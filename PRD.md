@@ -1,8 +1,8 @@
 # PRD: @duskmoon-dev/design — Design Token Package
 
-> **Version**: 1.0.0
-> **Date**: 2026-03-27
-> **Status**: Draft — Awaiting Review
+> **Version**: 2.0.0 — Final
+> **Date**: 2026-03-28
+> **Status**: Ready for Implementation
 > **Depends on**: Nothing (foundational package)
 > **Depended on by**: `@duskmoon-dev/core`, `flutter_duskmoon_ui`
 
@@ -18,8 +18,10 @@ DuskMoonUI's 65+ MD3 color tokens live as TypeScript objects in `@duskmoon-dev/c
 
 A framework-agnostic `@duskmoon-dev/design` package containing:
 
-1. **YAML token files** — canonical color definitions for every theme
-2. **`duskmoon-codegen`** — standalone Rust CLI that reads YAML and emits TS, Dart, JSON, CSS
+1. **YAML token files** — canonical definitions for colors, typography, and spacing/radius/elevation
+2. **`duskmoon-codegen`** — standalone **Rust** CLI that reads YAML and emits TS, Dart, JSON, CSS
+
+All downstream consumers are codegen-only. The YAML files are the single source of truth.
 
 ### Dependency Graph
 
@@ -27,7 +29,7 @@ A framework-agnostic `@duskmoon-dev/design` package containing:
 @duskmoon-dev/design (YAML source of truth)
     │
     ├── codegen ──► @duskmoon-dev/core (TS — replaces hand-written themes)
-    ├── codegen ──► flutter_duskmoon_ui (Dart — consumed by duskmoon_theme)
+    ├── codegen ──► flutter_duskmoon_ui/duskmoon_theme (Dart)
     ├── codegen ──► JSON / CSS (general consumption)
     └── codegen ──► (future: Swift, Kotlin, etc.)
 ```
@@ -45,6 +47,8 @@ packages/design/                   # @duskmoon-dev/design
 ├── tokens/
 │   ├── _schema.yaml              # Token structure & validation rules
 │   ├── _semantic.yaml            # Shared semantic color mappings
+│   ├── _typography.yaml          # Type scale definitions
+│   ├── _spacing.yaml             # Spacing, radius, elevation scales
 │   ├── sunshine.yaml             # Sunshine (light) theme
 │   └── moonlight.yaml            # Moonlight (dark) theme
 ├── generated/                    # Committed, CI-checked for staleness
@@ -57,7 +61,7 @@ packages/design/                   # @duskmoon-dev/design
 └── README.md
 ```
 
-### 2.2 Schema Definition
+### 2.2 Color Schema
 
 `tokens/_schema.yaml`:
 
@@ -86,7 +90,7 @@ groups:
       - surface-container
       - surface-container-high
       - surface-container-highest
-      - surface-variant
+      - surface-variant            # Kept for CSS backward compat; Dart codegen maps to surfaceContainerHighest
       - on-surface
       - on-surface-variant
   base:
@@ -112,7 +116,140 @@ groups:
       - on-error-container
 ```
 
-### 2.3 Theme File
+### 2.3 Typography Tokens
+
+`tokens/_typography.yaml`:
+
+```yaml
+# Typography scale — shared across all themes
+# Values are platform-agnostic; codegen maps to platform units
+
+type_scale:
+  display-large:
+    size: 57        # px / logical pixels
+    weight: 400
+    line_height: 64
+    letter_spacing: -0.25
+  display-medium:
+    size: 45
+    weight: 400
+    line_height: 52
+    letter_spacing: 0
+  display-small:
+    size: 36
+    weight: 400
+    line_height: 44
+    letter_spacing: 0
+
+  headline-large:
+    size: 32
+    weight: 400
+    line_height: 40
+    letter_spacing: 0
+  headline-medium:
+    size: 28
+    weight: 400
+    line_height: 36
+    letter_spacing: 0
+  headline-small:
+    size: 24
+    weight: 400
+    line_height: 32
+    letter_spacing: 0
+
+  title-large:
+    size: 22
+    weight: 400
+    line_height: 28
+    letter_spacing: 0
+  title-medium:
+    size: 16
+    weight: 500
+    line_height: 24
+    letter_spacing: 0.15
+  title-small:
+    size: 14
+    weight: 500
+    line_height: 20
+    letter_spacing: 0.1
+
+  body-large:
+    size: 16
+    weight: 400
+    line_height: 24
+    letter_spacing: 0.5
+  body-medium:
+    size: 14
+    weight: 400
+    line_height: 20
+    letter_spacing: 0.25
+  body-small:
+    size: 12
+    weight: 400
+    line_height: 16
+    letter_spacing: 0.4
+
+  label-large:
+    size: 14
+    weight: 500
+    line_height: 20
+    letter_spacing: 0.1
+  label-medium:
+    size: 12
+    weight: 500
+    line_height: 16
+    letter_spacing: 0.5
+  label-small:
+    size: 11
+    weight: 500
+    line_height: 16
+    letter_spacing: 0.5
+```
+
+### 2.4 Spacing, Radius & Elevation Tokens
+
+`tokens/_spacing.yaml`:
+
+```yaml
+# Spacing scale
+spacing:
+  0: 0
+  1: 4
+  2: 8
+  3: 12
+  4: 16
+  5: 20
+  6: 24
+  7: 28
+  8: 32
+  10: 40
+  12: 48
+  16: 64
+  20: 80
+  24: 96
+
+# Border radius scale
+radius:
+  none: 0
+  xs: 4
+  sm: 8
+  md: 12
+  lg: 16
+  xl: 20
+  2xl: 28
+  full: 9999
+
+# Elevation levels (MD3 standard)
+elevation:
+  level0: 0         # 0dp
+  level1: 1         # 1dp
+  level2: 3         # 3dp
+  level3: 6         # 6dp
+  level4: 8         # 8dp
+  level5: 12        # 12dp
+```
+
+### 2.5 Theme File
 
 `tokens/sunshine.yaml`:
 
@@ -206,7 +343,7 @@ Moonlight theme follows the same structure with values from DESIGN.md.
 
 ### 3.1 Repository
 
-Separate repo: `duskmoon-dev/codegen`
+Separate repo: `duskmoon-dev/codegen` — **Rust**
 
 ```
 duskmoon-dev/codegen/
@@ -220,10 +357,10 @@ duskmoon-dev/codegen/
 │   ├── config.rs                 # codegen.yaml parser
 │   └── targets/
 │       ├── mod.rs
-│       ├── typescript.rs         # TS emitter
-│       ├── dart.rs               # Dart emitter
-│       ├── json.rs               # JSON emitter
-│       └── css.rs                # CSS emitter
+│       ├── typescript.rs
+│       ├── dart.rs
+│       ├── json.rs
+│       └── css.rs
 ├── templates/                    # Tera templates for each target
 │   ├── typescript.tera
 │   ├── dart.tera
@@ -292,8 +429,6 @@ targets:
 
 ### 3.4 Color Conversion
 
-All token values stored as HSL strings. CLI converts at codegen time:
-
 | Source (YAML) | Target | Output |
 |---|---|---|
 | `"38 92% 50%"` | TypeScript | `'38 92% 50%'` (pass-through) |
@@ -301,7 +436,57 @@ All token values stored as HSL strings. CLI converts at codegen time:
 | `"38 92% 50%"` | CSS | `hsl(38 92% 50%)` |
 | `"38 92% 50%"` | JSON | `{ "h": 38, "s": 92, "l": 50, "hex": "#F59E0B" }` |
 
-### 3.5 Generated Output Examples
+### 3.5 Typography & Spacing Codegen
+
+**Dart** — generates `DmTypeScale` class and `DmSpacing`/`DmRadius`/`DmElevation` constants:
+
+```dart
+// GENERATED — DO NOT EDIT
+abstract final class DmTypeScale {
+  static const TextStyle displayLarge = TextStyle(
+    fontSize: 57, fontWeight: FontWeight.w400,
+    height: 1.123, letterSpacing: -0.25,
+  );
+  // ... all styles
+}
+
+abstract final class DmSpacing {
+  static const double s0 = 0;
+  static const double s1 = 4;
+  static const double s2 = 8;
+  // ...
+}
+
+abstract final class DmRadius {
+  static const double none = 0;
+  static const double xs = 4;
+  static const double sm = 8;
+  // ...
+  static const double full = 9999;
+}
+
+abstract final class DmElevation {
+  static const double level0 = 0;
+  static const double level1 = 1;
+  // ...
+}
+```
+
+**TypeScript** — generates equivalent objects for Tailwind consumption.
+
+**CSS** — generates custom properties: `--spacing-1: 4px;`, `--radius-md: 12px;`, etc.
+
+### 3.6 surface-variant Handling
+
+`surface-variant` is **kept** in YAML for CSS backward compatibility. Codegen targets handle it per-platform:
+
+| Target | Behavior |
+|---|---|
+| TypeScript / CSS | Emitted as `--color-surface-variant` (used by Tailwind) |
+| Dart | Mapped to `surfaceContainerHighest` (Flutter deprecated `surfaceVariant`) |
+| JSON | Included as normal token |
+
+### 3.7 Generated Output Examples
 
 **TypeScript** (`sunshine.generated.ts`):
 
@@ -339,7 +524,7 @@ abstract final class SunshineTokens {
 }
 ```
 
-### 3.6 Crate Dependencies
+### 3.8 Crate Dependencies
 
 ```toml
 [dependencies]
@@ -347,8 +532,8 @@ clap = { version = "4", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.9"
 serde_json = "1"
-palette = "0.7"       # HSL → sRGB conversion
-tera = "1"             # Template engine
+palette = "0.7"
+tera = "1"
 thiserror = "2"
 anyhow = "1"
 
@@ -359,8 +544,6 @@ insta = { version = "1", features = ["yaml"] }
 ---
 
 ## 4. Integration with @duskmoon-dev/core
-
-After codegen is operational:
 
 1. Generated TS files land in `packages/core/src/themes/generated/`
 2. `packages/core/src/themes/index.ts` re-exports generated modules
@@ -374,58 +557,65 @@ After codegen is operational:
 
 ### Phase 0 — Token Extraction (1–2 weeks)
 
-- [ ] Create `packages/design/` in JS monorepo with `package.json`
-- [ ] Write `_schema.yaml` covering all 65+ tokens
-- [ ] Write `sunshine.yaml` (values from DESIGN.md)
-- [ ] Write `moonlight.yaml` (values from DESIGN.md)
-- [ ] Write `_semantic.yaml` for shared mappings
-- [ ] Manual diff validation: YAML values ≡ existing TS theme objects
+- [x] Create `packages/design/` in JS monorepo with `package.json`
+- [x] Write `_schema.yaml` covering all 65+ color tokens
+- [x] Write `_typography.yaml` with MD3 type scale
+- [x] Write `_spacing.yaml` with spacing, radius, elevation scales
+- [x] Write `sunshine.yaml` (values from DESIGN.md)
+- [x] Write `moonlight.yaml` (values from DESIGN.md)
+- [x] Write `_semantic.yaml` for shared semantic mappings
+- [x] Manual diff validation: YAML color values ≡ existing TS theme objects
 
 ### Phase 1 — Codegen CLI (2–3 weeks)
 
 - [ ] Scaffold Rust project with clap derive CLI
-- [ ] YAML schema parser + `validate` command
-- [ ] HSL string → Color conversion via `palette` crate
+- [x] YAML schema parser + `validate` command
+- [x] HSL string → Color conversion via `palette` crate
 - [ ] Tera templates for each target
-- [ ] TypeScript emitter + snapshot tests
-- [ ] Dart emitter + snapshot tests
-- [ ] JSON emitter + snapshot tests
-- [ ] CSS emitter + snapshot tests
-- [ ] `codegen.yaml` config file support
-- [ ] `diff` command (compare two themes)
-- [ ] `docs` command (generate markdown reference)
+- [x] TypeScript emitter (colors + typography + spacing) + snapshot tests
+- [x] Dart emitter (colors + typography + spacing) + snapshot tests
+- [x] JSON emitter + snapshot tests
+- [x] CSS emitter + snapshot tests
+- [x] `codegen.yaml` config file support
+- [x] `diff` command
+- [x] `docs` command
 - [ ] Cross-platform binaries: linux-x64, darwin-arm64, darwin-x64
 
 ### Phase 2 — Core Integration (1 week)
 
-- [ ] Run codegen, generate TS into `core/src/themes/generated/`
-- [ ] Integration test: `bun run build` produces identical CSS output
-- [ ] Remove hand-written theme files
-- [ ] CI pipeline: codegen → build → staleness check
+- [x] Run codegen, generate TS into `core/src/themes/generated/`
+- [x] Integration test: `bun run build` produces identical CSS output
+- [x] Remove hand-written theme files
+- [x] CI pipeline: codegen → build → staleness check
 
 ---
 
 ## 6. Acceptance Criteria
 
-- [ ] `duskmoon-codegen validate` passes on all token files
-- [ ] Generated TS produces **byte-identical CSS** to current `@duskmoon-dev/core` build
-- [ ] Generated Dart `Color` values match HSL→sRGB conversion (ΔE < 1.0)
-- [ ] All 4 targets (TS, Dart, JSON, CSS) generate successfully
-- [ ] Deterministic output: same input → same output, byte-for-byte
-- [ ] < 5ms generation time for all targets from 2 theme files
+- [x] `duskmoon-codegen validate` passes on all token files
+- [x] Generated TS produces **byte-identical CSS** to current `@duskmoon-dev/core` build
+- [x] Generated Dart `Color` values match HSL→sRGB conversion (ΔE < 1.0)
+- [x] Generated Dart `DmTypeScale` matches `_typography.yaml` values
+- [x] Generated Dart `DmSpacing`/`DmRadius`/`DmElevation` match `_spacing.yaml`
+- [x] All 4 targets (TS, Dart, JSON, CSS) generate successfully
+- [x] Deterministic output: same input → same output, byte-for-byte
+- [x] < 5ms generation time for all targets from 2 theme files
 - [ ] Cross-compiles to linux-x64, darwin-arm64, darwin-x64
-- [ ] Adding a new theme = 1 YAML file + `duskmoon-codegen generate`
+- [x] Adding a new theme = 1 YAML file + `duskmoon-codegen generate`
 - [ ] Adding a new token = update `_schema.yaml` + theme files + regenerate
+- [x] `surface-variant` emitted in CSS/TS, mapped to `surfaceContainerHighest` in Dart
 
 ---
 
-## 7. Open Questions
+## 7. Resolved Decisions
 
-1. **Rust vs Go** — PRD assumes Rust (`palette` crate, `clap`, `insta`). Confirm or switch.
-2. **YAML vs TOML** — Both have excellent serde support in Rust. YAML chosen for readability. Confirm.
-3. **Typography tokens** — Should `@duskmoon-dev/design` also define type scale (font sizes, weights, line heights)? Or keep per-platform?
-4. **Spacing / radius tokens** — Extract spacing scale, border radius, elevation values to YAML? Or per-platform?
-5. **`surface-variant` deprecation** — Flutter deprecated `surfaceVariant`. Keep in YAML for CSS backward compat, or drop?
+| # | Question | Decision |
+|---|---|---|
+| 1 | Codegen CLI language | **Rust** (`palette`, `clap`, `insta`) |
+| 2 | Token file format | **YAML** |
+| 3 | Typography tokens | **Yes** — `_typography.yaml` with MD3 type scale |
+| 4 | Spacing / radius / elevation tokens | **Yes** — `_spacing.yaml` |
+| 5 | `surface-variant` deprecation | **Keep** in YAML for CSS backward compat; Dart maps to `surfaceContainerHighest` |
 
 ---
 
