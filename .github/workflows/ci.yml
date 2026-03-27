@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  validate:
+    name: Validate & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout design repo
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Validate token files
+        run: bun run validate
+
+      - name: Run unit tests
+        run: bun test
+
+  staleness:
+    name: Staleness Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout design repo
+        uses: actions/checkout@v4
+        with:
+          path: design
+
+      - name: Checkout duskmoonui repo
+        uses: actions/checkout@v4
+        with:
+          repository: duskmoon-dev/duskmoonui
+          path: duskmoonui
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install design dependencies
+        working-directory: design
+        run: bun install
+
+      - name: Generate all targets (JSON, CSS, Dart, TS)
+        working-directory: design
+        run: bun run generate
+
+      - name: Staleness check — generated/ (JSON, CSS, Dart)
+        working-directory: design
+        run: |
+          if ! git diff --exit-code generated/; then
+            echo "ERROR: generated/ files are stale. Run 'bun run generate' and commit."
+            exit 1
+          fi
+
+      - name: Staleness check — core TS themes
+        working-directory: duskmoonui
+        run: |
+          if ! git diff --exit-code packages/core/src/themes/generated/; then
+            echo "ERROR: core TS generated files are stale. Run codegen and commit."
+            exit 1
+          fi
