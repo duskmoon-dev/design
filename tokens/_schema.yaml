@@ -26,8 +26,8 @@ groups:
       - on-surface
       - on-surface-variant
   base:
-    description: "Legacy DaisyUI compatibility"
-    tokens: [base-100, base-200, base-300, base-content]
+    description: "Legacy DaisyUI compatibility + extended scale"
+    tokens: [base-100, base-200, base-300, base-400, base-500, base-600, base-700, base-800, base-900, base-content]
   outline:
     tokens: [outline, outline-variant]
   inverse:
@@ -38,10 +38,16 @@ groups:
     tokens:
       - info
       - info-content
+      - info-container
+      - on-info-container
       - success
       - success-content
+      - success-container
+      - on-success-container
       - warning
       - warning-content
+      - warning-container
+      - on-warning-container
       - error
       - error-content
       - error-container

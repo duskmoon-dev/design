@@ -47,10 +47,16 @@ colors:
   on-surface: "220 13% 91%"
   on-surface-variant: "220 9% 70%"
 
-  # Base (legacy)
+  # Base (legacy + extended scale)
   base-100: "220 13% 11%"
   base-200: "220 13% 9%"
   base-300: "220 13% 7%"
+  base-400: "220 9% 18%"
+  base-500: "220 9% 26%"
+  base-600: "220 9% 36%"
+  base-700: "220 9% 50%"
+  base-800: "220 9% 65%"
+  base-900: "220 9% 78%"
   base-content: "220 13% 91%"
 
   # Outline
@@ -69,10 +75,16 @@ colors:
   # Semantic
   info: "199 89% 60%"
   info-content: "0 0% 100%"
+  info-container: "199 89% 20%"
+  on-info-container: "199 89% 85%"
   success: "142 76% 60%"
   success-content: "0 0% 100%"
+  success-container: "142 76% 18%"
+  on-success-container: "142 76% 82%"
   warning: "38 92% 60%"
   warning-content: "0 0% 100%"
+  warning-container: "38 92% 20%"
+  on-warning-container: "38 92% 88%"
   error: "0 84% 70%"
   error-content: "0 0% 100%"
   error-container: "0 84% 25%"
