@@ -223,6 +223,116 @@ describe('Generated Dart', () => {
   }
 });
 
+// ─── Typography token tests ─────────────────────────────────────────────────
+
+describe('Typography tokens', () => {
+  const typography = parseYAML(readFileSync(resolve(ROOT, 'tokens/_typography.yaml'), 'utf-8'));
+
+  it('has type_scale key', () => {
+    expect(typography.type_scale).toBeDefined();
+  });
+
+  it('contains all MD3 styles', () => {
+    const styles = Object.keys(typography.type_scale);
+    for (const prefix of ['display', 'headline', 'title', 'body', 'label']) {
+      for (const size of ['large', 'medium', 'small']) {
+        expect(styles).toContain(`${prefix}-${size}`);
+      }
+    }
+  });
+
+  it('all entries have required fields', () => {
+    for (const [name, entry] of Object.entries(typography.type_scale) as [string, any][]) {
+      expect(entry.size).toBeGreaterThan(0);
+      expect(entry.weight).toBeGreaterThanOrEqual(100);
+      expect(entry.line_height).toBeGreaterThan(0);
+      expect(typeof entry.letter_spacing).toBe('number');
+    }
+  });
+});
+
+// ─── Spacing token tests ────────────────────────────────────────────────────
+
+describe('Spacing tokens', () => {
+  const spacingFile = parseYAML(readFileSync(resolve(ROOT, 'tokens/_spacing.yaml'), 'utf-8'));
+
+  it('has spacing scale', () => {
+    expect(Object.keys(spacingFile.spacing).length).toBeGreaterThanOrEqual(10);
+  });
+
+  it('has radius scale', () => {
+    expect(spacingFile.radius.none).toBe(0);
+    expect(spacingFile.radius.full).toBe(9999);
+  });
+
+  it('has elevation levels', () => {
+    expect(spacingFile.elevation.level0).toBe(0);
+    expect(spacingFile.elevation.level5).toBe(12);
+  });
+});
+
+// ─── Generated typography/spacing tests ─────────────────────────────────────
+
+describe('Generated Dart typography', () => {
+  it('dm_type_scale.g.dart has DmTypeScale class', () => {
+    const content = readFileSync(resolve(ROOT, 'generated/dart/dm_type_scale.g.dart'), 'utf-8');
+    expect(content).toContain('abstract final class DmTypeScale');
+    expect(content).toContain('static const TextStyle displayLarge');
+    expect(content).toContain('fontSize: 57');
+    expect(content).toContain('FontWeight.w400');
+  });
+});
+
+describe('Generated Dart spacing', () => {
+  it('dm_spacing.g.dart has DmSpacing, DmRadius, DmElevation', () => {
+    const content = readFileSync(resolve(ROOT, 'generated/dart/dm_spacing.g.dart'), 'utf-8');
+    expect(content).toContain('abstract final class DmSpacing');
+    expect(content).toContain('abstract final class DmRadius');
+    expect(content).toContain('abstract final class DmElevation');
+    expect(content).toContain('static const double s4 = 16');
+    expect(content).toContain('static const double md = 12');
+    expect(content).toContain('static const double level3 = 6');
+  });
+});
+
+describe('Generated CSS spacing', () => {
+  it('spacing.css has custom properties', () => {
+    const content = readFileSync(resolve(ROOT, 'generated/spacing.css'), 'utf-8');
+    expect(content).toContain('--spacing-4: 16px');
+    expect(content).toContain('--radius-md: 12px');
+    expect(content).toContain('--elevation-level3: 6px');
+  });
+});
+
+describe('Generated TS typography', () => {
+  it('typography.generated.ts has typeScale export', () => {
+    const content = readFileSync(resolve(ROOT, '../duskmoonui/packages/core/src/themes/generated/typography.generated.ts'), 'utf-8');
+    expect(content).toContain('export const typeScale');
+    expect(content).toContain("'display-large'");
+    expect(content).toContain('size: 57');
+  });
+});
+
+describe('Generated TS spacing', () => {
+  it('spacing.generated.ts has spacing/radius/elevation exports', () => {
+    const content = readFileSync(resolve(ROOT, '../duskmoonui/packages/core/src/themes/generated/spacing.generated.ts'), 'utf-8');
+    expect(content).toContain('export const spacing');
+    expect(content).toContain('export const radius');
+    expect(content).toContain('export const elevation');
+  });
+});
+
+describe('Generated JSON tokens', () => {
+  it('tokens.json has typeScale and spacing', () => {
+    const content = JSON.parse(readFileSync(resolve(ROOT, 'generated/tokens.json'), 'utf-8'));
+    expect(content.typeScale).toBeDefined();
+    expect(content.typeScale['display-large'].size).toBe(57);
+    expect(content.spacing).toBeDefined();
+    expect(content.radius).toBeDefined();
+    expect(content.elevation).toBeDefined();
+  });
+});
+
 // ─── Determinism test ────────────────────────────────────────────────────────
 
 describe('Determinism', () => {

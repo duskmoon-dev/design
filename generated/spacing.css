@@ -1,0 +1,36 @@
+/* GENERATED — DO NOT EDIT */
+/* Source: tokens/_spacing.yaml */
+/* Generator: duskmoon-codegen v1.0.0 */
+
+:root {
+  --spacing-0: 0px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-7: 28px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+  --spacing-24: 96px;
+
+  --radius-none: 0px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+
+  --elevation-level0: 0px;
+  --elevation-level1: 1px;
+  --elevation-level2: 3px;
+  --elevation-level3: 6px;
+  --elevation-level4: 8px;
+  --elevation-level5: 12px;
+}

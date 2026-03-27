@@ -124,3 +124,66 @@
 | `error-content` | `0 0% 100%` | `0 0% 100%` |
 | `error-container` | `0 100% 95%` | `0 84% 25%` |
 | `on-error-container` | `0 72% 20%` | `0 84% 90%` |
+
+## Typography
+
+| Style | Size | Weight | Line Height | Letter Spacing |
+|-------|------|--------|-------------|----------------|
+| `display-large` | 57 | 400 | 64 | -0.25 |
+| `display-medium` | 45 | 400 | 52 | 0 |
+| `display-small` | 36 | 400 | 44 | 0 |
+| `headline-large` | 32 | 400 | 40 | 0 |
+| `headline-medium` | 28 | 400 | 36 | 0 |
+| `headline-small` | 24 | 400 | 32 | 0 |
+| `title-large` | 22 | 400 | 28 | 0 |
+| `title-medium` | 16 | 500 | 24 | 0.15 |
+| `title-small` | 14 | 500 | 20 | 0.1 |
+| `body-large` | 16 | 400 | 24 | 0.5 |
+| `body-medium` | 14 | 400 | 20 | 0.25 |
+| `body-small` | 12 | 400 | 16 | 0.4 |
+| `label-large` | 14 | 500 | 20 | 0.1 |
+| `label-medium` | 12 | 500 | 16 | 0.5 |
+| `label-small` | 11 | 500 | 16 | 0.5 |
+
+## Spacing
+
+| Key | Value (px) |
+|-----|------------|
+| `0` | 0 |
+| `1` | 4 |
+| `2` | 8 |
+| `3` | 12 |
+| `4` | 16 |
+| `5` | 20 |
+| `6` | 24 |
+| `7` | 28 |
+| `8` | 32 |
+| `10` | 40 |
+| `12` | 48 |
+| `16` | 64 |
+| `20` | 80 |
+| `24` | 96 |
+
+## Radius
+
+| Key | Value (px) |
+|-----|------------|
+| `none` | 0 |
+| `xs` | 4 |
+| `sm` | 8 |
+| `md` | 12 |
+| `lg` | 16 |
+| `xl` | 20 |
+| `2xl` | 28 |
+| `full` | 9999 |
+
+## Elevation
+
+| Level | Value (dp) |
+|-------|------------|
+| `level0` | 0 |
+| `level1` | 1 |
+| `level2` | 3 |
+| `level3` | 6 |
+| `level4` | 8 |
+| `level5` | 12 |

@@ -1,0 +1,83 @@
+# Typography scale — shared across all themes
+# Values are platform-agnostic; codegen maps to platform units
+
+type_scale:
+  display-large:
+    size: 57
+    weight: 400
+    line_height: 64
+    letter_spacing: -0.25
+  display-medium:
+    size: 45
+    weight: 400
+    line_height: 52
+    letter_spacing: 0
+  display-small:
+    size: 36
+    weight: 400
+    line_height: 44
+    letter_spacing: 0
+
+  headline-large:
+    size: 32
+    weight: 400
+    line_height: 40
+    letter_spacing: 0
+  headline-medium:
+    size: 28
+    weight: 400
+    line_height: 36
+    letter_spacing: 0
+  headline-small:
+    size: 24
+    weight: 400
+    line_height: 32
+    letter_spacing: 0
+
+  title-large:
+    size: 22
+    weight: 400
+    line_height: 28
+    letter_spacing: 0
+  title-medium:
+    size: 16
+    weight: 500
+    line_height: 24
+    letter_spacing: 0.15
+  title-small:
+    size: 14
+    weight: 500
+    line_height: 20
+    letter_spacing: 0.1
+
+  body-large:
+    size: 16
+    weight: 400
+    line_height: 24
+    letter_spacing: 0.5
+  body-medium:
+    size: 14
+    weight: 400
+    line_height: 20
+    letter_spacing: 0.25
+  body-small:
+    size: 12
+    weight: 400
+    line_height: 16
+    letter_spacing: 0.4
+
+  label-large:
+    size: 14
+    weight: 500
+    line_height: 20
+    letter_spacing: 0.1
+  label-medium:
+    size: 12
+    weight: 500
+    line_height: 16
+    letter_spacing: 0.5
+  label-small:
+    size: 11
+    weight: 500
+    line_height: 16
+    letter_spacing: 0.5

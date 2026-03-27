@@ -22,6 +22,23 @@ interface ThemeFile {
   colors: Record<string, string>;
 }
 
+interface TypeScaleEntry {
+  size: number;
+  weight: number;
+  line_height: number;
+  letter_spacing: number;
+}
+
+interface TypographyFile {
+  type_scale: Record<string, TypeScaleEntry>;
+}
+
+interface SpacingFile {
+  spacing: Record<string, number>;
+  radius: Record<string, number>;
+  elevation: Record<string, number>;
+}
+
 interface Config {
   input: string;
   output: string;
@@ -121,6 +138,18 @@ function loadThemes(tokenDir: string): ThemeFile[] {
     const raw = readFileSync(join(tokenDir, f), 'utf-8');
     return parseYAML(raw) as ThemeFile;
   });
+}
+
+function loadTypography(tokenDir: string): TypographyFile | null {
+  const path = join(tokenDir, '_typography.yaml');
+  if (!existsSync(path)) return null;
+  return parseYAML(readFileSync(path, 'utf-8')) as TypographyFile;
+}
+
+function loadSpacing(tokenDir: string): SpacingFile | null {
+  const path = join(tokenDir, '_spacing.yaml');
+  if (!existsSync(path)) return null;
+  return parseYAML(readFileSync(path, 'utf-8')) as SpacingFile;
 }
 
 // ─── Validation ──────────────────────────────────────────────────────────────
@@ -231,6 +260,184 @@ function emitCSS(theme: ThemeFile, selectorPattern: string, variablePrefix: stri
   return lines.join('\n');
 }
 
+// ─── Typography & Spacing Emitters ──────────────────────────────────────────
+
+function kebabToCamel(s: string): string {
+  return s.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
+}
+
+function emitDartTypography(typography: TypographyFile): string {
+  const lines: string[] = [
+    '// GENERATED — DO NOT EDIT',
+    '// Source: tokens/_typography.yaml',
+    '// Generator: duskmoon-codegen v1.0.0',
+    '',
+    "import 'package:flutter/painting.dart' show TextStyle, FontWeight;",
+    '',
+    'abstract final class DmTypeScale {',
+  ];
+
+  for (const [name, entry] of Object.entries(typography.type_scale)) {
+    const dartName = kebabToCamel(name);
+    const height = (entry.line_height / entry.size).toFixed(3).replace(/0+$/, '').replace(/\.$/, '');
+    const w = entry.weight;
+    const weightStr = `FontWeight.w${w}`;
+    lines.push(`  static const TextStyle ${dartName} = TextStyle(`);
+    lines.push(`    fontSize: ${entry.size},`);
+    lines.push(`    fontWeight: ${weightStr},`);
+    lines.push(`    height: ${height},`);
+    lines.push(`    letterSpacing: ${entry.letter_spacing},`);
+    lines.push('  );');
+  }
+
+  lines.push('}');
+  lines.push('');
+  return lines.join('\n');
+}
+
+function emitDartSpacing(spacing: SpacingFile): string {
+  const lines: string[] = [
+    '// GENERATED — DO NOT EDIT',
+    '// Source: tokens/_spacing.yaml',
+    '// Generator: duskmoon-codegen v1.0.0',
+    '',
+  ];
+
+  // Spacing
+  lines.push('abstract final class DmSpacing {');
+  for (const [key, value] of Object.entries(spacing.spacing)) {
+    lines.push(`  static const double s${key} = ${value};`);
+  }
+  lines.push('}');
+  lines.push('');
+
+  // Radius
+  lines.push('abstract final class DmRadius {');
+  for (const [key, value] of Object.entries(spacing.radius)) {
+    // Dart identifiers can't start with a digit — prefix with 'r'
+    const dartKey = /^\d/.test(key) ? `r${key}` : key;
+    lines.push(`  static const double ${dartKey} = ${value};`);
+  }
+  lines.push('}');
+  lines.push('');
+
+  // Elevation
+  lines.push('abstract final class DmElevation {');
+  for (const [key, value] of Object.entries(spacing.elevation)) {
+    lines.push(`  static const double ${key} = ${value};`);
+  }
+  lines.push('}');
+  lines.push('');
+
+  return lines.join('\n');
+}
+
+function emitCSSSpacing(spacing: SpacingFile): string {
+  const lines: string[] = [
+    '/* GENERATED — DO NOT EDIT */',
+    '/* Source: tokens/_spacing.yaml */',
+    '/* Generator: duskmoon-codegen v1.0.0 */',
+    '',
+    ':root {',
+  ];
+
+  for (const [key, value] of Object.entries(spacing.spacing)) {
+    lines.push(`  --spacing-${key}: ${value}px;`);
+  }
+  lines.push('');
+  for (const [key, value] of Object.entries(spacing.radius)) {
+    lines.push(`  --radius-${key}: ${value}px;`);
+  }
+  lines.push('');
+  for (const [key, value] of Object.entries(spacing.elevation)) {
+    lines.push(`  --elevation-${key}: ${value}px;`);
+  }
+
+  lines.push('}');
+  lines.push('');
+  return lines.join('\n');
+}
+
+function emitTSSpacing(spacing: SpacingFile): string {
+  const lines: string[] = [
+    '// GENERATED — DO NOT EDIT',
+    '// Source: tokens/_spacing.yaml',
+    '// Generator: duskmoon-codegen v1.0.0',
+    '',
+    'export const spacing = {',
+  ];
+
+  for (const [key, value] of Object.entries(spacing.spacing)) {
+    lines.push(`  ${key}: ${value},`);
+  }
+  lines.push('} as const;');
+  lines.push('');
+
+  lines.push('export const radius = {');
+  for (const [key, value] of Object.entries(spacing.radius)) {
+    const keyStr = key.includes('x') || key === 'full' || key === 'none' ? key : key;
+    lines.push(`  '${keyStr}': ${value},`);
+  }
+  lines.push('} as const;');
+  lines.push('');
+
+  lines.push('export const elevation = {');
+  for (const [key, value] of Object.entries(spacing.elevation)) {
+    lines.push(`  ${key}: ${value},`);
+  }
+  lines.push('} as const;');
+  lines.push('');
+
+  return lines.join('\n');
+}
+
+function emitTSTypography(typography: TypographyFile): string {
+  const lines: string[] = [
+    '// GENERATED — DO NOT EDIT',
+    '// Source: tokens/_typography.yaml',
+    '// Generator: duskmoon-codegen v1.0.0',
+    '',
+    'export interface TypeScaleEntry {',
+    '  size: number;',
+    '  weight: number;',
+    '  lineHeight: number;',
+    '  letterSpacing: number;',
+    '}',
+    '',
+    'export const typeScale: Record<string, TypeScaleEntry> = {',
+  ];
+
+  for (const [name, entry] of Object.entries(typography.type_scale)) {
+    const tsName = `'${name}'`;
+    lines.push(`  ${tsName}: { size: ${entry.size}, weight: ${entry.weight}, lineHeight: ${entry.line_height}, letterSpacing: ${entry.letter_spacing} },`);
+  }
+
+  lines.push('} as const;');
+  lines.push('');
+  return lines.join('\n');
+}
+
+function emitJSONTypographySpacing(typography: TypographyFile | null, spacing: SpacingFile | null): string {
+  const result: Record<string, unknown> = {};
+  if (typography) {
+    result.typeScale = {};
+    for (const [name, entry] of Object.entries(typography.type_scale)) {
+      (result.typeScale as Record<string, unknown>)[name] = {
+        size: entry.size,
+        weight: entry.weight,
+        lineHeight: entry.line_height,
+        letterSpacing: entry.letter_spacing,
+      };
+    }
+  }
+  if (spacing) {
+    result.spacing = spacing.spacing;
+    result.radius = spacing.radius;
+    result.elevation = spacing.elevation;
+  }
+  return JSON.stringify(result, null, 2) + '\n';
+}
+
 // ─── Write helpers ───────────────────────────────────────────────────────────
 
 function writeOutput(filePath: string, content: string): void {
@@ -249,6 +456,8 @@ function cmdGenerate(configDir: string, config: Config, targets: Target[]): void
   const tokenDir = resolveDir(configDir, config.input);
   const schema = loadSchema(tokenDir);
   const themes = loadThemes(tokenDir);
+  const typography = loadTypography(tokenDir);
+  const spacing = loadSpacing(tokenDir);
 
   // Validate first
   const result = validate(schema, themes);
@@ -288,6 +497,31 @@ function cmdGenerate(configDir: string, config: Config, targets: Target[]): void
       const fileName = cc.file_pattern.replace('{theme}', theme.name);
       writeOutput(join(outDir, fileName), emitCSS(theme, cc.selector_pattern, cc.variable_prefix));
     }
+  }
+
+  // Shared token files (typography + spacing) — emitted once, not per-theme
+  if (shouldGenerate('dart') && config.targets.dart) {
+    const dc = config.targets.dart;
+    const outDir = resolveDir(configDir, dc.output_dir);
+    if (typography) writeOutput(join(outDir, 'dm_type_scale.g.dart'), emitDartTypography(typography));
+    if (spacing) writeOutput(join(outDir, 'dm_spacing.g.dart'), emitDartSpacing(spacing));
+  }
+
+  if (shouldGenerate('css') && config.targets.css) {
+    const outDir = resolveDir(configDir, config.output);
+    if (spacing) writeOutput(join(outDir, 'spacing.css'), emitCSSSpacing(spacing));
+  }
+
+  if (shouldGenerate('typescript') && config.targets.typescript) {
+    const tc = config.targets.typescript;
+    const outDir = resolveDir(configDir, tc.output_dir);
+    if (typography) writeOutput(join(outDir, 'typography.generated.ts'), emitTSTypography(typography));
+    if (spacing) writeOutput(join(outDir, 'spacing.generated.ts'), emitTSSpacing(spacing));
+  }
+
+  if (shouldGenerate('json') && config.targets.json) {
+    const outDir = resolveDir(configDir, config.output);
+    if (typography || spacing) writeOutput(join(outDir, 'tokens.json'), emitJSONTypographySpacing(typography, spacing));
   }
 
   console.log('Generation complete.');
@@ -338,6 +572,8 @@ function cmdDocs(configDir: string, config: Config): void {
   const tokenDir = resolveDir(configDir, config.input);
   const schema = loadSchema(tokenDir);
   const themes = loadThemes(tokenDir);
+  const typography = loadTypography(tokenDir);
+  const spacing = loadSpacing(tokenDir);
   const lines: string[] = [
     '# DuskMoonUI Design Tokens Reference',
     '',
@@ -356,6 +592,46 @@ function cmdDocs(configDir: string, config: Config): void {
     for (const token of g.tokens) {
       const values = themes.map(t => `\`${t.colors[token] ?? '—'}\``);
       lines.push(`| \`${token}\` | ${values.join(' | ')} |`);
+    }
+    lines.push('');
+  }
+
+  if (typography) {
+    lines.push('## Typography');
+    lines.push('');
+    lines.push('| Style | Size | Weight | Line Height | Letter Spacing |');
+    lines.push('|-------|------|--------|-------------|----------------|');
+    for (const [name, entry] of Object.entries(typography.type_scale)) {
+      lines.push(`| \`${name}\` | ${entry.size} | ${entry.weight} | ${entry.line_height} | ${entry.letter_spacing} |`);
+    }
+    lines.push('');
+  }
+
+  if (spacing) {
+    lines.push('## Spacing');
+    lines.push('');
+    lines.push('| Key | Value (px) |');
+    lines.push('|-----|------------|');
+    for (const [key, value] of Object.entries(spacing.spacing)) {
+      lines.push(`| \`${key}\` | ${value} |`);
+    }
+    lines.push('');
+
+    lines.push('## Radius');
+    lines.push('');
+    lines.push('| Key | Value (px) |');
+    lines.push('|-----|------------|');
+    for (const [key, value] of Object.entries(spacing.radius)) {
+      lines.push(`| \`${key}\` | ${value} |`);
+    }
+    lines.push('');
+
+    lines.push('## Elevation');
+    lines.push('');
+    lines.push('| Level | Value (dp) |');
+    lines.push('|-------|------------|');
+    for (const [key, value] of Object.entries(spacing.elevation)) {
+      lines.push(`| \`${key}\` | ${value} |`);
     }
     lines.push('');
   }
