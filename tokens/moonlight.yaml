@@ -1,0 +1,79 @@
+name: moonlight
+mode: dark
+
+colors:
+  # Primary - Soft Blue
+  primary: "217 91% 60%"
+  primary-focus: "217 91% 70%"
+  primary-content: "0 0% 100%"
+  primary-container: "217 91% 20%"
+  on-primary-container: "217 91% 90%"
+
+  # Secondary - Purple
+  secondary: "262 83% 70%"
+  secondary-focus: "262 83% 80%"
+  secondary-content: "0 0% 100%"
+  secondary-container: "262 83% 25%"
+  on-secondary-container: "262 83% 90%"
+
+  # Tertiary - Teal
+  tertiary: "173 80% 50%"
+  tertiary-focus: "173 80% 60%"
+  tertiary-content: "0 0% 100%"
+  tertiary-container: "173 80% 20%"
+  on-tertiary-container: "173 80% 90%"
+
+  # Accent - Cyan
+  accent: "189 94% 43%"
+  accent-focus: "189 94% 53%"
+  accent-content: "0 0% 100%"
+
+  # Neutral
+  neutral: "220 13% 91%"
+  neutral-focus: "220 13% 85%"
+  neutral-content: "220 9% 15%"
+  neutral-variant: "220 9% 46%"
+
+  # Surface (MD3 Dark)
+  surface: "220 13% 11%"
+  surface-dim: "220 13% 7%"
+  surface-bright: "220 13% 20%"
+  surface-container-lowest: "220 13% 7%"
+  surface-container-low: "220 13% 9%"
+  surface-container: "220 13% 11%"
+  surface-container-high: "220 13% 14%"
+  surface-container-highest: "220 13% 17%"
+  surface-variant: "220 9% 20%"
+  on-surface: "220 13% 91%"
+  on-surface-variant: "220 9% 70%"
+
+  # Base (legacy)
+  base-100: "220 13% 11%"
+  base-200: "220 13% 9%"
+  base-300: "220 13% 7%"
+  base-content: "220 13% 91%"
+
+  # Outline
+  outline: "220 9% 46%"
+  outline-variant: "220 9% 30%"
+
+  # Inverse
+  inverse-surface: "220 13% 91%"
+  inverse-on-surface: "220 13% 11%"
+  inverse-primary: "217 91% 40%"
+
+  # Shadow & Scrim
+  shadow: "0 0% 0%"
+  scrim: "0 0% 0%"
+
+  # Semantic
+  info: "199 89% 60%"
+  info-content: "0 0% 100%"
+  success: "142 76% 60%"
+  success-content: "0 0% 100%"
+  warning: "38 92% 60%"
+  warning-content: "0 0% 100%"
+  error: "0 84% 70%"
+  error-content: "0 0% 100%"
+  error-container: "0 84% 25%"
+  on-error-container: "0 84% 90%"

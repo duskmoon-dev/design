@@ -1,0 +1,60 @@
+/* GENERATED — DO NOT EDIT */
+/* Source: tokens/moonlight.yaml */
+/* Generator: duskmoon-codegen v1.0.0 */
+
+[data-theme="moonlight"] {
+  --color-primary: hsl(217 91% 60%);
+  --color-primary-focus: hsl(217 91% 70%);
+  --color-primary-content: hsl(0 0% 100%);
+  --color-primary-container: hsl(217 91% 20%);
+  --color-on-primary-container: hsl(217 91% 90%);
+  --color-secondary: hsl(262 83% 70%);
+  --color-secondary-focus: hsl(262 83% 80%);
+  --color-secondary-content: hsl(0 0% 100%);
+  --color-secondary-container: hsl(262 83% 25%);
+  --color-on-secondary-container: hsl(262 83% 90%);
+  --color-tertiary: hsl(173 80% 50%);
+  --color-tertiary-focus: hsl(173 80% 60%);
+  --color-tertiary-content: hsl(0 0% 100%);
+  --color-tertiary-container: hsl(173 80% 20%);
+  --color-on-tertiary-container: hsl(173 80% 90%);
+  --color-accent: hsl(189 94% 43%);
+  --color-accent-focus: hsl(189 94% 53%);
+  --color-accent-content: hsl(0 0% 100%);
+  --color-neutral: hsl(220 13% 91%);
+  --color-neutral-focus: hsl(220 13% 85%);
+  --color-neutral-content: hsl(220 9% 15%);
+  --color-neutral-variant: hsl(220 9% 46%);
+  --color-surface: hsl(220 13% 11%);
+  --color-surface-dim: hsl(220 13% 7%);
+  --color-surface-bright: hsl(220 13% 20%);
+  --color-surface-container-lowest: hsl(220 13% 7%);
+  --color-surface-container-low: hsl(220 13% 9%);
+  --color-surface-container: hsl(220 13% 11%);
+  --color-surface-container-high: hsl(220 13% 14%);
+  --color-surface-container-highest: hsl(220 13% 17%);
+  --color-surface-variant: hsl(220 9% 20%);
+  --color-on-surface: hsl(220 13% 91%);
+  --color-on-surface-variant: hsl(220 9% 70%);
+  --color-base-100: hsl(220 13% 11%);
+  --color-base-200: hsl(220 13% 9%);
+  --color-base-300: hsl(220 13% 7%);
+  --color-base-content: hsl(220 13% 91%);
+  --color-outline: hsl(220 9% 46%);
+  --color-outline-variant: hsl(220 9% 30%);
+  --color-inverse-surface: hsl(220 13% 91%);
+  --color-inverse-on-surface: hsl(220 13% 11%);
+  --color-inverse-primary: hsl(217 91% 40%);
+  --color-shadow: hsl(0 0% 0%);
+  --color-scrim: hsl(0 0% 0%);
+  --color-info: hsl(199 89% 60%);
+  --color-info-content: hsl(0 0% 100%);
+  --color-success: hsl(142 76% 60%);
+  --color-success-content: hsl(0 0% 100%);
+  --color-warning: hsl(38 92% 60%);
+  --color-warning-content: hsl(0 0% 100%);
+  --color-error: hsl(0 84% 70%);
+  --color-error-content: hsl(0 0% 100%);
+  --color-error-container: hsl(0 84% 25%);
+  --color-on-error-container: hsl(0 84% 90%);
+}

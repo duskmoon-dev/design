@@ -1,0 +1,22 @@
+{
+  "name": "@duskmoon-dev/design",
+  "version": "1.0.0",
+  "description": "Design tokens for DuskMoonUI — YAML source of truth with multi-target codegen",
+  "type": "module",
+  "scripts": {
+    "generate": "bun run scripts/codegen.ts generate --target all",
+    "generate:ts": "bun run scripts/codegen.ts generate --target typescript",
+    "generate:dart": "bun run scripts/codegen.ts generate --target dart",
+    "generate:json": "bun run scripts/codegen.ts generate --target json",
+    "generate:css": "bun run scripts/codegen.ts generate --target css",
+    "validate": "bun run scripts/codegen.ts validate",
+    "diff": "bun run scripts/codegen.ts diff"
+  },
+  "files": [
+    "tokens/",
+    "generated/"
+  ],
+  "devDependencies": {
+    "yaml": "^2.7.0"
+  }
+}

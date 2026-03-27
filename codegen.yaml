@@ -1,0 +1,24 @@
+input: ./tokens
+output: ./generated
+
+targets:
+  typescript:
+    output_dir: ../duskmoonui/packages/core/src/themes/generated
+    file_pattern: "{theme}.generated.ts"
+    export_style: named
+
+  dart:
+    output_dir: ./generated/dart
+    file_pattern: "{theme}_tokens.g.dart"
+    class_prefix: DuskMoon
+    color_type: Color
+
+  json:
+    output_dir: ./generated
+    file_pattern: "{theme}.json"
+
+  css:
+    output_dir: ./generated
+    file_pattern: "{theme}.css"
+    selector_pattern: '[data-theme="{theme}"]'
+    variable_prefix: "--color-"
