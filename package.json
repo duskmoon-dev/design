@@ -11,6 +11,7 @@
     "generate:css": "bun run scripts/codegen.ts generate --target css",
     "validate": "bun run scripts/codegen.ts validate",
     "diff": "bun run scripts/codegen.ts diff",
+    "docs": "bun run scripts/codegen.ts docs",
     "test": "bun test",
     "check": "bun run validate && bun test"
   },
