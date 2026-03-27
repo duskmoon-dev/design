@@ -527,17 +527,71 @@ function cmdGenerate(configDir: string, config: Config, targets: Target[]): void
   console.log('Generation complete.');
 }
 
+function validateTypography(typography: TypographyFile): string[] {
+  const errors: string[] = [];
+  if (!typography.type_scale || typeof typography.type_scale !== 'object') {
+    errors.push('_typography.yaml: missing type_scale');
+    return errors;
+  }
+  for (const [name, entry] of Object.entries(typography.type_scale)) {
+    if (typeof entry.size !== 'number' || entry.size <= 0)
+      errors.push(`typography.${name}: invalid size`);
+    if (typeof entry.weight !== 'number' || entry.weight < 100 || entry.weight > 900)
+      errors.push(`typography.${name}: invalid weight (must be 100-900)`);
+    if (typeof entry.line_height !== 'number' || entry.line_height <= 0)
+      errors.push(`typography.${name}: invalid line_height`);
+    if (typeof entry.letter_spacing !== 'number')
+      errors.push(`typography.${name}: missing letter_spacing`);
+  }
+  return errors;
+}
+
+function validateSpacing(spacing: SpacingFile): string[] {
+  const errors: string[] = [];
+  if (!spacing.spacing) errors.push('_spacing.yaml: missing spacing');
+  if (!spacing.radius) errors.push('_spacing.yaml: missing radius');
+  if (!spacing.elevation) errors.push('_spacing.yaml: missing elevation');
+
+  if (spacing.spacing) {
+    for (const [key, value] of Object.entries(spacing.spacing)) {
+      if (typeof value !== 'number' || value < 0)
+        errors.push(`spacing.${key}: invalid value ${value}`);
+    }
+  }
+  if (spacing.radius) {
+    for (const [key, value] of Object.entries(spacing.radius)) {
+      if (typeof value !== 'number' || value < 0)
+        errors.push(`radius.${key}: invalid value ${value}`);
+    }
+  }
+  if (spacing.elevation) {
+    for (const [key, value] of Object.entries(spacing.elevation)) {
+      if (typeof value !== 'number' || value < 0)
+        errors.push(`elevation.${key}: invalid value ${value}`);
+    }
+  }
+  return errors;
+}
+
 function cmdValidate(configDir: string, config: Config): void {
   const tokenDir = resolveDir(configDir, config.input);
   const schema = loadSchema(tokenDir);
   const themes = loadThemes(tokenDir);
   const result = validate(schema, themes);
+  const allErrors = [...result.errors];
 
-  if (result.valid) {
-    console.log(`Validated ${themes.length} theme(s) against schema — all OK.`);
+  const typography = loadTypography(tokenDir);
+  if (typography) allErrors.push(...validateTypography(typography));
+
+  const spacing = loadSpacing(tokenDir);
+  if (spacing) allErrors.push(...validateSpacing(spacing));
+
+  if (allErrors.length === 0) {
+    const extra = [typography && 'typography', spacing && 'spacing'].filter(Boolean).join(', ');
+    console.log(`Validated ${themes.length} theme(s) against schema${extra ? ` + ${extra}` : ''} — all OK.`);
   } else {
     console.error('Validation failed:');
-    result.errors.forEach(e => console.error(`  - ${e}`));
+    allErrors.forEach(e => console.error(`  - ${e}`));
     process.exit(1);
   }
 }
