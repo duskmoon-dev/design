@@ -10,7 +10,9 @@
     "generate:json": "bun run scripts/codegen.ts generate --target json",
     "generate:css": "bun run scripts/codegen.ts generate --target css",
     "validate": "bun run scripts/codegen.ts validate",
-    "diff": "bun run scripts/codegen.ts diff"
+    "diff": "bun run scripts/codegen.ts diff",
+    "test": "bun test",
+    "check": "bun run validate && bun test"
   },
   "files": [
     "tokens/",
