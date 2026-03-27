@@ -221,6 +221,14 @@ describe('Generated Dart', () => {
       expect(content).toContain('static const Color primary = Color(0xFF');
     });
   }
+
+  it('maps surface-variant to surfaceContainerHighest (MD3 deprecation)', () => {
+    const content = readFileSync(resolve(ROOT, 'generated/dart/sunshine_tokens.g.dart'), 'utf-8');
+    // surface-variant MUST appear as surfaceContainerHighest
+    expect(content).toContain('static const Color surfaceContainerHighest = Color(');
+    // surfaceVariant must NOT appear (deprecated Flutter name)
+    expect(content).not.toContain('static const Color surfaceVariant = Color(');
+  });
 });
 
 // ─── Typography token tests ─────────────────────────────────────────────────
