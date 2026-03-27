@@ -221,8 +221,14 @@ function emitDart(theme: ThemeFile, classPrefix: string): string {
     `abstract final class ${className} {`,
   ];
 
+  // surface-variant maps to surfaceContainerHighest in Dart (MD3 deprecation);
+  // surface-container-highest is skipped to avoid collision.
+  const DART_ALIASES: Record<string, string> = { 'surface-variant': 'surfaceContainerHighest' };
+  const DART_SKIP = new Set(['surface-container-highest']);
+
   for (const [key, value] of Object.entries(theme.colors)) {
-    const dartName = key.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
+    if (DART_SKIP.has(key)) continue;
+    const dartName = DART_ALIASES[key] ?? key.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
     const argbHex = hslToArgbHex(value);
     lines.push(`  static const Color ${dartName} = Color(${argbHex});`);
   }

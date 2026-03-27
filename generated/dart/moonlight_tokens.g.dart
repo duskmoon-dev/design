@@ -34,8 +34,7 @@ abstract final class DuskMoonMoonlightTokens {
   static const Color surfaceContainerLow = Color(0xFF14161A);
   static const Color surfaceContainer = Color(0xFF181B20);
   static const Color surfaceContainerHigh = Color(0xFF1F2228);
-  static const Color surfaceContainerHighest = Color(0xFF262931);
-  static const Color surfaceVariant = Color(0xFF2E3138);
+  static const Color surfaceContainerHighest = Color(0xFF2E3138);
   static const Color onSurface = Color(0xFFE5E7EB);
   static const Color onSurfaceVariant = Color(0xFFACB0B9);
   static const Color base100 = Color(0xFF181B20);
