@@ -13,13 +13,15 @@ import { parse as parseYAML } from 'yaml';
 interface Schema {
   version: string;
   color_format: string;
-  groups: Record<string, { tokens: string[]; description?: string }>;
+  groups: Record<string, { tokens: string[]; description?: string; notes?: string }>;
+  shape?: { tokens: string[]; format: string };
 }
 
 interface ThemeFile {
   name: string;
   mode: 'light' | 'dark';
   colors: Record<string, string>;
+  shape?: Record<string, string | number>;
 }
 
 interface TypeScaleEntry {
@@ -71,51 +73,80 @@ type Target = 'typescript' | 'dart' | 'json' | 'css' | 'all';
 
 // ─── Color conversion ────────────────────────────────────────────────────────
 
-function parseHSL(value: string): { h: number; s: number; l: number } {
-  const parts = value.trim().split(/\s+/);
+interface OklchColor {
+  l: number;   // 0–1
+  c: number;   // 0–~0.4
+  h: number;   // 0–360
+  alpha?: number; // 0–1
+}
+
+function parseOklch(value: string): OklchColor {
+  const [colorPart, alphaPart] = value.split('/').map(s => s.trim());
+  const parts = colorPart.split(/\s+/);
   return {
-    h: parseFloat(parts[0]),
-    s: parseFloat(parts[1].replace('%', '')),
-    l: parseFloat(parts[2].replace('%', '')),
+    l: parseFloat(parts[0].replace('%', '')) / 100,
+    c: parseFloat(parts[1]),
+    h: parseFloat(parts[2]),
+    alpha: alphaPart ? parseFloat(alphaPart.replace('%', '')) / 100 : undefined,
   };
 }
 
-function hslToRgb(h: number, s: number, l: number): { r: number; g: number; b: number } {
-  s /= 100;
-  l /= 100;
-  const c = (1 - Math.abs(2 * l - 1)) * s;
-  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-  const m = l - c / 2;
-  let r = 0, g = 0, b = 0;
+function oklchToOklab(l: number, c: number, h: number): [number, number, number] {
+  const hRad = (h * Math.PI) / 180;
+  return [l, c * Math.cos(hRad), c * Math.sin(hRad)];
+}
 
-  if (h < 60)      { r = c; g = x; b = 0; }
-  else if (h < 120) { r = x; g = c; b = 0; }
-  else if (h < 180) { r = 0; g = c; b = x; }
-  else if (h < 240) { r = 0; g = x; b = c; }
-  else if (h < 300) { r = x; g = 0; b = c; }
-  else              { r = c; g = 0; b = x; }
+function oklabToLinearSrgb(L: number, a: number, b: number): [number, number, number] {
+  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
+  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
+  const s_ = L - 0.0894841775 * a - 1.2914855480 * b;
+  const l = l_ * l_ * l_;
+  const m = m_ * m_ * m_;
+  const s = s_ * s_ * s_;
+  return [
+    +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+    -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s,
+  ];
+}
 
-  return {
-    r: Math.round((r + m) * 255),
-    g: Math.round((g + m) * 255),
-    b: Math.round((b + m) * 255),
-  };
+function linearToSrgb(x: number): number {
+  if (x <= 0) return 0;
+  if (x >= 1) return 1;
+  return x <= 0.0031308
+    ? 12.92 * x
+    : 1.055 * Math.pow(x, 1 / 2.4) - 0.055;
 }
 
 function rgbToHex(r: number, g: number, b: number): string {
-  return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0').toUpperCase()).join('');
+  return '#' + [r, g, b]
+    .map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0').toUpperCase())
+    .join('');
 }
 
-function hslToArgbHex(hslStr: string): string {
-  const { h, s, l } = parseHSL(hslStr);
-  const { r, g, b } = hslToRgb(h, s, l);
-  return '0xFF' + [r, g, b].map(v => v.toString(16).padStart(2, '0').toUpperCase()).join('');
+function oklchToRgb(oklchStr: string): { r: number; g: number; b: number } {
+  const { l, c, h } = parseOklch(oklchStr);
+  const [L, a, b] = oklchToOklab(l, c, h);
+  const [lr, lg, lb] = oklabToLinearSrgb(L, a, b);
+  return {
+    r: Math.round(linearToSrgb(lr) * 255),
+    g: Math.round(linearToSrgb(lg) * 255),
+    b: Math.round(linearToSrgb(lb) * 255),
+  };
 }
 
-function hslToHex(hslStr: string): string {
-  const { h, s, l } = parseHSL(hslStr);
-  const { r, g, b } = hslToRgb(h, s, l);
+function oklchToHex(oklchStr: string): string {
+  const { r, g, b } = oklchToRgb(oklchStr);
   return rgbToHex(r, g, b);
+}
+
+function oklchToArgbHex(oklchStr: string): string {
+  const parsed = parseOklch(oklchStr);
+  const { r, g, b } = oklchToRgb(oklchStr);
+  const alpha = parsed.alpha !== undefined ? Math.round(parsed.alpha * 255) : 255;
+  return '0x' + [alpha, r, g, b]
+    .map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0').toUpperCase())
+    .join('');
 }
 
 // ─── File loaders ────────────────────────────────────────────────────────────
@@ -156,25 +187,29 @@ function loadSpacing(tokenDir: string): SpacingFile | null {
 
 function validate(schema: Schema, themes: ThemeFile[]): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
-  const allTokens = Object.values(schema.groups).flatMap(g => g.tokens);
+  const allColorTokens = Object.values(schema.groups).flatMap(g => g.tokens);
+  const shapeTokens = schema.shape?.tokens ?? [];
 
   for (const theme of themes) {
-    // Check all schema tokens exist in theme
-    for (const token of allTokens) {
+    for (const token of allColorTokens) {
       if (!(token in theme.colors)) {
-        errors.push(`${theme.name}: missing token "${token}"`);
+        errors.push(`${theme.name}: missing color token "${token}"`);
       }
     }
-    // Check all theme tokens are in schema
     for (const token of Object.keys(theme.colors)) {
-      if (!allTokens.includes(token)) {
-        errors.push(`${theme.name}: unknown token "${token}" (not in schema)`);
+      if (!allColorTokens.includes(token)) {
+        errors.push(`${theme.name}: unknown color token "${token}" (not in schema)`);
       }
     }
-    // Validate HSL format
+    const oklchRe = /^\d+(\.\d+)?%\s+\d+(\.\d+)?\s+\d+(\.\d+)?(\s+\/\s+\d+(\.\d+)?%)?$/;
     for (const [token, value] of Object.entries(theme.colors)) {
-      if (!/^\d+(\.\d+)?\s+\d+(\.\d+)?%\s+\d+(\.\d+)?%$/.test(value)) {
-        errors.push(`${theme.name}.${token}: invalid HSL format "${value}"`);
+      if (!oklchRe.test(value)) {
+        errors.push(`${theme.name}.${token}: invalid OKLCH format "${value}"`);
+      }
+    }
+    for (const token of shapeTokens) {
+      if (!(token in (theme.shape ?? {}))) {
+        errors.push(`${theme.name}: missing shape token "${token}"`);
       }
     }
   }
@@ -188,11 +223,11 @@ function emitTypeScript(theme: ThemeFile): string {
   const lines: string[] = [
     '// GENERATED — DO NOT EDIT',
     `// Source: tokens/${theme.name}.yaml`,
-    '// Generator: duskmoon-codegen v1.0.0',
+    '// Generator: duskmoon-codegen v2.0.0',
     '',
-    "import type { ThemeColors } from '../types';",
+    "import type { ThemeColors, ThemeShape } from './types';",
     '',
-    `export const ${theme.name}: ThemeColors = {`,
+    `export const ${theme.name}Colors: ThemeColors = {`,
   ];
 
   const entries = Object.entries(theme.colors);
@@ -200,12 +235,58 @@ function emitTypeScript(theme: ThemeFile): string {
     const [key, value] = entries[i];
     const needsQuotes = key.includes('-');
     const keyStr = needsQuotes ? `'${key}'` : key;
-    const comma = i < entries.length - 1 ? ',' : ',';
-    lines.push(`  ${keyStr}: '${value}'${comma}`);
+    lines.push(`  ${keyStr}: '${value}',`);
+  }
+  lines.push('};');
+
+  if (theme.shape) {
+    lines.push('');
+    lines.push(`export const ${theme.name}Shape: ThemeShape = {`);
+    for (const [key, value] of Object.entries(theme.shape)) {
+      const needsQuotes = key.includes('-');
+      const keyStr = needsQuotes ? `'${key}'` : key;
+      const valStr = typeof value === 'string' ? `'${value}'` : String(value);
+      lines.push(`  ${keyStr}: ${valStr},`);
+    }
+    lines.push('};');
   }
 
-  lines.push('};');
   lines.push('');
+  return lines.join('\n');
+}
+
+function emitTypesTS(themes: ThemeFile[]): string {
+  const lines: string[] = [
+    '// GENERATED — DO NOT EDIT',
+    '// Generator: duskmoon-codegen v2.0.0',
+    '',
+    '/** OKLCH color string: "L% C H" or "L% C H / A%" */',
+    'export type OklchColor = string;',
+    '',
+    'export interface ThemeColors {',
+  ];
+
+  if (themes.length > 0) {
+    for (const key of Object.keys(themes[0].colors)) {
+      const needsQuotes = key.includes('-');
+      const keyStr = needsQuotes ? `'${key}'` : key;
+      lines.push(`  ${keyStr}: OklchColor;`);
+    }
+  }
+  lines.push('}');
+  lines.push('');
+
+  if (themes.length > 0 && themes[0].shape) {
+    lines.push('export interface ThemeShape {');
+    for (const key of Object.keys(themes[0].shape!)) {
+      const needsQuotes = key.includes('-');
+      const keyStr = needsQuotes ? `'${key}'` : key;
+      lines.push(`  ${keyStr}: string | number;`);
+    }
+    lines.push('}');
+    lines.push('');
+  }
+
   return lines.join('\n');
 }
 
@@ -214,23 +295,42 @@ function emitDart(theme: ThemeFile, classPrefix: string): string {
   const lines: string[] = [
     '// GENERATED — DO NOT EDIT',
     `// Source: tokens/${theme.name}.yaml`,
-    '// Generator: duskmoon-codegen v1.0.0',
+    '// Generator: duskmoon-codegen v2.0.0',
     '',
     "import 'dart:ui' show Color;",
     '',
     `abstract final class ${className} {`,
   ];
 
-  // surface-variant maps to surfaceContainerHighest in Dart (MD3 deprecation);
-  // surface-container-highest is skipped to avoid collision.
   const DART_ALIASES: Record<string, string> = { 'surface-variant': 'surfaceContainerHighest' };
   const DART_SKIP = new Set(['surface-container-highest']);
 
   for (const [key, value] of Object.entries(theme.colors)) {
     if (DART_SKIP.has(key)) continue;
     const dartName = DART_ALIASES[key] ?? key.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
-    const argbHex = hslToArgbHex(value);
+    const argbHex = oklchToArgbHex(value);
     lines.push(`  static const Color ${dartName} = Color(${argbHex});`);
+  }
+
+  if (theme.shape) {
+    lines.push('');
+    lines.push('  // Shape tokens');
+    for (const [key, value] of Object.entries(theme.shape)) {
+      const dartName = key.replace(/-([a-z0-9])/g, (_, c: string) => c.toUpperCase());
+      if (typeof value === 'number') {
+        lines.push(`  static const double ${dartName} = ${value};`);
+      } else {
+        const numMatch = String(value).match(/^([\d.]+)(rem|px)?$/);
+        if (numMatch) {
+          const num = parseFloat(numMatch[1]);
+          const unit = numMatch[2] ?? '';
+          const pxValue = unit === 'rem' ? num * 16 : num;
+          lines.push(`  static const double ${dartName} = ${pxValue};`);
+        } else {
+          lines.push(`  static const String ${dartName} = '${value}';`);
+        }
+      }
+    }
   }
 
   lines.push('}');
@@ -239,10 +339,21 @@ function emitDart(theme: ThemeFile, classPrefix: string): string {
 }
 
 function emitJSON(theme: ThemeFile): string {
-  const result: Record<string, { h: number; s: number; l: number; hex: string }> = {};
+  const colors: Record<string, { l: number; c: number; h: number; hex: string; alpha?: number }> = {};
   for (const [key, value] of Object.entries(theme.colors)) {
-    const { h, s, l } = parseHSL(value);
-    result[key] = { h, s, l, hex: hslToHex(value) };
+    const parsed = parseOklch(value);
+    const { r, g, b } = oklchToRgb(value);
+    colors[key] = {
+      l: parsed.l,
+      c: parsed.c,
+      h: parsed.h,
+      hex: rgbToHex(r, g, b),
+      ...(parsed.alpha !== undefined && { alpha: parsed.alpha }),
+    };
+  }
+  const result: Record<string, unknown> = { colors };
+  if (theme.shape) {
+    result.shape = theme.shape;
   }
   return JSON.stringify(result, null, 2) + '\n';
 }
@@ -252,13 +363,21 @@ function emitCSS(theme: ThemeFile, selectorPattern: string, variablePrefix: stri
   const lines: string[] = [
     '/* GENERATED — DO NOT EDIT */',
     `/* Source: tokens/${theme.name}.yaml */`,
-    '/* Generator: duskmoon-codegen v1.0.0 */',
+    '/* Generator: duskmoon-codegen v2.0.0 */',
     '',
     `${selector} {`,
+    `  color-scheme: ${theme.mode};`,
   ];
 
   for (const [key, value] of Object.entries(theme.colors)) {
-    lines.push(`  ${variablePrefix}${key}: hsl(${value});`);
+    lines.push(`  ${variablePrefix}${key}: oklch(${value});`);
+  }
+
+  if (theme.shape) {
+    lines.push('');
+    for (const [key, value] of Object.entries(theme.shape)) {
+      lines.push(`  --${key}: ${value};`);
+    }
   }
 
   lines.push('}');
@@ -276,7 +395,7 @@ function emitDartTypography(typography: TypographyFile): string {
   const lines: string[] = [
     '// GENERATED — DO NOT EDIT',
     '// Source: tokens/_typography.yaml',
-    '// Generator: duskmoon-codegen v1.0.0',
+    '// Generator: duskmoon-codegen v2.0.0',
     '',
     "import 'package:flutter/painting.dart' show TextStyle, FontWeight;",
     '',
@@ -305,7 +424,7 @@ function emitDartSpacing(spacing: SpacingFile): string {
   const lines: string[] = [
     '// GENERATED — DO NOT EDIT',
     '// Source: tokens/_spacing.yaml',
-    '// Generator: duskmoon-codegen v1.0.0',
+    '// Generator: duskmoon-codegen v2.0.0',
     '',
   ];
 
@@ -342,7 +461,7 @@ function emitCSSSpacing(spacing: SpacingFile): string {
   const lines: string[] = [
     '/* GENERATED — DO NOT EDIT */',
     '/* Source: tokens/_spacing.yaml */',
-    '/* Generator: duskmoon-codegen v1.0.0 */',
+    '/* Generator: duskmoon-codegen v2.0.0 */',
     '',
     ':root {',
   ];
@@ -368,7 +487,7 @@ function emitTSSpacing(spacing: SpacingFile): string {
   const lines: string[] = [
     '// GENERATED — DO NOT EDIT',
     '// Source: tokens/_spacing.yaml',
-    '// Generator: duskmoon-codegen v1.0.0',
+    '// Generator: duskmoon-codegen v2.0.0',
     '',
     'export const spacing = {',
   ];
@@ -401,7 +520,7 @@ function emitTSTypography(typography: TypographyFile): string {
   const lines: string[] = [
     '// GENERATED — DO NOT EDIT',
     '// Source: tokens/_typography.yaml',
-    '// Generator: duskmoon-codegen v1.0.0',
+    '// Generator: duskmoon-codegen v2.0.0',
     '',
     'export interface TypeScaleEntry {',
     '  size: number;',
@@ -521,6 +640,7 @@ function cmdGenerate(configDir: string, config: Config, targets: Target[]): void
   if (shouldGenerate('typescript') && config.targets.typescript) {
     const tc = config.targets.typescript;
     const outDir = resolveDir(configDir, tc.output_dir);
+    writeOutput(join(outDir, 'types.ts'), emitTypesTS(themes));
     if (typography) writeOutput(join(outDir, 'typography.generated.ts'), emitTSTypography(typography));
     if (spacing) writeOutput(join(outDir, 'spacing.generated.ts'), emitTSSpacing(spacing));
   }
@@ -637,7 +757,7 @@ function cmdDocs(configDir: string, config: Config): void {
   const lines: string[] = [
     '# DuskMoonUI Design Tokens Reference',
     '',
-    `> Generated by duskmoon-codegen v1.0.0`,
+    `> Generated by duskmoon-codegen v2.0.0`,
     `> ${themes.length} theme(s): ${themes.map(t => t.name).join(', ')}`,
     '',
   ];
@@ -651,6 +771,18 @@ function cmdDocs(configDir: string, config: Config): void {
     lines.push('|-------|' + themes.map(() => '-------').join('|') + '|');
     for (const token of g.tokens) {
       const values = themes.map(t => `\`${t.colors[token] ?? '—'}\``);
+      lines.push(`| \`${token}\` | ${values.join(' | ')} |`);
+    }
+    lines.push('');
+  }
+
+  if (schema.shape) {
+    lines.push('## Shape');
+    lines.push('');
+    lines.push('| Token | ' + themes.map(t => t.name).join(' | ') + ' |');
+    lines.push('|-------|' + themes.map(() => '-------').join('|') + '|');
+    for (const token of schema.shape.tokens) {
+      const values = themes.map(t => `\`${(t.shape ?? {})[token] ?? '—'}\``);
       lines.push(`| \`${token}\` | ${values.join(' | ')} |`);
     }
     lines.push('');
