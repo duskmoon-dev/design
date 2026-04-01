@@ -1,17 +1,17 @@
-version: "1.0"
-color_format: "hsl"  # All values: "H S% L%"
+version: "2.0"
+color_format: "oklch"  # All values: "L% C H" — e.g. "72% 0.17 75"
 
 groups:
   primary:
-    tokens: [primary, primary-focus, primary-content, primary-container, on-primary-container]
+    tokens: [primary, primary-content, primary-container, on-primary-container]
   secondary:
-    tokens: [secondary, secondary-focus, secondary-content, secondary-container, on-secondary-container]
+    tokens: [secondary, secondary-content, secondary-container, on-secondary-container]
   tertiary:
-    tokens: [tertiary, tertiary-focus, tertiary-content, tertiary-container, on-tertiary-container]
+    tokens: [tertiary, tertiary-content, tertiary-container, on-tertiary-container]
   accent:
-    tokens: [accent, accent-focus, accent-content]
+    tokens: [accent, accent-content]
   neutral:
-    tokens: [neutral, neutral-focus, neutral-content, neutral-variant]
+    tokens: [neutral, neutral-content, neutral-variant]
   surface:
     tokens:
       - surface
@@ -26,7 +26,7 @@ groups:
       - on-surface
       - on-surface-variant
   base:
-    description: "Legacy DaisyUI compatibility + extended scale"
+    description: "Extended neutral scale (100=lightest in light mode, 100=darkest in dark mode)"
     tokens: [base-100, base-200, base-300, base-400, base-500, base-600, base-700, base-800, base-900, base-content]
   outline:
     tokens: [outline, outline-variant]
@@ -34,6 +34,7 @@ groups:
     tokens: [inverse-surface, inverse-on-surface, inverse-primary]
   shadow:
     tokens: [shadow, scrim]
+    notes: "scrim supports alpha channel: 'L% C H / A%'"
   semantic:
     tokens:
       - info
@@ -52,3 +53,15 @@ groups:
       - error-content
       - error-container
       - on-error-container
+
+shape:
+  tokens:
+    - radius-selector
+    - radius-field
+    - radius-box
+    - size-selector
+    - size-field
+    - border
+    - depth
+    - noise
+  format: "css-value"
