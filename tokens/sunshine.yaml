@@ -2,90 +2,101 @@ name: sunshine
 mode: light
 
 colors:
-  # Primary - Warm Orange
-  primary: "38 92% 50%"
-  primary-focus: "38 92% 40%"
-  primary-content: "0 0% 100%"
-  primary-container: "38 100% 90%"
-  on-primary-container: "38 92% 15%"
+  # Primary — Warm Amber
+  primary: "72% 0.17 75"
+  primary-content: "100% 0 0"
+  primary-container: "95% 0.035 95.91"
+  on-primary-container: "25% 0.03 95.91"
 
-  # Secondary - Pink
-  secondary: "330 81% 60%"
-  secondary-focus: "330 81% 50%"
-  secondary-content: "0 0% 100%"
-  secondary-container: "330 100% 92%"
-  on-secondary-container: "330 81% 18%"
+  # Secondary — Coral Rose
+  secondary: "62% 0.19 20"
+  secondary-content: "100% 0 0"
+  secondary-container: "94% 0.05 87.01"
+  on-secondary-container: "25% 0.05 87.01"
 
-  # Tertiary - Purple
-  tertiary: "258 90% 66%"
-  tertiary-focus: "258 90% 56%"
-  tertiary-content: "0 0% 100%"
-  tertiary-container: "258 100% 92%"
-  on-tertiary-container: "258 90% 20%"
+  # Tertiary — Soft Violet
+  tertiary: "80% 0.085 235"
+  tertiary-content: "18% 0.010 235"
+  tertiary-container: "95% 0.035 235"
+  on-tertiary-container: "22% 0.012 235"
 
-  # Accent - Emerald
-  accent: "160 84% 39%"
-  accent-focus: "160 84% 29%"
-  accent-content: "0 0% 100%"
+  # Accent
+  accent: "85.23% 0.14 327"
+  accent-content: "41% 0.112 45.904"
 
   # Neutral
-  neutral: "217 33% 17%"
-  neutral-focus: "217 33% 12%"
-  neutral-content: "0 0% 100%"
-  neutral-variant: "220 14% 60%"
+  neutral: "0% 0 0"
+  neutral-content: "80% 0.015 50"
+  neutral-variant: "50% 0.02 260"
 
   # Surface (MD3)
-  surface: "0 0% 99%"
-  surface-dim: "220 13% 94%"
-  surface-bright: "0 0% 100%"
-  surface-container-lowest: "0 0% 100%"
-  surface-container-low: "220 13% 97%"
-  surface-container: "220 13% 96%"
-  surface-container-high: "220 13% 94%"
-  surface-container-highest: "220 13% 91%"
-  surface-variant: "220 14% 90%"
-  on-surface: "217 33% 17%"
-  on-surface-variant: "220 9% 30%"
+  surface: "100% 0 0"
+  surface-dim: "96% 0.01 85"
+  surface-bright: "100% 0 0"
+  surface-container-lowest: "100% 0 0"
+  surface-container-low: "99% 0.01 85"
+  surface-container: "97% 0.01 85"
+  surface-container-high: "96% 0.01 85"
+  surface-container-highest: "94% 0.01 85"
+  surface-variant: "94% 0.02 85"
+  on-surface: "27% 0.02 260"
+  on-surface-variant: "50% 0.02 260"
 
-  # Base (legacy + extended scale)
-  base-100: "0 0% 100%"
-  base-200: "220 13% 96%"
-  base-300: "220 13% 91%"
-  base-400: "220 9% 80%"
-  base-500: "220 9% 65%"
-  base-600: "220 9% 50%"
-  base-700: "220 9% 37%"
-  base-800: "220 9% 27%"
-  base-900: "220 9% 18%"
-  base-content: "217 33% 17%"
+  # Base Scale
+  base-100: "100% 0.005 255"
+  base-200: "95% 0.008 255"
+  base-300: "90% 0.01 255"
+  base-400: "55% 0.06 255"
+  base-500: "45% 0.05 255"
+  base-600: "35% 0.04 255"
+  base-700: "25% 0.03 255"
+  base-800: "18% 0.02 255"
+  base-900: "12% 0.01 255"
+  base-content: "10% 0 255"
 
   # Outline
-  outline: "220 9% 55%"
-  outline-variant: "220 14% 80%"
+  outline: "75% 0.01 260"
+  outline-variant: "85% 0.01 260"
 
   # Inverse
-  inverse-surface: "217 33% 17%"
-  inverse-on-surface: "220 13% 94%"
-  inverse-primary: "38 100% 75%"
+  inverse-surface: "25% 0.02 260"
+  inverse-on-surface: "95% 0.01 260"
+  inverse-primary: "80% 0.14 55"
 
   # Shadow & Scrim
-  shadow: "0 0% 0%"
-  scrim: "0 0% 0%"
+  shadow: "0% 0 0"
+  scrim: "0% 0 0 / 50%"
 
-  # Semantic
-  info: "199 89% 48%"
-  info-content: "0 0% 100%"
-  info-container: "199 89% 92%"
-  on-info-container: "199 89% 18%"
-  success: "142 71% 45%"
-  success-content: "0 0% 100%"
-  success-container: "142 71% 90%"
-  on-success-container: "142 71% 18%"
-  warning: "38 92% 50%"
-  warning-content: "0 0% 100%"
-  warning-container: "38 92% 90%"
-  on-warning-container: "38 92% 20%"
-  error: "0 72% 51%"
-  error-content: "0 0% 100%"
-  error-container: "0 100% 95%"
-  on-error-container: "0 72% 20%"
+  # Semantic — Info
+  info: "41.94% 0.114 254.39"
+  info-content: "91.94% 0.114 254.39"
+  info-container: "95% 0.03 235"
+  on-info-container: "35% 0.08 235"
+
+  # Semantic — Success
+  success: "67.21% 0.19 133.55"
+  success-content: "27.21% 0.19 133.55"
+  success-container: "93% 0.04 150"
+  on-success-container: "30% 0.08 150"
+
+  # Semantic — Warning
+  warning: "68.19% 0.203 42.44"
+  warning-content: "18.19% 0.6 42"
+  warning-container: "93% 0.05 80"
+  on-warning-container: "38% 0.10 80"
+
+  # Semantic — Error
+  error: "61.17% 0.237 28.15"
+  error-content: "90.01% 0.153 84.78"
+  error-container: "93% 0.04 25"
+  on-error-container: "32% 0.10 25"
+
+shape:
+  radius-selector: "0.25rem"
+  radius-field: "0.625rem"
+  radius-box: "2rem"
+  size-selector: "0.1875rem"
+  size-field: "0.1875rem"
+  border: "0.5px"
+  depth: 1
+  noise: 1
