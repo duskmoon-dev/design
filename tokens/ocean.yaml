@@ -1,0 +1,88 @@
+name: ocean
+mode: dark
+
+colors:
+  primary: "72% 0.12 210"
+  primary-content: "15% 0.02 210"
+  primary-container: "30% 0.08 210"
+  on-primary-container: "90% 0.04 210"
+
+  secondary: "75% 0.10 175"
+  secondary-content: "15% 0.02 175"
+  secondary-container: "28% 0.06 175"
+  on-secondary-container: "90% 0.04 175"
+
+  tertiary: "72% 0.10 280"
+  tertiary-content: "15% 0.02 280"
+  tertiary-container: "28% 0.06 280"
+  on-tertiary-container: "90% 0.04 280"
+
+  accent: "70% 0.12 190"
+  accent-content: "15% 0.03 190"
+
+  neutral: "90% 0.01 210"
+  neutral-content: "16% 0.02 220"
+  neutral-variant: "50% 0.02 220"
+
+  surface: "16% 0.02 220"
+  surface-dim: "10% 0.015 220"
+  surface-bright: "24% 0.025 220"
+  surface-container-lowest: "8% 0.01 220"
+  surface-container-low: "12% 0.015 220"
+  surface-container: "16% 0.02 220"
+  surface-container-high: "20% 0.022 220"
+  surface-container-highest: "24% 0.025 220"
+  surface-variant: "22% 0.025 220"
+  on-surface: "90% 0.01 210"
+  on-surface-variant: "70% 0.015 210"
+
+  base-100: "16% 0.02 220"
+  base-200: "14% 0.015 220"
+  base-300: "10% 0.01 220"
+  base-400: "30% 0.02 220"
+  base-500: "40% 0.02 220"
+  base-600: "55% 0.015 220"
+  base-700: "70% 0.01 220"
+  base-800: "82% 0.01 220"
+  base-900: "92% 0.005 220"
+  base-content: "90% 0.01 210"
+
+  outline: "45% 0.02 220"
+  outline-variant: "32% 0.015 220"
+
+  inverse-surface: "90% 0.01 210"
+  inverse-on-surface: "16% 0.02 220"
+  inverse-primary: "45% 0.12 210"
+
+  shadow: "0% 0 0"
+  scrim: "0% 0 0 / 60%"
+
+  info: "70% 0.12 230"
+  info-content: "15% 0.03 230"
+  info-container: "28% 0.06 230"
+  on-info-container: "88% 0.04 230"
+
+  success: "72% 0.15 155"
+  success-content: "15% 0.03 155"
+  success-container: "28% 0.06 155"
+  on-success-container: "88% 0.04 155"
+
+  warning: "75% 0.14 75"
+  warning-content: "18% 0.04 75"
+  warning-container: "30% 0.06 75"
+  on-warning-container: "88% 0.05 75"
+
+  error: "70% 0.16 20"
+  error-content: "15% 0.03 20"
+  error-container: "28% 0.06 20"
+  on-error-container: "88% 0.05 20"
+
+shape:
+  radius-selector: "0.25rem"
+  radius-field: "0.75rem"
+  radius-box: "1.5rem"
+  size-selector: "0.125rem"
+  size-field: "0.125rem"
+  border: "1px"
+  depth: 0.7
+  noise: 0.3

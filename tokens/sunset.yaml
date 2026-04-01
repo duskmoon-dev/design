@@ -1,0 +1,88 @@
+name: sunset
+mode: light
+
+colors:
+  primary: "58% 0.18 35"
+  primary-content: "98% 0.01 35"
+  primary-container: "92% 0.04 35"
+  on-primary-container: "25% 0.07 35"
+
+  secondary: "58% 0.15 350"
+  secondary-content: "98% 0.01 350"
+  secondary-container: "92% 0.04 350"
+  on-secondary-container: "25% 0.06 350"
+
+  tertiary: "65% 0.14 75"
+  tertiary-content: "18% 0.04 75"
+  tertiary-container: "93% 0.04 75"
+  on-tertiary-container: "28% 0.06 75"
+
+  accent: "62% 0.14 310"
+  accent-content: "98% 0.01 310"
+
+  neutral: "14% 0.01 30"
+  neutral-content: "92% 0.01 50"
+  neutral-variant: "48% 0.015 40"
+
+  surface: "99% 0.008 50"
+  surface-dim: "95% 0.012 50"
+  surface-bright: "100% 0 0"
+  surface-container-lowest: "100% 0 0"
+  surface-container-low: "98% 0.01 50"
+  surface-container: "96% 0.012 50"
+  surface-container-high: "94% 0.015 50"
+  surface-container-highest: "92% 0.018 50"
+  surface-variant: "93% 0.02 50"
+  on-surface: "22% 0.02 30"
+  on-surface-variant: "42% 0.02 30"
+
+  base-100: "99% 0.008 50"
+  base-200: "92% 0.012 50"
+  base-300: "80% 0.01 50"
+  base-400: "60% 0.01 50"
+  base-500: "48% 0.01 50"
+  base-600: "38% 0.008 50"
+  base-700: "28% 0.008 50"
+  base-800: "20% 0.005 50"
+  base-900: "14% 0.003 50"
+  base-content: "14% 0.01 30"
+
+  outline: "60% 0.015 40"
+  outline-variant: "80% 0.01 40"
+
+  inverse-surface: "22% 0.02 30"
+  inverse-on-surface: "95% 0.01 50"
+  inverse-primary: "75% 0.14 35"
+
+  shadow: "0% 0 0"
+  scrim: "0% 0 0 / 45%"
+
+  info: "50% 0.10 245"
+  info-content: "98% 0.01 245"
+  info-container: "94% 0.03 245"
+  on-info-container: "28% 0.05 245"
+
+  success: "58% 0.14 140"
+  success-content: "98% 0.01 140"
+  success-container: "93% 0.04 140"
+  on-success-container: "26% 0.06 140"
+
+  warning: "65% 0.18 60"
+  warning-content: "18% 0.05 60"
+  warning-container: "93% 0.05 60"
+  on-warning-container: "32% 0.08 60"
+
+  error: "52% 0.20 20"
+  error-content: "98% 0.01 20"
+  error-container: "93% 0.04 20"
+  on-error-container: "28% 0.08 20"
+
+shape:
+  radius-selector: "0.1875rem"
+  radius-field: "0.5rem"
+  radius-box: "1.25rem"
+  size-selector: "0.1875rem"
+  size-field: "0.1875rem"
+  border: "0.75px"
+  depth: 0.9
+  noise: 0.7
