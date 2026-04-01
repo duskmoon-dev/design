@@ -1,16 +1,22 @@
-version: "1.0"
+version: "2.0"
 description: "Shared semantic color mappings across themes"
 
 mappings:
   info:
     role: "Informational feedback"
     contrast_pair: info-content
+    container: info-container
+    on_container: on-info-container
   success:
     role: "Positive feedback"
     contrast_pair: success-content
+    container: success-container
+    on_container: on-success-container
   warning:
     role: "Cautionary feedback"
     contrast_pair: warning-content
+    container: warning-container
+    on_container: on-warning-container
   error:
     role: "Destructive / error feedback"
     contrast_pair: error-content
