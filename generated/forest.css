@@ -1,0 +1,77 @@
+/* GENERATED — DO NOT EDIT */
+/* Source: tokens/forest.yaml */
+/* Generator: duskmoon-codegen v2.0.0 */
+
+[data-theme="forest"] {
+  color-scheme: light;
+  --color-primary: oklch(50% 0.14 150);
+  --color-primary-content: oklch(98% 0.01 150);
+  --color-primary-container: oklch(92% 0.04 150);
+  --color-on-primary-container: oklch(22% 0.06 150);
+  --color-secondary: oklch(52% 0.10 55);
+  --color-secondary-content: oklch(98% 0.01 55);
+  --color-secondary-container: oklch(92% 0.03 55);
+  --color-on-secondary-container: oklch(24% 0.05 55);
+  --color-tertiary: oklch(58% 0.08 175);
+  --color-tertiary-content: oklch(98% 0.01 175);
+  --color-tertiary-container: oklch(93% 0.03 175);
+  --color-on-tertiary-container: oklch(22% 0.04 175);
+  --color-accent: oklch(60% 0.12 85);
+  --color-accent-content: oklch(20% 0.04 85);
+  --color-neutral: oklch(14% 0.01 100);
+  --color-neutral-content: oklch(92% 0.01 100);
+  --color-neutral-variant: oklch(48% 0.015 100);
+  --color-surface: oklch(99% 0.005 100);
+  --color-surface-dim: oklch(95% 0.01 100);
+  --color-surface-bright: oklch(100% 0 0);
+  --color-surface-container-lowest: oklch(100% 0 0);
+  --color-surface-container-low: oklch(98% 0.008 100);
+  --color-surface-container: oklch(96% 0.01 100);
+  --color-surface-container-high: oklch(94% 0.012 100);
+  --color-surface-container-highest: oklch(92% 0.015 100);
+  --color-surface-variant: oklch(93% 0.02 100);
+  --color-on-surface: oklch(22% 0.02 100);
+  --color-on-surface-variant: oklch(42% 0.02 100);
+  --color-base-100: oklch(99% 0.005 100);
+  --color-base-200: oklch(92% 0.01 100);
+  --color-base-300: oklch(80% 0.01 100);
+  --color-base-400: oklch(60% 0.01 100);
+  --color-base-500: oklch(48% 0.01 100);
+  --color-base-600: oklch(38% 0.01 100);
+  --color-base-700: oklch(28% 0.01 100);
+  --color-base-800: oklch(20% 0.008 100);
+  --color-base-900: oklch(14% 0.005 100);
+  --color-base-content: oklch(14% 0.01 100);
+  --color-outline: oklch(60% 0.015 100);
+  --color-outline-variant: oklch(78% 0.01 100);
+  --color-inverse-surface: oklch(22% 0.02 100);
+  --color-inverse-on-surface: oklch(95% 0.01 100);
+  --color-inverse-primary: oklch(75% 0.10 150);
+  --color-shadow: oklch(0% 0 0);
+  --color-scrim: oklch(0% 0 0 / 40%);
+  --color-info: oklch(48% 0.12 240);
+  --color-info-content: oklch(98% 0.01 240);
+  --color-info-container: oklch(94% 0.03 240);
+  --color-on-info-container: oklch(28% 0.06 240);
+  --color-success: oklch(55% 0.16 145);
+  --color-success-content: oklch(98% 0.01 145);
+  --color-success-container: oklch(93% 0.04 145);
+  --color-on-success-container: oklch(25% 0.07 145);
+  --color-warning: oklch(62% 0.16 65);
+  --color-warning-content: oklch(18% 0.04 65);
+  --color-warning-container: oklch(93% 0.04 65);
+  --color-on-warning-container: oklch(32% 0.08 65);
+  --color-error: oklch(52% 0.18 15);
+  --color-error-content: oklch(98% 0.01 15);
+  --color-error-container: oklch(93% 0.04 15);
+  --color-on-error-container: oklch(28% 0.08 15);
+
+  --radius-selector: 0.125rem;
+  --radius-field: 0.375rem;
+  --radius-box: 1rem;
+  --size-selector: 0.1875rem;
+  --size-field: 0.1875rem;
+  --border: 1px;
+  --depth: 0.5;
+  --noise: 0.8;
+}

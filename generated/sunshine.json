@@ -1,398 +1,381 @@
 {
-  "primary": {
-    "h": 38,
-    "s": 92,
-    "l": 50,
-    "hex": "#F59F0A"
-  },
-  "primary-focus": {
-    "h": 38,
-    "s": 92,
-    "l": 40,
-    "hex": "#C47F08"
-  },
-  "primary-content": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "primary-container": {
-    "h": 38,
-    "s": 100,
-    "l": 90,
-    "hex": "#FFECCC"
-  },
-  "on-primary-container": {
-    "h": 38,
-    "s": 92,
-    "l": 15,
-    "hex": "#493003"
-  },
-  "secondary": {
-    "h": 330,
-    "s": 81,
-    "l": 60,
-    "hex": "#EC4699"
-  },
-  "secondary-focus": {
-    "h": 330,
-    "s": 81,
-    "l": 50,
-    "hex": "#E71880"
-  },
-  "secondary-content": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "secondary-container": {
-    "h": 330,
-    "s": 100,
-    "l": 92,
-    "hex": "#FFD6EB"
-  },
-  "on-secondary-container": {
-    "h": 330,
-    "s": 81,
-    "l": 18,
-    "hex": "#53092E"
-  },
-  "tertiary": {
-    "h": 258,
-    "s": 90,
-    "l": 66,
-    "hex": "#895AF6"
-  },
-  "tertiary-focus": {
-    "h": 258,
-    "s": 90,
-    "l": 56,
-    "hex": "#662AF4"
-  },
-  "tertiary-content": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "tertiary-container": {
-    "h": 258,
-    "s": 100,
-    "l": 92,
-    "hex": "#E2D6FF"
-  },
-  "on-tertiary-container": {
-    "h": 258,
-    "s": 90,
-    "l": 20,
-    "hex": "#210561"
-  },
-  "accent": {
-    "h": 160,
-    "s": 84,
-    "l": 39,
-    "hex": "#10B77F"
-  },
-  "accent-focus": {
-    "h": 160,
-    "s": 84,
-    "l": 29,
-    "hex": "#0C885F"
-  },
-  "accent-content": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "neutral": {
-    "h": 217,
-    "s": 33,
-    "l": 17,
-    "hex": "#1D283A"
-  },
-  "neutral-focus": {
-    "h": 217,
-    "s": 33,
-    "l": 12,
-    "hex": "#151C29"
-  },
-  "neutral-content": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "neutral-variant": {
-    "h": 220,
-    "s": 14,
-    "l": 60,
-    "hex": "#8B94A7"
-  },
-  "surface": {
-    "h": 0,
-    "s": 0,
-    "l": 99,
-    "hex": "#FCFCFC"
-  },
-  "surface-dim": {
-    "h": 220,
-    "s": 13,
-    "l": 94,
-    "hex": "#EEEFF2"
-  },
-  "surface-bright": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "surface-container-lowest": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "surface-container-low": {
-    "h": 220,
-    "s": 13,
-    "l": 97,
-    "hex": "#F6F7F8"
-  },
-  "surface-container": {
-    "h": 220,
-    "s": 13,
-    "l": 96,
-    "hex": "#F3F4F6"
-  },
-  "surface-container-high": {
-    "h": 220,
-    "s": 13,
-    "l": 94,
-    "hex": "#EEEFF2"
-  },
-  "surface-container-highest": {
-    "h": 220,
-    "s": 13,
-    "l": 91,
-    "hex": "#E5E7EB"
-  },
-  "surface-variant": {
-    "h": 220,
-    "s": 14,
-    "l": 90,
-    "hex": "#E2E4E9"
-  },
-  "on-surface": {
-    "h": 217,
-    "s": 33,
-    "l": 17,
-    "hex": "#1D283A"
-  },
-  "on-surface-variant": {
-    "h": 220,
-    "s": 9,
-    "l": 30,
-    "hex": "#464A53"
-  },
-  "base-100": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "base-200": {
-    "h": 220,
-    "s": 13,
-    "l": 96,
-    "hex": "#F3F4F6"
-  },
-  "base-300": {
-    "h": 220,
-    "s": 13,
-    "l": 91,
-    "hex": "#E5E7EB"
-  },
-  "base-400": {
-    "h": 220,
-    "s": 9,
-    "l": 80,
-    "hex": "#C7CAD1"
-  },
-  "base-500": {
-    "h": 220,
-    "s": 9,
-    "l": 65,
-    "hex": "#9EA3AE"
-  },
-  "base-600": {
-    "h": 220,
-    "s": 9,
-    "l": 50,
-    "hex": "#747C8B"
-  },
-  "base-700": {
-    "h": 220,
-    "s": 9,
-    "l": 37,
-    "hex": "#565C67"
-  },
-  "base-800": {
-    "h": 220,
-    "s": 9,
-    "l": 27,
-    "hex": "#3F434B"
-  },
-  "base-900": {
-    "h": 220,
-    "s": 9,
-    "l": 18,
-    "hex": "#2A2D32"
-  },
-  "base-content": {
-    "h": 217,
-    "s": 33,
-    "l": 17,
-    "hex": "#1D283A"
-  },
-  "outline": {
-    "h": 220,
-    "s": 9,
-    "l": 55,
-    "hex": "#828997"
-  },
-  "outline-variant": {
-    "h": 220,
-    "s": 14,
-    "l": 80,
-    "hex": "#C5CAD3"
-  },
-  "inverse-surface": {
-    "h": 217,
-    "s": 33,
-    "l": 17,
-    "hex": "#1D283A"
-  },
-  "inverse-on-surface": {
-    "h": 220,
-    "s": 13,
-    "l": 94,
-    "hex": "#EEEFF2"
-  },
-  "inverse-primary": {
-    "h": 38,
-    "s": 100,
-    "l": 75,
-    "hex": "#FFD080"
-  },
-  "shadow": {
-    "h": 0,
-    "s": 0,
-    "l": 0,
-    "hex": "#000000"
-  },
-  "scrim": {
-    "h": 0,
-    "s": 0,
-    "l": 0,
-    "hex": "#000000"
-  },
-  "info": {
-    "h": 199,
-    "s": 89,
-    "l": 48,
-    "hex": "#0DA2E7"
-  },
-  "info-content": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "info-container": {
-    "h": 199,
-    "s": 89,
-    "l": 92,
-    "hex": "#D8F1FD"
-  },
-  "on-info-container": {
-    "h": 199,
-    "s": 89,
-    "l": 18,
-    "hex": "#053D57"
-  },
-  "success": {
-    "h": 142,
-    "s": 71,
-    "l": 45,
-    "hex": "#21C45D"
-  },
-  "success-content": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "success-container": {
-    "h": 142,
-    "s": 71,
-    "l": 90,
-    "hex": "#D3F8E1"
-  },
-  "on-success-container": {
-    "h": 142,
-    "s": 71,
-    "l": 18,
-    "hex": "#0D4E25"
-  },
-  "warning": {
-    "h": 38,
-    "s": 92,
-    "l": 50,
-    "hex": "#F59F0A"
-  },
-  "warning-content": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "warning-container": {
-    "h": 38,
-    "s": 92,
-    "l": 90,
-    "hex": "#FDECCE"
-  },
-  "on-warning-container": {
-    "h": 38,
-    "s": 92,
-    "l": 20,
-    "hex": "#624004"
-  },
-  "error": {
-    "h": 0,
-    "s": 72,
-    "l": 51,
-    "hex": "#DC2828"
-  },
-  "error-content": {
-    "h": 0,
-    "s": 0,
-    "l": 100,
-    "hex": "#FFFFFF"
-  },
-  "error-container": {
-    "h": 0,
-    "s": 100,
-    "l": 95,
-    "hex": "#FFE5E5"
-  },
-  "on-error-container": {
-    "h": 0,
-    "s": 72,
-    "l": 20,
-    "hex": "#580E0E"
+  "colors": {
+    "primary": {
+      "l": 0.72,
+      "c": 0.17,
+      "h": 75,
+      "hex": "#E19100"
+    },
+    "primary-content": {
+      "l": 1,
+      "c": 0,
+      "h": 0,
+      "hex": "#FFFFFF"
+    },
+    "primary-container": {
+      "l": 0.95,
+      "c": 0.035,
+      "h": 95.91,
+      "hex": "#F5EFD5"
+    },
+    "on-primary-container": {
+      "l": 0.25,
+      "c": 0.03,
+      "h": 95.91,
+      "hex": "#262210"
+    },
+    "secondary": {
+      "l": 0.62,
+      "c": 0.19,
+      "h": 20,
+      "hex": "#E14754"
+    },
+    "secondary-content": {
+      "l": 1,
+      "c": 0,
+      "h": 0,
+      "hex": "#FFFFFF"
+    },
+    "secondary-container": {
+      "l": 0.94,
+      "c": 0.05,
+      "h": 87.01,
+      "hex": "#FAEAC6"
+    },
+    "on-secondary-container": {
+      "l": 0.25,
+      "c": 0.05,
+      "h": 87.01,
+      "hex": "#2C2001"
+    },
+    "tertiary": {
+      "l": 0.8,
+      "c": 0.085,
+      "h": 235,
+      "hex": "#86C7ED"
+    },
+    "tertiary-content": {
+      "l": 0.18,
+      "c": 0.01,
+      "h": 235,
+      "hex": "#0D1215"
+    },
+    "tertiary-container": {
+      "l": 0.95,
+      "c": 0.035,
+      "h": 235,
+      "hex": "#D9F3FF"
+    },
+    "on-tertiary-container": {
+      "l": 0.22,
+      "c": 0.012,
+      "h": 235,
+      "hex": "#151C1F"
+    },
+    "accent": {
+      "l": 0.8523000000000001,
+      "c": 0.14,
+      "h": 327,
+      "hex": "#FFADFE"
+    },
+    "accent-content": {
+      "l": 0.41,
+      "c": 0.112,
+      "h": 45.904,
+      "hex": "#793205"
+    },
+    "neutral": {
+      "l": 0,
+      "c": 0,
+      "h": 0,
+      "hex": "#000000"
+    },
+    "neutral-content": {
+      "l": 0.8,
+      "c": 0.015,
+      "h": 50,
+      "hex": "#C6BBB5"
+    },
+    "neutral-variant": {
+      "l": 0.5,
+      "c": 0.02,
+      "h": 260,
+      "hex": "#5D646F"
+    },
+    "surface": {
+      "l": 1,
+      "c": 0,
+      "h": 0,
+      "hex": "#FFFFFF"
+    },
+    "surface-dim": {
+      "l": 0.96,
+      "c": 0.01,
+      "h": 85,
+      "hex": "#F5F1EA"
+    },
+    "surface-bright": {
+      "l": 1,
+      "c": 0,
+      "h": 0,
+      "hex": "#FFFFFF"
+    },
+    "surface-container-lowest": {
+      "l": 1,
+      "c": 0,
+      "h": 0,
+      "hex": "#FFFFFF"
+    },
+    "surface-container-low": {
+      "l": 0.99,
+      "c": 0.01,
+      "h": 85,
+      "hex": "#FFFBF4"
+    },
+    "surface-container": {
+      "l": 0.97,
+      "c": 0.01,
+      "h": 85,
+      "hex": "#F8F5EE"
+    },
+    "surface-container-high": {
+      "l": 0.96,
+      "c": 0.01,
+      "h": 85,
+      "hex": "#F5F1EA"
+    },
+    "surface-container-highest": {
+      "l": 0.94,
+      "c": 0.01,
+      "h": 85,
+      "hex": "#EEEBE4"
+    },
+    "surface-variant": {
+      "l": 0.94,
+      "c": 0.02,
+      "h": 85,
+      "hex": "#F1EADC"
+    },
+    "on-surface": {
+      "l": 0.27,
+      "c": 0.02,
+      "h": 260,
+      "hex": "#212730"
+    },
+    "on-surface-variant": {
+      "l": 0.5,
+      "c": 0.02,
+      "h": 260,
+      "hex": "#5D646F"
+    },
+    "base-100": {
+      "l": 1,
+      "c": 0.005,
+      "h": 255,
+      "hex": "#FDFFFF"
+    },
+    "base-200": {
+      "l": 0.95,
+      "c": 0.008,
+      "h": 255,
+      "hex": "#EBEFF4"
+    },
+    "base-300": {
+      "l": 0.9,
+      "c": 0.01,
+      "h": 255,
+      "hex": "#DADEE5"
+    },
+    "base-400": {
+      "l": 0.55,
+      "c": 0.06,
+      "h": 255,
+      "hex": "#5A7394"
+    },
+    "base-500": {
+      "l": 0.45,
+      "c": 0.05,
+      "h": 255,
+      "hex": "#425771"
+    },
+    "base-600": {
+      "l": 0.35,
+      "c": 0.04,
+      "h": 255,
+      "hex": "#2C3C4F"
+    },
+    "base-700": {
+      "l": 0.25,
+      "c": 0.03,
+      "h": 255,
+      "hex": "#182230"
+    },
+    "base-800": {
+      "l": 0.18,
+      "c": 0.02,
+      "h": 255,
+      "hex": "#0C121A"
+    },
+    "base-900": {
+      "l": 0.12,
+      "c": 0.01,
+      "h": 255,
+      "hex": "#040609"
+    },
+    "base-content": {
+      "l": 0.1,
+      "c": 0,
+      "h": 255,
+      "hex": "#030303"
+    },
+    "outline": {
+      "l": 0.75,
+      "c": 0.01,
+      "h": 260,
+      "hex": "#AAAEB4"
+    },
+    "outline-variant": {
+      "l": 0.85,
+      "c": 0.01,
+      "h": 260,
+      "hex": "#CACED4"
+    },
+    "inverse-surface": {
+      "l": 0.25,
+      "c": 0.02,
+      "h": 260,
+      "hex": "#1C222B"
+    },
+    "inverse-on-surface": {
+      "l": 0.95,
+      "c": 0.01,
+      "h": 260,
+      "hex": "#EBEFF5"
+    },
+    "inverse-primary": {
+      "l": 0.8,
+      "c": 0.14,
+      "h": 55,
+      "hex": "#FFA460"
+    },
+    "shadow": {
+      "l": 0,
+      "c": 0,
+      "h": 0,
+      "hex": "#000000"
+    },
+    "scrim": {
+      "l": 0,
+      "c": 0,
+      "h": 0,
+      "hex": "#000000",
+      "alpha": 0.5
+    },
+    "info": {
+      "l": 0.4194,
+      "c": 0.114,
+      "h": 254.39,
+      "hex": "#184D89"
+    },
+    "info-content": {
+      "l": 0.9194,
+      "c": 0.114,
+      "h": 254.39,
+      "hex": "#B0E8FF"
+    },
+    "info-container": {
+      "l": 0.95,
+      "c": 0.03,
+      "h": 235,
+      "hex": "#DCF2FF"
+    },
+    "on-info-container": {
+      "l": 0.35,
+      "c": 0.08,
+      "h": 235,
+      "hex": "#00405E"
+    },
+    "success": {
+      "l": 0.6720999999999999,
+      "c": 0.19,
+      "h": 133.55,
+      "hex": "#62AD05"
+    },
+    "success-content": {
+      "l": 0.2721,
+      "c": 0.19,
+      "h": 133.55,
+      "hex": "#003500"
+    },
+    "success-container": {
+      "l": 0.93,
+      "c": 0.04,
+      "h": 150,
+      "hex": "#D6F0DA"
+    },
+    "on-success-container": {
+      "l": 0.3,
+      "c": 0.08,
+      "h": 150,
+      "hex": "#033816"
+    },
+    "warning": {
+      "l": 0.6819,
+      "c": 0.203,
+      "h": 42.44,
+      "hex": "#FA6104"
+    },
+    "warning-content": {
+      "l": 0.1819,
+      "c": 0.6,
+      "h": 42,
+      "hex": "#9E0000"
+    },
+    "warning-container": {
+      "l": 0.93,
+      "c": 0.05,
+      "h": 80,
+      "hex": "#FAE5C3"
+    },
+    "on-warning-container": {
+      "l": 0.38,
+      "c": 0.1,
+      "h": 80,
+      "hex": "#5E3A00"
+    },
+    "error": {
+      "l": 0.6117,
+      "c": 0.237,
+      "h": 28.15,
+      "hex": "#F1201F"
+    },
+    "error-content": {
+      "l": 0.9001,
+      "c": 0.153,
+      "h": 84.78,
+      "hex": "#FFD556"
+    },
+    "error-container": {
+      "l": 0.93,
+      "c": 0.04,
+      "h": 25,
+      "hex": "#FFDEDB"
+    },
+    "on-error-container": {
+      "l": 0.32,
+      "c": 0.1,
+      "h": 25,
+      "hex": "#5C1717"
+    }
+  },
+  "shape": {
+    "radius-selector": "0.25rem",
+    "radius-field": "0.625rem",
+    "radius-box": "2rem",
+    "size-selector": "0.1875rem",
+    "size-field": "0.1875rem",
+    "border": "0.5px",
+    "depth": 1,
+    "noise": 1
   }
 }

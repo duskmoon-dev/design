@@ -1,6 +1,6 @@
 // GENERATED — DO NOT EDIT
 // Source: tokens/_typography.yaml
-// Generator: duskmoon-codegen v1.0.0
+// Generator: duskmoon-codegen v2.0.0
 
 import 'package:flutter/painting.dart' show TextStyle, FontWeight;
 
