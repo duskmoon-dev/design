@@ -13,7 +13,8 @@
     "diff": "bun run scripts/codegen.ts diff",
     "docs": "bun run scripts/codegen.ts docs",
     "test": "bun test",
-    "check": "bun run validate && bun test"
+    "check": "bun run validate && bun test",
+    "build:pages": "bun run scripts/build-pages.ts"
   },
   "files": [
     "tokens/",
