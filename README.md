@@ -19,19 +19,22 @@ bun test            # Run tests
 
 **CSS:**
 ```css
-@import '@duskmoon-dev/design/generated/sunset.css';
-@import '@duskmoon-dev/design/generated/spacing.css';
+@import '@duskmoon-dev/design/generated/sunset.css';   /* theme colors + shape */
+@import '@duskmoon-dev/design/generated/spacing.css';   /* spacing, radius, elevation */
 
 body {
   color: var(--color-on-surface);
   background: var(--color-surface);
   padding: var(--spacing-4);
+  border-radius: var(--radius-md);
 }
 ```
 
 **TypeScript:**
 ```typescript
 import { sunsetColors, sunsetShape } from '@duskmoon-dev/design/generated/ts/sunset.generated';
+import { typeScale } from '@duskmoon-dev/design/generated/ts/typography.generated';
+import { spacing, radius, elevation } from '@duskmoon-dev/design/generated/ts/spacing.generated';
 import type { ThemeColors } from '@duskmoon-dev/design/generated/ts/types';
 ```
 
@@ -45,7 +48,7 @@ import 'package:duskmoon_design/generated/dart/dm_spacing.g.dart';
 **JSON:**
 ```javascript
 import sunset from '@duskmoon-dev/design/generated/sunset.json';
-import tokens from '@duskmoon-dev/design/generated/tokens.json';
+import tokens from '@duskmoon-dev/design/generated/tokens.json';  // combined: typography + spacing + all themes
 ```
 
 ## Tokens

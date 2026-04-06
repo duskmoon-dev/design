@@ -15,7 +15,8 @@ bun run generate:dart     # Dart only
 bun run generate:json     # JSON only
 bun run generate:css      # CSS only
 bun run validate          # Validate tokens against schema
-bun test                  # Run tests (140 tests)
+bun test                  # Run tests
+bun test --test-name-pattern "CSS"  # Run tests matching pattern
 bun run check             # validate + test
 bun run diff              # Compare themes side-by-side
 bun run docs              # Generate TOKENS.md reference
@@ -24,13 +25,20 @@ bun run build:pages       # Build GitHub Pages site → _site/
 
 ## Architecture
 
-**Pipeline:** YAML tokens → `scripts/codegen.ts` (877 lines, Bun) → generated outputs
+**Pipeline:** YAML tokens → `scripts/codegen.ts` (Bun) → generated outputs
 
 ```
-tokens/*.yaml  ──→  codegen.ts  ──→  generated/ts/*.generated.ts
-                                ──→  generated/dart/*_tokens.g.dart
-                                ──→  generated/*.json
-                                ──→  generated/*.css
+tokens/{theme}.yaml     ──→  codegen.ts  ──→  generated/ts/{theme}.generated.ts
+                                         ──→  generated/dart/{theme}_tokens.g.dart
+                                         ──→  generated/{theme}.json
+                                         ──→  generated/{theme}.css
+
+tokens/_typography.yaml ──→  codegen.ts  ──→  generated/ts/typography.generated.ts
+tokens/_spacing.yaml    ──→              ──→  generated/ts/spacing.generated.ts
+                                         ──→  generated/dart/dm_type_scale.g.dart
+                                         ──→  generated/dart/dm_spacing.g.dart
+                                         ──→  generated/spacing.css
+                                         ──→  generated/tokens.json (combined)
 ```
 
 The codegen reads `codegen.yaml` for config (input/output dirs, file patterns, selectors). Each emitter is pure — no shared mutable state between targets.
