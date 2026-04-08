@@ -1,4 +1,11 @@
 {
+  "meta": {
+    "name": "forest",
+    "mode": "light",
+    "family": "ecotone",
+    "pair": "ocean",
+    "description": "Cool green/teal"
+  },
   "colors": {
     "primary": {
       "l": 0.5,

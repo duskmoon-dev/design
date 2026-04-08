@@ -4,7 +4,7 @@ import { resolve } from 'path';
 import { parse as parseYAML } from 'yaml';
 
 const ROOT = resolve(import.meta.dir, '..');
-const ALL_THEMES = ['sunshine', 'moonlight', 'ocean', 'forest', 'sunset'];
+const ALL_THEMES = ['sunshine', 'moonlight', 'forest', 'ocean'];
 
 // ─── Inline OKLCH helpers (duplicated for test independence) ────────────────
 
@@ -125,6 +125,15 @@ for (const themeName of ALL_THEMES) {
       expect(['light', 'dark']).toContain(theme.mode);
     });
 
+    it('has family, pair, and description', () => {
+      expect(typeof theme.family).toBe('string');
+      expect(theme.family.length).toBeGreaterThan(0);
+      expect(typeof theme.pair).toBe('string');
+      expect(theme.pair.length).toBeGreaterThan(0);
+      expect(typeof theme.description).toBe('string');
+      expect(theme.description.length).toBeGreaterThan(0);
+    });
+
     it('contains all schema color tokens', () => {
       for (const token of allTokens) {
         expect(theme.colors).toHaveProperty(token);
@@ -152,6 +161,36 @@ for (const themeName of ALL_THEMES) {
     });
   });
 }
+
+// ─── Theme metadata consistency ─────────────────────────────────────────────
+
+describe('Theme metadata consistency', () => {
+  const themes = ALL_THEMES.map(name =>
+    parseYAML(readFileSync(resolve(ROOT, `tokens/${name}.yaml`), 'utf-8'))
+  );
+
+  it('pair references are symmetric (A→B implies B→A)', () => {
+    for (const theme of themes) {
+      const paired = themes.find(t => t.name === theme.pair);
+      expect(paired).toBeDefined();
+      expect(paired!.pair).toBe(theme.name);
+    }
+  });
+
+  it('paired themes share the same family', () => {
+    for (const theme of themes) {
+      const paired = themes.find(t => t.name === theme.pair);
+      expect(paired!.family).toBe(theme.family);
+    }
+  });
+
+  it('paired themes have opposite modes (light↔dark)', () => {
+    for (const theme of themes) {
+      const paired = themes.find(t => t.name === theme.pair);
+      expect(paired!.mode).not.toBe(theme.mode);
+    }
+  });
+});
 
 // ─── OKLCH to RGB conversion tests ──────────────────────────────────────────
 
@@ -214,7 +253,12 @@ describe('Generated TypeScript', () => {
 
       it('imports from types', () => {
         const content = readFileSync(genPath, 'utf-8');
-        expect(content).toContain("import type { ThemeColors");
+        expect(content).toContain("import type { ThemeMeta, ThemeColors");
+      });
+
+      it('exports {theme}Meta: ThemeMeta', () => {
+        const content = readFileSync(genPath, 'utf-8');
+        expect(content).toContain(`export const ${themeName}Meta: ThemeMeta`);
       });
 
       it('exports {theme}Colors: ThemeColors', () => {
@@ -242,6 +286,11 @@ describe('Generated TypeScript', () => {
       expect(content).toContain('ThemeColors');
     });
 
+    it('has ThemeMeta interface', () => {
+      const content = readFileSync(typesPath, 'utf-8');
+      expect(content).toContain('interface ThemeMeta');
+    });
+
     it('has ThemeShape interface', () => {
       const content = readFileSync(typesPath, 'utf-8');
       expect(content).toContain('ThemeShape');
@@ -254,6 +303,17 @@ describe('Generated TypeScript', () => {
 describe('Generated JSON', () => {
   for (const themeName of ALL_THEMES) {
     describe(themeName, () => {
+      it('has meta object with name, mode, family, pair, description', () => {
+        const content = readFileSync(resolve(ROOT, `generated/${themeName}.json`), 'utf-8');
+        const data = JSON.parse(content);
+        expect(data.meta).toBeDefined();
+        expect(data.meta.name).toBe(themeName);
+        expect(['light', 'dark']).toContain(data.meta.mode);
+        expect(typeof data.meta.family).toBe('string');
+        expect(typeof data.meta.pair).toBe('string');
+        expect(typeof data.meta.description).toBe('string');
+      });
+
       it('is valid JSON with colors.primary containing hex, l, c, h', () => {
         const content = readFileSync(resolve(ROOT, `generated/${themeName}.json`), 'utf-8');
         const data = JSON.parse(content);
@@ -300,6 +360,12 @@ describe('Generated CSS', () => {
         expect(content).toContain('GENERATED — DO NOT EDIT');
       });
 
+      it('has theme metadata custom properties', () => {
+        const content = readFileSync(resolve(ROOT, `generated/${themeName}.css`), 'utf-8');
+        expect(content).toContain('--theme-family:');
+        expect(content).toContain('--theme-pair:');
+      });
+
       it('has shape variables', () => {
         const content = readFileSync(resolve(ROOT, `generated/${themeName}.css`), 'utf-8');
         expect(content).toContain('--radius-selector:');
@@ -330,6 +396,13 @@ describe('Generated Dart', () => {
       it('has static const Color primary', () => {
         const content = readFileSync(dartPath, 'utf-8');
         expect(content).toContain('static const Color primary = Color(0x');
+      });
+
+      it('has metadata constants', () => {
+        const content = readFileSync(dartPath, 'utf-8');
+        expect(content).toContain("static const String family = '");
+        expect(content).toContain("static const String pair = '");
+        expect(content).toContain("static const String description = '");
       });
 
       it('has shape constants', () => {

@@ -5,6 +5,13 @@
 import 'dart:ui' show Color;
 
 abstract final class DuskMoonForestTokens {
+
+  // Theme metadata
+  static const String name = 'forest';
+  static const String mode = 'light';
+  static const String family = 'ecotone';
+  static const String pair = 'ocean';
+  static const String description = 'Cool green/teal';
   static const Color primary = Color(0xFF007834);
   static const Color primaryContent = Color(0xFFF4FAF5);
   static const Color primaryContainer = Color(0xFFD3EDD7);

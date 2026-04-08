@@ -20,6 +20,9 @@ interface Schema {
 interface ThemeFile {
   name: string;
   mode: 'light' | 'dark';
+  family: string;
+  pair: string;
+  description: string;
   colors: Record<string, string>;
   shape?: Record<string, string | number>;
 }
@@ -190,7 +193,15 @@ function validate(schema: Schema, themes: ThemeFile[]): { valid: boolean; errors
   const allColorTokens = Object.values(schema.groups).flatMap(g => g.tokens);
   const shapeTokens = schema.shape?.tokens ?? [];
 
+  const themeNames = new Set(themes.map(t => t.name));
+
   for (const theme of themes) {
+    // Metadata validation
+    if (!theme.family) errors.push(`${theme.name}: missing "family" field`);
+    if (!theme.pair) errors.push(`${theme.name}: missing "pair" field`);
+    else if (!themeNames.has(theme.pair)) errors.push(`${theme.name}: pair "${theme.pair}" is not a known theme`);
+    if (!theme.description) errors.push(`${theme.name}: missing "description" field`);
+
     for (const token of allColorTokens) {
       if (!(token in theme.colors)) {
         errors.push(`${theme.name}: missing color token "${token}"`);
@@ -225,7 +236,15 @@ function emitTypeScript(theme: ThemeFile): string {
     `// Source: tokens/${theme.name}.yaml`,
     '// Generator: duskmoon-codegen v2.0.0',
     '',
-    "import type { ThemeColors, ThemeShape } from './types';",
+    "import type { ThemeMeta, ThemeColors, ThemeShape } from './types';",
+    '',
+    `export const ${theme.name}Meta: ThemeMeta = {`,
+    `  name: '${theme.name}',`,
+    `  mode: '${theme.mode}',`,
+    `  family: '${theme.family}',`,
+    `  pair: '${theme.pair}',`,
+    `  description: '${theme.description}',`,
+    '};',
     '',
     `export const ${theme.name}Colors: ThemeColors = {`,
   ];
@@ -262,6 +281,14 @@ function emitTypesTS(themes: ThemeFile[]): string {
     '',
     '/** OKLCH color string: "L% C H" or "L% C H / A%" */',
     'export type OklchColor = string;',
+    '',
+    'export interface ThemeMeta {',
+    "  name: string;",
+    "  mode: 'light' | 'dark';",
+    "  family: string;",
+    "  pair: string;",
+    "  description: string;",
+    '}',
     '',
     'export interface ThemeColors {',
   ];
@@ -300,6 +327,13 @@ function emitDart(theme: ThemeFile, classPrefix: string): string {
     "import 'dart:ui' show Color;",
     '',
     `abstract final class ${className} {`,
+    '',
+    '  // Theme metadata',
+    `  static const String name = '${theme.name}';`,
+    `  static const String mode = '${theme.mode}';`,
+    `  static const String family = '${theme.family}';`,
+    `  static const String pair = '${theme.pair}';`,
+    `  static const String description = '${theme.description}';`,
   ];
 
   const DART_ALIASES: Record<string, string> = { 'surface-variant': 'surfaceContainerHighest' };
@@ -351,7 +385,16 @@ function emitJSON(theme: ThemeFile): string {
       ...(parsed.alpha !== undefined && { alpha: parsed.alpha }),
     };
   }
-  const result: Record<string, unknown> = { colors };
+  const result: Record<string, unknown> = {
+    meta: {
+      name: theme.name,
+      mode: theme.mode,
+      family: theme.family,
+      pair: theme.pair,
+      description: theme.description,
+    },
+    colors,
+  };
   if (theme.shape) {
     result.shape = theme.shape;
   }
@@ -367,6 +410,11 @@ function emitCSS(theme: ThemeFile, selectorPattern: string, variablePrefix: stri
     '',
     `${selector} {`,
     `  color-scheme: ${theme.mode};`,
+    `  --theme-name: "${theme.name}";`,
+    `  --theme-mode: "${theme.mode}";`,
+    `  --theme-family: "${theme.family}";`,
+    `  --theme-pair: "${theme.pair}";`,
+    `  --theme-description: "${theme.description}";`,
   ];
 
   for (const [key, value] of Object.entries(theme.colors)) {

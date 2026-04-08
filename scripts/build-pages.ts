@@ -14,7 +14,7 @@ const GENERATED = join(ROOT, "generated");
 const TEMPLATE_PATH = join(ROOT, "docs", "index.html");
 const OUT_DIR = join(ROOT, "_site");
 
-// Collect theme JSONs: { sunset: {...}, moonlight: {...}, ... }
+// Collect theme JSONs: { sunshine: {...}, moonlight: {...}, ... }
 const themeData: Record<string, unknown> = {};
 for (const file of readdirSync(GENERATED)) {
   if (file.endsWith(".json") && file !== "tokens.json") {

@@ -2,7 +2,15 @@
 // Source: tokens/sunshine.yaml
 // Generator: duskmoon-codegen v2.0.0
 
-import type { ThemeColors, ThemeShape } from './types';
+import type { ThemeMeta, ThemeColors, ThemeShape } from './types';
+
+export const sunshineMeta: ThemeMeta = {
+  name: 'sunshine',
+  mode: 'light',
+  family: 'duskmoon',
+  pair: 'moonlight',
+  description: 'Warm amber/coral',
+};
 
 export const sunshineColors: ThemeColors = {
   primary: '72% 0.17 75',

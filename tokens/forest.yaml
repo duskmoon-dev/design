@@ -1,5 +1,8 @@
 name: forest
 mode: light
+family: ecotone
+pair: ocean
+description: Cool green/teal
 
 colors:
   primary: "50% 0.14 150"

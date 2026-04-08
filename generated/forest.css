@@ -4,6 +4,11 @@
 
 [data-theme="forest"] {
   color-scheme: light;
+  --theme-name: "forest";
+  --theme-mode: "light";
+  --theme-family: "ecotone";
+  --theme-pair: "ocean";
+  --theme-description: "Cool green/teal";
   --color-primary: oklch(50% 0.14 150);
   --color-primary-content: oklch(98% 0.01 150);
   --color-primary-container: oklch(92% 0.04 150);

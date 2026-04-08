@@ -48,9 +48,27 @@ The codegen reads `codegen.yaml` for config (input/output dirs, file patterns, s
 - `tokens/_typography.yaml` — 15 MD3 type scale styles (shared across themes)
 - `tokens/_spacing.yaml` — spacing/radius/elevation scales (shared across themes)
 - `tokens/_semantic.yaml` — semantic color role mappings
-- `tokens/{theme}.yaml` — per-theme color + shape values (5 themes)
+- `tokens/{theme}.yaml` — per-theme color, shape, and metadata values (4 themes)
 - `scripts/codegen.ts` — the entire generation pipeline
-- `scripts/codegen.test.ts` — test suite
+- `scripts/codegen.test.ts` — test suite (142 tests)
+
+## Themes
+
+4 themes in 2 paired families, each with a light + dark variant:
+
+- **DuskMoon:** `sunshine` (light) ↔ `moonlight` (dark)
+- **Ecotone:** `forest` (light) ↔ `ocean` (dark)
+
+Each theme YAML has 5 top-level metadata fields (`name`, `mode`, `family`, `pair`, `description`), 61 OKLCH colors, and 8 shape tokens. The `pair` field references the other theme in the same family (must be symmetric, validated at build time).
+
+### Theme metadata in generated outputs
+
+| Target | How metadata appears |
+|--------|---------------------|
+| **TS** | `{theme}Meta: ThemeMeta` export (typed object) |
+| **Dart** | `static const String name/mode/family/pair/description` on token class |
+| **JSON** | Top-level `meta` object: `{ name, mode, family, pair, description }` |
+| **CSS** | Custom properties: `--theme-name`, `--theme-mode`, `--theme-family`, `--theme-pair`, `--theme-description` |
 
 ## OKLCH Color Format
 
@@ -76,9 +94,7 @@ Target handling:
 
 **Generated files are committed:** The `generated/` directory is checked into git. Do not edit those files — they are overwritten on every `bun run generate`.
 
-## Themes
-
-5 themes: `sunset` (light), `sunshine` (light), `moonlight` (dark), `forest` (light), `ocean` (dark). Each defines all 61 colors + 8 shape tokens. Shape values (radius, border, depth, noise) vary between themes.
+**Pair validation:** The validator checks that each theme's `pair` references an existing theme, that paired themes share the same `family`, and tests enforce symmetry (A→B implies B→A) and opposite modes (light↔dark).
 
 ## GitHub Pages
 

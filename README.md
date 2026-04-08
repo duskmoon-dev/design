@@ -19,7 +19,7 @@ bun test            # Run tests
 
 **CSS:**
 ```css
-@import '@duskmoon-dev/design/generated/sunset.css';   /* theme colors + shape */
+@import '@duskmoon-dev/design/generated/sunshine.css';  /* theme colors + shape + metadata */
 @import '@duskmoon-dev/design/generated/spacing.css';   /* spacing, radius, elevation */
 
 body {
@@ -28,27 +28,42 @@ body {
   padding: var(--spacing-4);
   border-radius: var(--radius-md);
 }
+
+/* Theme metadata available as custom properties */
+/* --theme-name, --theme-mode, --theme-family, --theme-pair, --theme-description */
 ```
 
 **TypeScript:**
 ```typescript
-import { sunsetColors, sunsetShape } from '@duskmoon-dev/design/generated/ts/sunset.generated';
+import { sunshineMeta, sunshineColors, sunshineShape } from '@duskmoon-dev/design/generated/ts/sunshine.generated';
 import { typeScale } from '@duskmoon-dev/design/generated/ts/typography.generated';
 import { spacing, radius, elevation } from '@duskmoon-dev/design/generated/ts/spacing.generated';
-import type { ThemeColors } from '@duskmoon-dev/design/generated/ts/types';
+import type { ThemeMeta, ThemeColors } from '@duskmoon-dev/design/generated/ts/types';
+
+// Switch to dark pair
+const darkTheme = sunshineMeta.pair; // → "moonlight"
 ```
 
 **Dart:**
 ```dart
-import 'package:duskmoon_design/generated/dart/sunset_tokens.g.dart';
+import 'package:duskmoon_design/generated/dart/sunshine_tokens.g.dart';
 import 'package:duskmoon_design/generated/dart/dm_type_scale.g.dart';
 import 'package:duskmoon_design/generated/dart/dm_spacing.g.dart';
+
+// Access metadata
+print(DuskMoonSunshineTokens.family);      // → "duskmoon"
+print(DuskMoonSunshineTokens.pair);         // → "moonlight"
+print(DuskMoonSunshineTokens.description);  // → "Warm amber/coral"
 ```
 
 **JSON:**
 ```javascript
-import sunset from '@duskmoon-dev/design/generated/sunset.json';
-import tokens from '@duskmoon-dev/design/generated/tokens.json';  // combined: typography + spacing + all themes
+import sunshine from '@duskmoon-dev/design/generated/sunshine.json';
+import tokens from '@duskmoon-dev/design/generated/tokens.json';  // combined: typography + spacing
+
+sunshine.meta.family;  // → "duskmoon"
+sunshine.meta.pair;    // → "moonlight"
+sunshine.colors;       // → { primary: { l, c, h, hex }, ... }
 ```
 
 ## Tokens
@@ -87,13 +102,16 @@ Display, Headline, Title, Body, Label — each in large/medium/small.
 
 ## Themes
 
-| Theme | Mode | Character |
-|-------|------|-----------|
-| Sunset | Light | Warm orange/coral |
-| Sunshine | Light | Warm amber/coral |
-| Forest | Light | Cool green/teal |
-| Moonlight | Dark | Neutral white/gold |
-| Ocean | Dark | Cool blue |
+4 themes in 2 paired families (light + dark):
+
+| Family | Theme | Mode | Character |
+|--------|-------|------|-----------|
+| DuskMoon | Sunshine | Light | Warm amber/coral |
+| DuskMoon | Moonlight | Dark | Neutral white/gold |
+| Ecotone | Forest | Light | Cool green/teal |
+| Ecotone | Ocean | Dark | Cool blue |
+
+Each theme carries metadata (`family`, `pair`, `description`) propagated to all generated targets. Use `pair` to look up the light/dark counterpart at runtime.
 
 ## Development
 
@@ -101,7 +119,7 @@ Display, Headline, Title, Body, Label — each in large/medium/small.
 bun run generate        # All targets (TS, Dart, JSON, CSS)
 bun run generate:ts     # TypeScript only
 bun run validate        # Validate tokens against schema
-bun test                # 140 automated tests
+bun test                # 142 automated tests
 bun run check           # validate + test
 bun run diff            # Compare themes
 bun run docs            # Generate TOKENS.md
@@ -109,14 +127,15 @@ bun run docs            # Generate TOKENS.md
 
 ### Adding a theme
 
-1. Create `tokens/mytheme.yaml` with `name`, `mode`, all 61 colors, and 8 shape tokens
-2. Run `bun run generate`
-3. Commit `tokens/mytheme.yaml` and `generated/`
+1. Create `tokens/mytheme.yaml` with `name`, `mode`, `family`, `pair`, `description`, all 61 colors, and 8 shape tokens
+2. Ensure the paired theme's `pair` field points back to your new theme
+3. Run `bun run generate`
+4. Commit `tokens/mytheme.yaml` and `generated/`
 
 ### Adding a token
 
 1. Add to `tokens/_schema.yaml` group
-2. Add values to all 5 theme files
+2. Add values to all 4 theme files
 3. Run `bun run validate && bun run generate`
 
 ## License

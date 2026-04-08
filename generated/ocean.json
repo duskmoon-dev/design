@@ -1,4 +1,11 @@
 {
+  "meta": {
+    "name": "ocean",
+    "mode": "dark",
+    "family": "ecotone",
+    "pair": "forest",
+    "description": "Cool blue"
+  },
   "colors": {
     "primary": {
       "l": 0.72,

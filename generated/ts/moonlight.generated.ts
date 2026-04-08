@@ -2,7 +2,15 @@
 // Source: tokens/moonlight.yaml
 // Generator: duskmoon-codegen v2.0.0
 
-import type { ThemeColors, ThemeShape } from './types';
+import type { ThemeMeta, ThemeColors, ThemeShape } from './types';
+
+export const moonlightMeta: ThemeMeta = {
+  name: 'moonlight',
+  mode: 'dark',
+  family: 'duskmoon',
+  pair: 'sunshine',
+  description: 'Neutral white/gold',
+};
 
 export const moonlightColors: ThemeColors = {
   primary: '85.45% 0 0',

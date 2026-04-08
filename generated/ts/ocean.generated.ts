@@ -2,7 +2,15 @@
 // Source: tokens/ocean.yaml
 // Generator: duskmoon-codegen v2.0.0
 
-import type { ThemeColors, ThemeShape } from './types';
+import type { ThemeMeta, ThemeColors, ThemeShape } from './types';
+
+export const oceanMeta: ThemeMeta = {
+  name: 'ocean',
+  mode: 'dark',
+  family: 'ecotone',
+  pair: 'forest',
+  description: 'Cool blue',
+};
 
 export const oceanColors: ThemeColors = {
   primary: '72% 0.12 210',

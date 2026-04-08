@@ -4,6 +4,14 @@
 /** OKLCH color string: "L% C H" or "L% C H / A%" */
 export type OklchColor = string;
 
+export interface ThemeMeta {
+  name: string;
+  mode: 'light' | 'dark';
+  family: string;
+  pair: string;
+  description: string;
+}
+
 export interface ThemeColors {
   primary: OklchColor;
   'primary-content': OklchColor;

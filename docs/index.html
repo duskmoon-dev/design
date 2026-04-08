@@ -36,6 +36,18 @@
       font-size: 0.875rem; font-weight: 500;
       transition: all 0.2s;
     }
+    .family-label {
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--color-on-surface-variant, #888); font-weight: 600;
+      margin-left: 0.25rem;
+    }
+    .family-sep { width: 1px; height: 1.5rem; background: var(--color-outline-variant, #ddd); margin: 0 0.25rem; }
+    .theme-meta {
+      font-size: 0.85rem; color: var(--color-on-surface-variant, #666);
+      margin-top: 0.25rem;
+    }
+    .theme-meta a { color: var(--color-primary, #4a90d9); text-decoration: none; }
+    .theme-meta a:hover { text-decoration: underline; }
     .theme-btn:hover { border-color: var(--color-primary, #666); }
     .theme-btn.active {
       background: var(--color-primary, #333);
@@ -213,6 +225,16 @@
     const themeNames = Object.keys(themes);
     let activeTheme = themeNames[0];
 
+    // Group themes by family using metadata
+    const families = {};
+    for (const name of themeNames) {
+      const meta = themes[name].meta;
+      if (meta && meta.family) {
+        if (!families[meta.family]) families[meta.family] = [];
+        families[meta.family].push(name);
+      }
+    }
+
     // ── Color grouping ──
     const COLOR_GROUPS = [
       { name: 'Primary',   keys: ['primary', 'primary-content', 'primary-container', 'on-primary-container'] },
@@ -246,20 +268,30 @@
     // ── Render ──
     function render() {
       const data = themes[activeTheme];
+      const meta = data.meta || {};
       const colors = data.colors;
       const shape = data.shape;
       const { typeScale, spacing, radius, elevation } = shared;
 
+      const familyNames = Object.keys(families);
+      const themeSwitcher = familyNames.length > 0
+        ? familyNames.map(fam => `
+            <span class="family-label">${h(fam)}</span>
+            ${families[fam].map(t => `<button class="theme-btn ${t === activeTheme ? 'active' : ''}" onclick="switchTheme('${t}')">${t}</button>`).join('')}
+          `).join('<span class="family-sep"></span>')
+        : themeNames.map(t => `<button class="theme-btn ${t === activeTheme ? 'active' : ''}" onclick="switchTheme('${t}')">${t}</button>`).join('');
+
       document.getElementById('app').innerHTML = `
         <header>
           <h1>DuskMoon Design Tokens</h1>
-          <p>OKLCH color system &middot; ${themeNames.length} themes &middot; Material Design 3 type scale</p>
+          <p>OKLCH color system &middot; ${themeNames.length} themes in ${familyNames.length} families &middot; Material Design 3 type scale</p>
         </header>
 
         <div class="theme-bar">
           <label>Theme:</label>
-          ${themeNames.map(t => `<button class="theme-btn ${t === activeTheme ? 'active' : ''}" onclick="switchTheme('${t}')">${t}</button>`).join('')}
+          ${themeSwitcher}
         </div>
+        ${meta.description ? `<p class="theme-meta">${h(meta.description)} &middot; ${h(meta.mode)} mode &middot; pair: <a href="#" onclick="event.preventDefault();switchTheme('${meta.pair}')">${h(meta.pair)}</a></p>` : ''}
 
         <!-- Colors -->
         <section>

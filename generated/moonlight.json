@@ -1,4 +1,11 @@
 {
+  "meta": {
+    "name": "moonlight",
+    "mode": "dark",
+    "family": "duskmoon",
+    "pair": "sunshine",
+    "description": "Neutral white/gold"
+  },
   "colors": {
     "primary": {
       "l": 0.8545,

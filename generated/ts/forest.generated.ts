@@ -2,7 +2,15 @@
 // Source: tokens/forest.yaml
 // Generator: duskmoon-codegen v2.0.0
 
-import type { ThemeColors, ThemeShape } from './types';
+import type { ThemeMeta, ThemeColors, ThemeShape } from './types';
+
+export const forestMeta: ThemeMeta = {
+  name: 'forest',
+  mode: 'light',
+  family: 'ecotone',
+  pair: 'ocean',
+  description: 'Cool green/teal',
+};
 
 export const forestColors: ThemeColors = {
   primary: '50% 0.14 150',

@@ -5,6 +5,13 @@
 import 'dart:ui' show Color;
 
 abstract final class DuskMoonMoonlightTokens {
+
+  // Theme metadata
+  static const String name = 'moonlight';
+  static const String mode = 'dark';
+  static const String family = 'duskmoon';
+  static const String pair = 'sunshine';
+  static const String description = 'Neutral white/gold';
   static const Color primary = Color(0xFFCFCFCF);
   static const Color primaryContent = Color(0xFF160603);
   static const Color primaryContainer = Color(0xFF262021);

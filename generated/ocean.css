@@ -4,6 +4,11 @@
 
 [data-theme="ocean"] {
   color-scheme: dark;
+  --theme-name: "ocean";
+  --theme-mode: "dark";
+  --theme-family: "ecotone";
+  --theme-pair: "forest";
+  --theme-description: "Cool blue";
   --color-primary: oklch(72% 0.12 210);
   --color-primary-content: oklch(15% 0.02 210);
   --color-primary-container: oklch(30% 0.08 210);

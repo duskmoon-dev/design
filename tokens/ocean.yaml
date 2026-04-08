@@ -1,5 +1,8 @@
 name: ocean
 mode: dark
+family: ecotone
+pair: forest
+description: Cool blue
 
 colors:
   primary: "72% 0.12 210"

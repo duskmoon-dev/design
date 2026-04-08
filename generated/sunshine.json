@@ -1,4 +1,11 @@
 {
+  "meta": {
+    "name": "sunshine",
+    "mode": "light",
+    "family": "duskmoon",
+    "pair": "moonlight",
+    "description": "Warm amber/coral"
+  },
   "colors": {
     "primary": {
       "l": 0.72,
