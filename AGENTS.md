@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to agent when working with code in this repository.
 
 ## What This Is
 
@@ -99,3 +99,10 @@ Target handling:
 ## GitHub Pages
 
 `docs/index.html` is a template with `__THEME_DATA__` / `__SHARED_DATA__` placeholders. `scripts/build-pages.ts` injects JSON data and writes to `_site/index.html`. The Pages workflow deploys `_site/` via `actions/deploy-pages`.
+
+## Agent note
+
+After we add new feature, change architecture or fix issues we write agent note.
+When save note to agent-note, should add labels:
+- `project: duskmoon`
+- `variant: design`
