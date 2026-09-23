@@ -7,6 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'fs';
 import { resolve, dirname, join } from 'path';
 import { parse as parseYAML } from 'yaml';
+import { parseOklch, oklchToHex, oklchToArgbHex, oklchToRgb, rgbToHex } from './color';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -74,84 +75,6 @@ interface Config {
 
 type Target = 'typescript' | 'dart' | 'json' | 'css' | 'all';
 
-// ─── Color conversion ────────────────────────────────────────────────────────
-
-interface OklchColor {
-  l: number;   // 0–1
-  c: number;   // 0–~0.4
-  h: number;   // 0–360
-  alpha?: number; // 0–1
-}
-
-function parseOklch(value: string): OklchColor {
-  const [colorPart, alphaPart] = value.split('/').map(s => s.trim());
-  const parts = colorPart.split(/\s+/);
-  return {
-    l: parseFloat(parts[0].replace('%', '')) / 100,
-    c: parseFloat(parts[1]),
-    h: parseFloat(parts[2]),
-    alpha: alphaPart ? parseFloat(alphaPart.replace('%', '')) / 100 : undefined,
-  };
-}
-
-function oklchToOklab(l: number, c: number, h: number): [number, number, number] {
-  const hRad = (h * Math.PI) / 180;
-  return [l, c * Math.cos(hRad), c * Math.sin(hRad)];
-}
-
-function oklabToLinearSrgb(L: number, a: number, b: number): [number, number, number] {
-  const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
-  const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
-  const s_ = L - 0.0894841775 * a - 1.2914855480 * b;
-  const l = l_ * l_ * l_;
-  const m = m_ * m_ * m_;
-  const s = s_ * s_ * s_;
-  return [
-    +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
-    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
-    -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s,
-  ];
-}
-
-function linearToSrgb(x: number): number {
-  if (x <= 0) return 0;
-  if (x >= 1) return 1;
-  return x <= 0.0031308
-    ? 12.92 * x
-    : 1.055 * Math.pow(x, 1 / 2.4) - 0.055;
-}
-
-function rgbToHex(r: number, g: number, b: number): string {
-  return '#' + [r, g, b]
-    .map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0').toUpperCase())
-    .join('');
-}
-
-function oklchToRgb(oklchStr: string): { r: number; g: number; b: number } {
-  const { l, c, h } = parseOklch(oklchStr);
-  const [L, a, b] = oklchToOklab(l, c, h);
-  const [lr, lg, lb] = oklabToLinearSrgb(L, a, b);
-  return {
-    r: Math.round(linearToSrgb(lr) * 255),
-    g: Math.round(linearToSrgb(lg) * 255),
-    b: Math.round(linearToSrgb(lb) * 255),
-  };
-}
-
-function oklchToHex(oklchStr: string): string {
-  const { r, g, b } = oklchToRgb(oklchStr);
-  return rgbToHex(r, g, b);
-}
-
-function oklchToArgbHex(oklchStr: string): string {
-  const parsed = parseOklch(oklchStr);
-  const { r, g, b } = oklchToRgb(oklchStr);
-  const alpha = parsed.alpha !== undefined ? Math.round(parsed.alpha * 255) : 255;
-  return '0x' + [alpha, r, g, b]
-    .map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0').toUpperCase())
-    .join('');
-}
-
 // ─── File loaders ────────────────────────────────────────────────────────────
 
 function loadConfig(configPath: string): Config {
@@ -167,7 +90,7 @@ function loadSchema(tokenDir: string): Schema {
 function loadThemes(tokenDir: string): ThemeFile[] {
   const files = readdirSync(tokenDir).filter(
     f => f.endsWith('.yaml') && !f.startsWith('_')
-  );
+  ).sort();
   return files.map(f => {
     const raw = readFileSync(join(tokenDir, f), 'utf-8');
     return parseYAML(raw) as ThemeFile;

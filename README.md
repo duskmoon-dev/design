@@ -81,7 +81,7 @@ import 'package:duskmoon_design/generated/dart/dm_spacing.g.dart';
 // Access metadata
 print(DuskMoonSunshineTokens.family);      // → "duskmoon"
 print(DuskMoonSunshineTokens.pair);         // → "moonlight"
-print(DuskMoonSunshineTokens.description);  // → "Warm amber/coral"
+print(DuskMoonSunshineTokens.description);  // → "Sunlit ivory with golden amber, muted lavender and sky blue"
 ```
 
 ### JSON
@@ -140,12 +140,51 @@ Shared token files apply to every theme:
 
 | Family | Theme | Mode | Character |
 |--------|-------|------|-----------|
-| DuskMoon | Sunshine | Light | Warm amber/coral |
+| DuskMoon | Sunshine | Light | Sunlit ivory with golden amber, muted lavender and sky blue |
 | DuskMoon | Moonlight | Dark | Neutral white/gold |
 | Ecotone | Forest | Light | Cool green/teal |
 | Ecotone | Ocean | Dark | Cool blue |
 
 Each theme carries metadata (`family`, `pair`, `description`) propagated to all generated targets. Use `pair` to look up the light/dark counterpart at runtime.
+
+## Sunshine roles and migration
+
+Sunshine is a workspace lit by sunshine: golden amber primary, muted lavender
+secondary, sky-blue tertiary, a soft golden accent, warm ivory/cream surfaces,
+and warm charcoal text. Error/destructive remains red, success green, info blue,
+and warning a deeper orange. **Lavender supersedes the earlier coral proposal**:
+coral made supporting brand expression too similar to destructive/error red.
+This does not guarantee separation under every color-vision condition; keep
+labels, icons and explicit destructive wording. Gold and warning need those cues too.
+
+A secondary action does not require secondary color. The generated-data gallery
+shows gold **Save**, neutral **Cancel**, red **Delete**, and lavender supporting
+expression. Status containers use their actual `on-*-container` foregrounds.
+
+Warm-neutral correspondences are intentional:
+`surface = base-100`, `surface-container-low = base-200`, and
+`surface-container-high = base-300`. `base-content` is intended for the first
+three base shades, not all nine. Brand fills use dark authored content tokens.
+
+Bright primary is a **fill, not foreground ink**. Do not use it for small text,
+necessary standalone icons, or the sole focus/selection cue on ivory. In this
+gallery, `on-primary-container` supplies underlined links, offset keyboard focus,
+selected borders/check marks and brand-button boundaries. Neutral controls and
+inputs use `outline`; `outline-variant` is decorative separation. These are
+explicitly tested contexts, not universal substitutions on arbitrary backgrounds.
+
+Downstream consumers must migrate hardcoded coral/pink styling and white brand
+labels to semantic tokens; audit Save/Cancel/Delete independently of brand role;
+and check hover, pressed, disabled, selected and focus states against their actual
+neighbors. Additional consumer state-role work remains separate: no
+`primary-ink`, `primary-hover`, `primary-active` or `focus-ring` public keys were
+added. Suggested future state colors are not production roles or demo overrides.
+Token generation passing does **not** establish consumer integration correctness.
+
+Sunshine and Moonlight preserve the same primary/supporting/complementary/status
+semantics, but Moonlight retains white/gold/blue and a magenta accent. Its colors
+are unchanged; do not assume their hues or accessibility properties mirror
+Sunshine. See [palette validation and known follow-ups](docs/sunshine-validation.md).
 
 ## Generated Outputs
 

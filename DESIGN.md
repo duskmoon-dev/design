@@ -201,15 +201,26 @@ Automated checks establish structural and generation correctness. They verify
 schema completeness, recognized token names, OKLCH string shape, known pair
 names, registered theme metadata relationships, and generated target behavior.
 
-They do not currently prove:
+Sunshine additionally has required palette gates in `scripts/sunshine.test.ts`,
+executed by both `bun run check` and CI's `bun test`. Shared pure math in
+`scripts/color.ts` exposes unbounded linear-sRGB channels before clipping;
+`scripts/palette.ts` lists intended text (4.5:1) and necessary cue (3:1) contexts.
+The gamut tolerance is 1e-6 for matrix/serialization rounding at black/white and
+sRGB boundaries. Components must be finite and valid; chroma has no arbitrary
+universal ceiling. Reference colors are test fixtures only; YAML remains the
+runtime source. Independent primary-color, WCAG and alpha-compositing cases
+protect against self-consistent math errors.
 
-- WCAG contrast compliance.
-- Whether an OKLCH value is in the target display gamut.
-- Numeric OKLCH component ranges.
-- Visual balance or semantic appropriateness.
+Sunshine's approved direction, the lavender-over-coral decision, warm-neutral
+mappings and downstream migration are documented in the
+[README](README.md#sunshine-roles-and-migration). The gallery uses generated data,
+actual content roles and calculated results, with native OKLCH and sRGB modes.
 
-Those properties require visual and accessibility review. Passing
-`bun run check` is necessary, but it is not evidence that a palette is usable.
+These gates do not prove universal WCAG compliance, visual balance, consumer
+state styling, or accessibility of other themes. Other themes retain their
+existing colors and are diagnosed separately; see the
+[validation scope and follow-ups](docs/sunshine-validation.md). Review paired
+variants together without treating a successful token build as consumer testing.
 
 The base validator only checks that a named pair exists. Reciprocal pairing,
 shared family, and opposite modes are enforced by tests over the names in
