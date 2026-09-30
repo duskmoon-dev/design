@@ -8,6 +8,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 
 import { resolve, dirname, join } from 'path';
 import { parse as parseYAML } from 'yaml';
 import { parseOklch, oklchToHex, oklchToArgbHex, oklchToRgb, rgbToHex } from './color';
+import { validateSunshineColors } from './palette';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -141,6 +142,7 @@ function validate(schema: Schema, themes: ThemeFile[]): { valid: boolean; errors
         errors.push(`${theme.name}.${token}: invalid OKLCH format "${value}"`);
       }
     }
+    if (theme.name === 'sunshine') errors.push(...validateSunshineColors(theme.colors));
     for (const token of shapeTokens) {
       if (!(token in (theme.shape ?? {}))) {
         errors.push(`${theme.name}: missing shape token "${token}"`);

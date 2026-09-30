@@ -23,11 +23,8 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Validate token files
-        run: bun run validate
-
-      - name: Run unit tests
-        run: bun test
+      - name: Validate tokens and run required palette tests
+        run: bun run check
 
   staleness:
     name: Staleness Check

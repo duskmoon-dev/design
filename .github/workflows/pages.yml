@@ -32,6 +32,9 @@ jobs:
       - name: Generate tokens
         run: bun run generate
 
+      - name: Check tokens and required Sunshine palette gates
+        run: bun run check
+
       - name: Build pages
         run: bun run scripts/build-pages.ts
 

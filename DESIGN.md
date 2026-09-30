@@ -111,6 +111,56 @@ inversion of light mode.
 three-color foundation; `accent` is the separate highlight role retained for
 DuskMoonUI compatibility.
 
+## Approved Sunshine direction
+
+Sunshine is a workspace lit by sunshine, not an interface painted yellow:
+golden amber primary, muted lavender secondary, sky-blue tertiary, soft golden
+yellow accent, warm ivory/cream surfaces and warm charcoal neutrals. **Lavender
+supersedes the earlier coral secondary proposal**, which risked confusing
+supporting brand expression with errors or destructive interactions. Red is
+reserved for error/destructive treatments, green for success, blue for info,
+and deeper orange for warning.
+
+An action's priority does not dictate its token family. The gallery demonstrates
+gold Save, neutral Cancel and red Delete alongside lavender supporting and
+sky-blue complementary actions. Use dark actual content tokens on the bright
+brand fills and matching hue-family content/container pairs throughout.
+
+The warm-neutral layers intentionally correspond: `surface = base-100`,
+`surface-container-low = base-200`, `surface-container-high = base-300`.
+`base-content` is intended for those light bases, not every darker base shade.
+`on-surface` and `on-surface-variant` serve every intended light surface.
+
+Bright fills are not ink. Do not use golden primary for small text, necessary
+standalone icons or the sole focus/selection cue on ivory. The gallery uses
+`on-primary-container` as light-surface link/focus/selected-marker ink and
+`outline` as a necessary control border. `outline-variant` remains decorative;
+surface layering and decorative dividers need not meet the 3:1 control-cue
+threshold. Brand fill boundaries use `on-primary-container` against both the
+fill and adjacent light surface; destructive boundaries use `error`. Selected
+navigation has both a dark marker and an
+explicit pressed state, not just a pale container.
+
+Labels, icons and destructive wording carry semantic meaning alongside hue.
+Lavender cannot guarantee discrimination for every color-vision condition;
+primary/warning distinctions also need non-color cues.
+
+Moonlight retains its authored white/gold primary/secondary and pink accent.
+It shares the same role hierarchy and blue tertiary/status roles, but the brand
+color shift and existing palette failures need separate review. Do not recolor
+Moonlight as part of Sunshine implementation.
+
+### Consumer-state follow-up
+
+Consumers must migrate white-on-brand assumptions, coral secondary actions,
+magenta highlights, cool neutrals, fill-as-ink and hue-only states. Audit actual
+web/Flutter component boundaries, keyboard focus, selection and disabled,
+hover/pressed behavior after importing the generated tokens. Dedicated ink,
+hover and pressed roles remain future consumer-state work: no `primary-ink`,
+`primary-hover`, `primary-active` or `focus-ring` is added to the shared schema,
+and no demo-only state palette hides that gap. Generated token success does
+not establish consumer integration correctness.
+
 ## Complete theme token model
 
 At schema version 2.0, each theme variant contains:
@@ -197,35 +247,74 @@ atomically:
 
 ## Validation boundary
 
-Automated checks establish structural and generation correctness. They verify
-schema completeness, recognized token names, OKLCH string shape, known pair
-names, registered theme metadata relationships, and generated target behavior.
+Automated checks establish structural and generation correctness: schema
+completeness, recognized token names, known pair names, registered metadata
+relationships and generated target behavior. Sunshine additionally has required
+palette gates in `validate`, generation, `check` and CI:
 
-Sunshine additionally has required palette gates in `scripts/sunshine.test.ts`,
-executed by both `bun run check` and CI's `bun test`. Shared pure math in
-`scripts/color.ts` exposes unbounded linear-sRGB channels before clipping;
-`scripts/palette.ts` lists intended text (4.5:1) and necessary cue (3:1) contexts.
-The gamut tolerance is 1e-6 for matrix/serialization rounding at black/white and
-sRGB boundaries. Components must be finite and valid; chroma has no arbitrary
-universal ceiling. Reference colors are test fixtures only; YAML remains the
-runtime source. Independent primary-color, WCAG and alpha-compositing cases
-protect against self-consistent math errors.
+Pure color conversion/compositing is shared in `scripts/color.ts`; intended
+contexts and palette assessment live in `scripts/palette.ts`. Both the original
+upstream `scripts/sunshine.test.ts` and complementary
+`scripts/sunshine-regression.test.ts` run without weakening existing gates.
 
-Sunshine's approved direction, the lavender-over-coral decision, warm-neutral
-mappings and downstream migration are documented in the
-[README](README.md#sunshine-roles-and-migration). The gallery uses generated data,
-actual content roles and calculated results, with native OKLCH and sRGB modes.
+- Parse finite raw OKLCH components, lightness/alpha in `[0,1]`, nonnegative
+  chroma and hue in `[0,360]`; there is no arbitrary universal chroma maximum.
+- Inspect **unbounded linear-sRGB channels before clamping**, accepting only
+  `[0,1]` with `1e-6` tolerance for matrix/decimal precision near the boundary.
+- Convert the approved sRGB references programmatically to raw OKLCH with eight
+  lightness/hue decimals and ten chroma decimals. Reference fixtures are
+  tests only; all runtime previews consume generated data. CSS/TS raw values,
+  JSON sRGB and Dart ARGB must reproduce references within one 8-bit channel.
+- Require unrounded contrast >=4.5:1 for actual filled/content and
+  container/content roles; both surface foregrounds on all nine intended light
+  surfaces; `base-content` on the three light bases; inverse foregrounds on
+  `inverse-surface`; and gallery link ink on the intended surfaces.
+- Require >=3:1 for necessary outlines and gallery focus against adjacent
+  surfaces, and selected navigation markers against both the selected container
+  and unselected panel. Composite transparent foregrounds in display sRGB over
+  the real opaque background; scrim preserves 50% alpha. Do not impose these
+  thresholds on decorative dividers or all surface pairs.
+- Reject unreadable and out-of-gamut negative controls. Independent primary
+  color/OKLab, luminance, gamma, black/white, near-threshold and alpha reference
+  cases protect against self-consistent math errors. Compare artifacts after
+  repeated all-target and individual-target runs, respecting the existing Dart
+  surface alias.
 
-These gates do not prove universal WCAG compliance, visual balance, consumer
-state styling, or accessibility of other themes. Other themes retain their
-existing colors and are diagnosed separately; see the
-[validation scope and follow-ups](docs/sunshine-validation.md). Review paired
-variants together without treating a successful token build as consumer testing.
+The gallery reports the same contexts in native OKLCH and generated sRGB,
+including failures in other themes without changing their colors. Other themes
+are not newly subjected to Sunshine's required gamut/contrast gate. These
+checks cover named contexts, not every possible component state, color-vision
+condition or integration. Visual balance and downstream accessibility still
+require rendered/keyboard review; `bun run check` alone is not a global
+accessibility claim.
 
 The base validator only checks that a named pair exists. Reciprocal pairing,
 shared family, and opposite modes are enforced by tests over the names in
 `ALL_THEMES`; this is why registering both new variants there is part of the
 theme workflow.
+
+### Existing other-theme audit (2026-10-01)
+
+The unchanged authored palettes at this HEAD have the following diagnostic
+failures in the gallery's role contexts. These are follow-up concerns, not
+new failing repository tests or a request to redesign other themes. For
+out-of-sRGB values, contrast results use the clipped-sRGB diagnostic rendering,
+not a guarantee about native wide-gamut display behavior.
+
+| Theme | Out-of-sRGB authored tokens | Contrast concerns |
+|---|---|---|
+| Moonlight | `info`, `error-content` | Neutral fill text 3.12:1, error fill text 2.73:1; necessary outlines on nine surfaces 1.76–2.56:1; inverse-primary text 4.24:1; bright brand inner boundaries and destructive boundary also fail (17 failing contexts total). |
+| Forest | `primary`, `info`, `warning`, `on-warning-container`, `error-content`, `error-container` | Tertiary fill text 3.89:1, success fill text 4.30:1; supporting-button inner boundary 2.9924:1 remains below 3:1 (3 failing contexts total). |
+| Ocean | `primary-container`, `secondary-container`, `accent-content`, `inverse-primary`, `info-content`, `info-container`, `warning-content` | Necessary outlines on nine surfaces 2.22–2.81:1 and bright brand inner boundaries fail (13 failing contexts total). |
+
+Sunshine has zero failures: minimum tested text contrast 4.7742:1,
+minimum necessary cue contrast 3.2132:1, and unbounded linear channels
+from 0 to 1.0000000684 (inside the documented `1e-6` tolerance). All 61 sRGB
+references round-trip exactly in generated JSON/Dart (zero channel error),
+including black scrim with preserved 50% source alpha / rounded ARGB `0x80`.
+
+See [validation scope and follow-ups](docs/sunshine-validation.md) and reproduce
+all diagnostics with `bun run scripts/audit-palette.ts`.
 
 ## Design decisions
 
@@ -264,3 +353,4 @@ theme model merely to accommodate one output language.
 - [Material 3 color system](https://developer.android.com/develop/ui/compose/designsystems/material3) — inspiration for light/dark schemes and semantic color roles.
 - [Design Tokens Format Module](https://www.designtokens.org/tr/2025.10/format/) — platform-independent design-token terminology and interoperability.
 - [WCAG 2.2 contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) — minimum text contrast thresholds used during manual review.
+- [OKLab conversion reference](https://bottosson.github.io/posts/oklab/) — forward/inverse linear-sRGB matrices and independent primary-color reference cases.

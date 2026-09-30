@@ -19,7 +19,9 @@ metadata/shapes, all 61 reference round trips, all four output adapters, 50%
 scrim alpha, isolated repeat generation, finite/valid components, unclipped
 gamut, intended contrast pairs and negative controls. The Dart
 `surface-variant` → `surfaceContainerHighest` alias remains intentional.
-The reference fixture is not imported by the generator or gallery.
+The reference fixture is not imported by the generator or gallery. Both the
+original Sunshine tests and complementary `scripts/sunshine-regression.test.ts`
+run in check/CI. Palette gates also run before validation/generation succeeds.
 
 ## Measured Sunshine results
 
@@ -28,7 +30,8 @@ The reference fixture is not imported by the generator or gallery.
 - Unbounded linear-sRGB range: 0 to 1.0000000684. All channels pass the documented
   1e-6 numerical tolerance; this is measured before clipping.
 - Minimum intended normal-text contrast: 4.7742:1 (required 4.5:1).
-- Minimum necessary gallery cue contrast: 3.7760:1 (required 3:1).
+- Minimum necessary gallery cue contrast: 3.2132:1 (required 3:1), including
+  necessary boundaries against every intended light surface.
 - The transparent scrim remains black at 50%. Transparent contrast tests composite
   over a specified opaque background before calculating luminance; an unspecified
   background is rejected. No text is placed on the scrim in the gallery.
@@ -41,7 +44,7 @@ ratios and never substitutes automatic black/white labels.
 The offset focus ring is adjacent to the surrounding surface, not the button
 fill. Necessary neutral control borders use outline; brand buttons use
 on-primary-container so their boundaries also contrast with the bright fill.
-Selected navigation uses a dark border, a check mark and `aria-current`.
+Selected navigation uses a dark border, a selected symbol and `aria-pressed`.
 Decorative surface layering/dividers are not subject to the control threshold.
 
 ## Other themes: existing authored limitations
@@ -78,14 +81,17 @@ roles must be addressed there, without inventing shared token keys in this chang
 
 ## Browser smoke checks
 
-Chrome DevTools checks passed at a 1440 × 1100 desktop viewport and a
-390 × 844 mobile emulation viewport: no document horizontal overflow, real Tab
-focus on Save (3px dark outline with 4px offset), Enter activation, generated
-sRGB switching, and actual rendered content pairs ≥ 4.5:1. All four status
-containers are present with authored foregrounds; no browser console errors
-were observed. Sunshine/Moonlight were reviewed side by side. Captures are local
-ignored artifacts in `_site/`: `sunshine-desktop.png`, `sunshine-mobile.png`,
-and `sunshine-moonlight.png`.
+The original upstream Chrome DevTools smoke covered 1440 × 1100 desktop and
+390 × 844 mobile viewports. The reconciled gallery additionally checks
+1440 × 1080, 390 × 844 and 320 × 720 layouts: no document horizontal overflow,
+real Tab focus on Save (3px dark outline with 3px offset), Enter activation,
+keyboard navigation/disclosures, generated-sRGB switching, and authored
+foregrounds on all four status containers. Necessary brand boundaries preserve
+the original inner/outer contrast gates. Native and generated-sRGB pair ratios
+are displayed together, and the paired-theme comparison is retained.
+
+Latest local captures and `sunshine-browser-results.json` are outside deployment
+output, in `/home/gao/.codex/visualizations/2026/09/30/01a0f2e2-a9e6-7a41-ba36-4522a0faa440/`.
 
 This is a Chromium smoke check, not a cross-browser or real-device matrix.
 Downstream consumer integrations remain untested.

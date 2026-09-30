@@ -27,9 +27,9 @@
       display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;
       padding: 1rem 0;
     }
-    .theme-bar label { font-weight: 500; margin-right: 0.5rem; }
+    .theme-bar .theme-label { font-weight: 500; margin-right: 0.5rem; }
     .theme-btn {
-      border: 2px solid var(--color-outline);
+      border: 2px solid var(--color-outline, #ccc);
       background: var(--color-surface-container, #f0f0f0);
       color: var(--color-on-surface, #1a1a1a);
       padding: 0.4rem 1rem; border-radius: 2rem; cursor: pointer;
@@ -46,7 +46,7 @@
       font-size: 0.85rem; color: var(--color-on-surface-variant, #666);
       margin-top: 0.25rem;
     }
-    .theme-meta a { color: var(--color-on-primary-container); text-decoration: underline; }
+    a { color: var(--color-on-primary-container); text-decoration: underline; }
     .theme-meta a:hover { text-decoration: underline; }
     .theme-btn:hover { border-color: var(--color-on-primary-container); }
     .theme-btn.active {
@@ -199,60 +199,58 @@
       text-align: center; padding: 4rem;
       color: var(--color-on-surface-variant, #888);
     }
-
-    /* Role previews use generated tokens and their authored content pairings. */
-    a { color: var(--color-on-primary-container); }
-    :where(button, input, select, a, summary):focus-visible {
-      outline: 3px solid var(--color-on-primary-container); outline-offset: 4px;
+    :is(button, input, select, a, summary):focus-visible {
+      outline: 3px solid var(--color-on-primary-container);
+      outline-offset: 3px;
     }
     button, input, select { font: inherit; }
-    .preview-heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: baseline; margin: 2rem 0 1rem; }
-    .preview-heading h2 { margin: 0; border: 0; padding: 0; }
-    .mode-picker { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
-    select, .workspace input { background: var(--color-surface-container-lowest); color: var(--color-on-surface); border: 2px solid var(--color-outline); border-radius: .5rem; padding: .5rem .75rem; }
-    .workspace { display: grid; grid-template-columns: 180px minmax(0,1fr); border: 1px solid var(--color-outline-variant); border-radius: 1.25rem; overflow: visible; background: var(--color-surface-container-lowest); }
-    .workspace nav { padding: 1.25rem; background: var(--color-surface-container); border-radius: 1.25rem 0 0 1.25rem; }
-    .workspace nav a { display: block; padding: .6rem; margin: .25rem 0; border: 2px solid transparent; border-radius: .5rem; text-decoration: none; }
-    .workspace nav a[aria-current] { background: var(--color-primary-container); border-color: var(--color-on-primary-container); font-weight: 700; }
-    .workspace-main { padding: 1.5rem; min-width: 0; }
-    .workspace h3 { font: 600 1.8rem/1.2 Georgia, serif; margin-bottom: .4rem; }
+    .workspace { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 1rem; }
+    .workspace-nav { background: var(--color-surface-container-low); border-radius: 1rem; padding: 1rem; }
+    .workspace-nav button {
+      display: block; width: 100%; text-align: left; margin: 0.5rem 0;
+      background: transparent; color: var(--color-on-surface); border: 0;
+      border-left: 4px solid transparent; padding: 0.65rem; cursor: pointer;
+    }
+    .workspace-nav button[aria-pressed="true"] {
+      background: var(--color-primary-container); color: var(--color-on-primary-container);
+      border-left-color: var(--color-on-primary-container); font-weight: 700;
+    }
+    .workspace-card { background: var(--color-surface-bright); padding: 1.5rem; border-radius: 1rem; min-width: 0; }
+    .workspace-card h3 { font-family: Georgia, serif; font-size: 1.75rem; }
     .muted { color: var(--color-on-surface-variant); }
-    .workspace label { display: grid; gap: .4rem; margin: 1rem 0; max-width: 28rem; }
-    .workspace input { width: 100%; min-width: 0; }
-    .actions { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1rem 0; }
-    .action { border: 2px solid var(--color-on-primary-container); padding: .5rem 1rem; border-radius: .6rem; cursor: pointer; font-weight: 600; }
-    .action:hover { text-decoration: underline; text-underline-offset: .2em; }
-    .save { background: var(--color-primary); color: var(--color-primary-content); }
-    .support { background: var(--color-secondary); color: var(--color-secondary-content); }
-    .complement { background: var(--color-tertiary); color: var(--color-tertiary-content); }
-    .cancel { background: var(--color-surface-container-lowest); color: var(--color-on-surface); border-color: var(--color-outline); }
-    .delete { background: var(--color-error); color: var(--color-error-content); border-color: var(--color-error); }
-    .status-grid, .comparison-grid, .pair-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .75rem; }
-    .status-item, .role-sample { border-radius: .65rem; padding: .85rem 1rem; }
-    .status-item strong { display: block; }
-    .role-sample strong, .role-sample small { display: block; }
-    .tonal-panel { background: var(--color-surface-container); border-radius: .75rem; padding: 1rem; margin: 1rem 0; }
-    .comparison { background: var(--color-surface-container-lowest); border: 1px solid var(--color-outline-variant); border-radius: .75rem; padding: 1rem; min-width: 0; }
-    .comparison h3 { margin-bottom: .75rem; }
-    .comparison .comparison-grid { margin-top: .75rem; }
-    .pair-card { border: 1px solid var(--color-outline-variant); border-radius: .75rem; overflow: hidden; min-width: 0; }
-    .pair-card .role-sample { border-radius: 0; overflow-wrap: anywhere; }
-    .pair-result { padding: .5rem .75rem; font-size: .8rem; background: var(--color-surface-container-low); }
-    .table-scroll { max-width: 100%; overflow-x: auto; }
-    .color-value { overflow-wrap: anywhere; }
-    .spacing-bar { flex-shrink: 1; min-width: 0; }
-    .spacing-row .label, .spacing-row .value { flex-shrink: 0; }
-    @media (max-width: 640px) {
+    .tonal-panel { background: var(--color-surface-container); padding: 1rem; margin: 1rem 0; border-radius: 0.75rem; }
+    .preview-input { display: block; margin: 0.4rem 0 1rem; width: 100%; max-width: 30rem;
+      background: var(--color-surface-bright); color: var(--color-on-surface);
+      border: 2px solid var(--color-outline); padding: 0.6rem 0.75rem; border-radius: var(--radius-field); }
+    .preview-actions, .preview-toolbar { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin: 1rem 0; }
+    .preview-button { background: var(--fill); color: var(--ink); border: 2px solid var(--color-outline);
+      border-radius: var(--radius-field); padding: 0.55rem 1rem; cursor: pointer; }
+    .preview-button[data-action="primary"], .preview-button[data-role="secondary"], .preview-button[data-role="tertiary"] {
+      border-color: var(--color-on-primary-container);
+    }
+    .preview-button[data-action="error"] { border-color: var(--color-error); }
+    .preview-button:hover { text-decoration: underline; }
+    .status-grid, .role-grid, .comparison-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+    .status-panel { background: var(--fill); color: var(--ink); padding: 0.75rem 1rem; border-radius: 0.75rem; }
+    .status-panel strong { display: block; }
+    .role-pair { padding: 0.8rem; border: 1px solid var(--color-outline-variant); border-radius: 0.75rem; }
+    .role-sample { background: var(--fill); color: var(--ink); padding: 0.75rem; margin: 0.4rem 0; border-radius: 0.5rem; }
+    .role-sample small { display: block; }
+    .preview-message { min-height: 1.6em; }
+    .table-scroll { overflow-x: auto; }
+    .preview-toolbar select { background: var(--color-surface-bright); color: var(--color-on-surface);
+      border: 2px solid var(--color-outline); padding: 0.5rem; border-radius: 0.5rem; }
+    .spacing-bar { max-width: 100%; }
+    .theme-meta { margin-bottom: 1.5rem; }
+    @media (max-width: 600px) {
       .container { padding: 1rem; }
-      header { padding: 1rem 0; margin-bottom: 1rem; }
-      .workspace { grid-template-columns: minmax(0,1fr); }
-      .workspace nav { border-radius: 1.25rem 1.25rem 0 0; display: flex; flex-wrap: wrap; gap: .5rem; }
-      .workspace nav p { width: 100%; }
-      .workspace-main { padding: 1rem; }
-      .status-grid, .pair-grid, .comparison-grid { grid-template-columns: minmax(0,1fr); }
-      .comparison .comparison-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-      .color-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-      .role-sample { padding: .75rem; }
+      header { padding: 1rem 0; }
+      .workspace, .status-grid, .role-grid { grid-template-columns: 1fr; }
+      .workspace-card { padding: 1rem; }
+      .comparison-grid { grid-template-columns: 1fr; }
+      .workspace-nav { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+      .workspace-nav button { width: auto; margin: 0; }
+      .type-table th, .type-table td { padding: 0.5rem; }
     }
   </style>
 </head>
@@ -264,7 +262,8 @@
   <!-- Inline generated data at build time (populated by build script) -->
   <script id="theme-data" type="application/json">__THEME_DATA__</script>
   <script id="shared-data" type="application/json">__SHARED_DATA__</script>
-  <script id="pair-data" type="application/json">__PAIR_DATA__</script>
+  <script id="contrast-data" type="application/json">__CONTRAST_DATA__</script>
+  <!-- CSS is linked dynamically -->
 
   <script>
     // ── Data ──
@@ -279,8 +278,8 @@
 
     const themeNames = Object.keys(themes);
     let activeTheme = themes.sunshine ? 'sunshine' : themeNames[0];
-    let previewMode = 'native';
-    const pairData = JSON.parse(document.getElementById('pair-data').textContent);
+    let previewMode = 'oklch';
+    const contrastData = JSON.parse(document.getElementById('contrast-data').textContent);
 
     // Group themes by family using metadata
     const families = {};
@@ -316,70 +315,87 @@
       return s;
     }
 
-    function previewColor(c) {
-      if (previewMode === 'native') return `oklch(${oklchStr(c)})`;
-      if (c.alpha == null) return c.hex;
-      const rgb = [1,3,5].map(i => parseInt(c.hex.slice(i,i+2),16));
-      return `rgb(${rgb.join(' ')} / ${c.alpha})`;
+    function roleStyle(fill, ink) {
+      return `--fill:var(--color-${fill});--ink:var(--color-${ink})`;
     }
 
-    function pairStyle(colors, bg, fg) {
-      return `background:${previewColor(colors[bg])};color:${previewColor(colors[fg])}`;
+    function previewColor(color) {
+      if (previewMode === 'oklch') return `oklch(${oklchStr(color)})`;
+      if (color.alpha == null) return color.hex;
+      const channels = [1, 3, 5].map(offset => parseInt(color.hex.slice(offset, offset + 2), 16));
+      return `rgb(${channels.join(' ')} / ${color.alpha})`;
     }
 
-    function changePreviewMode(value) {
-      previewMode = value;
-      render();
-      document.getElementById('preview-mode').focus();
-    }
-
-    function renderWorkspace(colors) {
-      const statuses = [['info','ⓘ','Information','Your workspace is up to date.'], ['success','✓','Success','Changes have been saved.'], ['warning','⚠','Warning','Review before replacing this file.'], ['error','!','Error','This file could not be uploaded.']];
-      return `<section id="role-preview">
-        <div class="preview-heading"><h2>A workspace in the light</h2>
-          <label class="mode-picker">Color output <select id="preview-mode" onchange="changePreviewMode(this.value)">
-            <option value="native" ${previewMode === 'native' ? 'selected' : ''}>Native OKLCH</option>
-            <option value="srgb" ${previewMode === 'srgb' ? 'selected' : ''}>Generated sRGB</option>
-          </select></label>
-        </div>
-        <p class="section-desc">Brand fills support the work. Neutral surfaces give it room. Try Tab to see real keyboard focus.</p>
-        <div class="workspace">
-          <nav aria-label="Workspace preview"><p class="muted">YOUR WORKSPACE</p>
-            <a href="#workspace-title" aria-current="page">✓ Overview</a><a href="#role-comparisons">Role guide</a><a href="#pair-results">Contrast pairs</a>
-          </nav>
-          <div class="workspace-main">
-            <h3 id="workspace-title">A little room to think.</h3><p class="muted">White cards, warm canvas, and quieter supporting colors.</p>
-            <label>Workspace name<input value="Morning notes" aria-describedby="preview-help"></label>
-            <p id="preview-help" class="muted">An editable preview. Actions below demonstrate visual roles.</p>
-            <div class="actions"><button class="action save" onclick="previewAction('Saved this preview.')">Save</button><button class="action cancel" onclick="previewAction('Cancelled this preview.')">Cancel</button><button class="action delete" onclick="previewAction('Delete is destructive. This preview deletes no data.')">⌫ Delete</button></div>
-            <div class="tonal-panel"><strong>Supporting expression</strong><p>Supporting brand roles do not determine action priority.</p><div class="actions"><button class="action support" onclick="previewAction('Supporting collection selected.')">◇ Collection</button><button class="action complement" onclick="previewAction('Complementary view selected.')">↗ Explore</button></div><a href="#pair-results">Inspect the actual content pairings</a></div>
-            <div class="status-grid">${statuses.map(([role,icon,label,copy]) => `<div class="status-item" style="${pairStyle(colors,role+'-container','on-'+role+'-container')}"><strong><span aria-hidden="true">${icon}</span> ${label}</strong>${copy}</div>`).join('')}</div>
-            <p id="action-feedback" role="status" class="muted">Preview ready.</p>
-          </div>
-        </div>
-      </section>`;
-    }
-
-    function previewAction(message) { document.getElementById('action-feedback').textContent = message; }
-
-    function renderComparisons() {
-      const colors = themes[activeTheme].colors;
-      const sample = (c, role, label) => `<div class="role-sample" style="${pairStyle(c,role,role+'-content')}"><strong>${label}</strong><small>${role}</small></div>`;
+    function pairedComparison() {
       const paired = themes[themes[activeTheme].meta.pair];
-      return `<section id="role-comparisons"><h2>Different roles. Explicit meaning.</h2><p class="section-desc">Labels and symbols carry meaning beyond hue, including under color-vision differences.</p>
-        <div class="comparison-grid">
-          <div class="comparison"><h3>Supporting / destructive</h3><div class="comparison-grid">${sample(colors,'secondary','◇ Collection')}${sample(colors,'error','⌫ Delete')}</div></div>
-          <div class="comparison"><h3>Primary / warning</h3><div class="comparison-grid">${sample(colors,'primary','✓ Save')}${sample(colors,'warning','⚠ Review risk')}</div></div>
-        </div>
-        <details style="margin-top:1rem"><summary>Compare paired themes: ${activeTheme} / ${paired.meta.name}</summary><p class="muted">The semantic roles stay consistent; hues need not match. Moonlight is unchanged and still needs its own contrast and gamut review.</p>
-          <div class="comparison-grid">${[themes[activeTheme],paired].map(theme => `<div class="comparison" style="${pairStyle(theme.colors,'surface','on-surface')}"><h3>${theme.meta.name}</h3><div class="comparison-grid">${sample(theme.colors,'primary','Primary')}${sample(theme.colors,'secondary','Supporting')}${sample(theme.colors,'tertiary','Complementary')}${sample(theme.colors,'error','Destructive')}</div></div>`).join('')}</div>
-        </details>
-      </section>`;
+      return `<details id="paired-comparison"><summary>Compare paired themes: ${h(activeTheme)} / ${h(paired.meta.name)}</summary>
+        <p class="muted">Semantic roles remain consistent; hues need not match. Moonlight is unchanged and needs its own contrast and gamut review.</p>
+        <div class="comparison-grid">${[themes[activeTheme], paired].map(theme => `<article class="role-pair" data-paired-theme="${theme.meta.name}" style="background:${previewColor(theme.colors.surface)};color:${previewColor(theme.colors['on-surface'])}">
+          <h3>${h(theme.meta.name)}</h3><div class="role-grid">${[['primary', 'Primary'], ['secondary', 'Supporting'], ['tertiary', 'Complementary'], ['error', 'Destructive']].map(([role, label]) => `<div class="role-sample" style="--fill:${previewColor(theme.colors[role])};--ink:${previewColor(theme.colors[`${role}-content`])}">${label}<small>${role} + ${role}-content</small></div>`).join('')}</div>
+        </article>`).join('')}</div></details>`;
     }
 
-    function renderPairs() {
-      const colors = themes[activeTheme].colors;
-      return `<section id="pair-results"><h2>Filled &amp; container pairs</h2><p class="section-desc">Actual authored foregrounds. Normal text requires ≥ 4.5:1; ratios below are rounded only for display. A readable label alone does not prove a visible control boundary. Ratios use sRGB; out-of-gamut themes need separate display review.</p><div class="pair-grid">${pairData[activeTheme].map(pair => `<div class="pair-card"><div class="role-sample" style="${pairStyle(colors,pair.background,pair.foreground)}"><strong>${pair.background}</strong><small>${pair.foreground}</small></div><div class="pair-result">OKLCH ${pair.native.toFixed(2)}:1 ${pair.native >= 4.5 ? 'PASS' : 'FAIL'} · sRGB ${pair.srgb.toFixed(2)}:1 ${pair.srgb >= 4.5 ? 'PASS' : 'FAIL'}</div></div>`).join('')}</div></section>`;
+    function pairPreview(role) {
+      const report = contrastData[activeTheme];
+      return `<div class="role-pair"><strong>${h(role)}</strong>${['fill', 'container'].map(kind => {
+        const fill = kind === 'fill' ? role : `${role}-container`;
+        const ink = kind === 'fill' ? `${role}-content` : `on-${role}-container`;
+        if (!themes[activeTheme].colors[fill]) return '';
+        const check = report.checks.find(entry => entry.foreground === ink && entry.background === fill);
+        return `<div class="role-sample" data-fill="${fill}" data-ink="${ink}" style="${roleStyle(fill, ink)}">
+          ${h(fill)} + ${h(ink)}<small>Native ${check.ratio.toFixed(2)}:1 ${check.ratio >= check.minimum ? 'PASS' : 'FAIL'} · sRGB ${check.srgbRatio.toFixed(2)}:1 ${check.srgbRatio >= check.minimum ? 'PASS' : 'FAIL'} normal text (4.5:1)</small></div>`;
+      }).join('')}</div>`;
+    }
+
+    function workspacePreview() {
+      const report = contrastData[activeTheme];
+      const isSunshine = activeTheme === 'sunshine';
+      const failed = report.checks.filter(check => (previewMode === 'oklch' ? check.ratio : check.srgbRatio) < check.minimum);
+      return `<section id="role-preview" aria-labelledby="workspace-heading">
+        <h2 id="workspace-heading">${isSunshine ? 'A workspace lit by sunshine' : `${h(activeTheme)} workspace role preview`}</h2>
+        <p class="section-desc">${isSunshine ? 'Gold leads; lavender supports; sky blue complements. Action priority does not assign brand color: Save is gold, Cancel is neutral, Delete is destructive red.' : 'The same role contract in the paired/alternative theme: primary Save, neutral Cancel and error Delete. Existing palette concerns are shown without substituting different content colors.'}</p>
+        <div class="preview-toolbar"><label for="preview-mode">Color rendering</label>
+          <select id="preview-mode" onchange="setPreviewMode(this.value)">
+            <option value="oklch" ${previewMode === 'oklch' ? 'selected' : ''}>Native OKLCH (CSS / TypeScript)</option>
+            <option value="srgb" ${previewMode === 'srgb' ? 'selected' : ''}>Generated sRGB (JSON / Dart)</option>
+          </select><a href="#role-contrast">Inspect calculated contrast</a></div>
+        <div class="workspace">
+          <nav class="workspace-nav" aria-label="Workspace preview">
+            ${['Overview', 'Projects', 'Activity'].map((label, index) => `<button type="button" aria-pressed="${index === 0}" onclick="selectPanel(this)">${index === 0 ? '◈' : '◇'} ${label}</button>`).join('')}
+          </nav>
+          <article class="workspace-card">
+            <h3>Room to do your best work</h3><p class="muted">${isSunshine ? 'Warm canvas · white card · readable warm charcoal' : 'Surface canvas · bright surface card · normal and muted text'}</p>
+            <div class="tonal-panel"><strong>Today's workspace</strong><p class="muted">${isSunshine ? 'Cream layers provide hierarchy without painting the interface yellow.' : 'Surface-container layers provide hierarchy using the authored theme tokens.'}</p></div>
+            <label for="workspace-title">Project name</label><input class="preview-input" id="workspace-title" value="Sunlit studio">
+            <div class="preview-actions">
+              ${[['primary', 'Save'], ['neutral', 'Cancel'], ['error', 'Delete project']].map(([role, label]) => `<button type="button" class="preview-button" data-action="${role}" style="${roleStyle(role, `${role}-content`)}" onclick="previewAction('${label}')">${label}</button>`).join('')}
+            </div>
+            <div class="preview-actions">
+              <button type="button" class="preview-button" data-role="secondary" style="${roleStyle('secondary', 'secondary-content')}" onclick="previewAction('Explore templates')">◇ Explore templates</button>
+              <button type="button" class="preview-button" data-role="tertiary" style="${roleStyle('tertiary', 'tertiary-content')}" onclick="previewAction('View insights')">↗ View insights</button>
+            </div>
+            <p class="preview-message muted" id="preview-message" aria-live="polite">Preview only. Tab through the controls to inspect keyboard focus.</p>
+            <div class="status-grid">
+              ${[['info', 'ⓘ', 'Information', 'Updates are available.'], ['success', '✓', 'Success', 'Your work is saved.'], ['warning', '⚠', 'Warning', 'Check before continuing.'], ['error', '!', 'Error', 'The project could not be deleted.']].map(([role, icon, label, message]) => `<div class="status-panel" data-fill="${role}-container" data-ink="on-${role}-container" style="${roleStyle(`${role}-container`, `on-${role}-container`)}"><strong><span aria-hidden="true">${icon}</span> ${label}</strong>${message}</div>`).join('')}
+            </div>
+          </article>
+        </div>
+        <div class="comparison-grid" id="role-comparisons">
+          <div><h3>Supporting brand versus destructive</h3><p class="muted">${isSunshine ? 'Lavender is not an error.' : 'A supporting brand role is not an error.'} Use labels, icons and explicit destructive wording, not hue alone.</p><div class="role-grid">${pairPreview('secondary')}${pairPreview('error')}</div></div>
+          <div><h3>Primary versus warning</h3><p class="muted">${isSunshine ? 'Gold action versus deeper orange warning.' : 'Primary action versus a semantic warning.'} Their semantic cues remain necessary.</p><div class="role-grid">${pairPreview('primary')}${pairPreview('warning')}</div></div>
+        </div>
+        ${pairedComparison()}
+        <details id="role-contrast"><summary id="pair-results">Filled/container contrast and actual gallery cues</summary>
+          <div class="role-grid">${['primary', 'secondary', 'tertiary', 'accent', 'neutral', 'info', 'success', 'warning', 'error'].map(pairPreview).join('')}</div>
+          <div class="table-scroll"><table class="type-table"><thead><tr><th>Context</th><th>Foreground / adjacent background</th><th>Ratio / threshold</th></tr></thead><tbody>
+            ${report.checks.filter(check => check.minimum === 3 || check.label === 'gallery link text').map(check => {
+              const ratio = previewMode === 'oklch' ? check.ratio : check.srgbRatio;
+              return `<tr><td>${h(check.label)}</td><td>${h(check.foreground)} / ${h(check.background)}</td><td>${ratio.toFixed(2)}:1 / ${check.minimum}:1 ${ratio >= check.minimum ? 'PASS' : 'FAIL'}</td></tr>`;
+            }).join('')}</tbody></table></div>
+        </details>
+        <p class="muted">${failed.length} failing checks in these preview contexts; ${report.outOfGamut.length} authored out-of-sRGB tokens${report.outOfGamut.length ? `: ${report.outOfGamut.map(h).join(', ')}` : ''}. Other-theme failures are reported, not recolored.${report.outOfGamut.length ? ' Out-of-gamut contrast is a clipped-sRGB diagnostic, not a wide-gamut guarantee.' : ''}</p>
+        <p class="muted">Bright fills are not text ink or sole selection cues. Links and focus use on-primary-container; neutral control borders use outline, brand boundaries use on-primary-container and destructive boundaries use error. Decorative dividers use outline-variant. No demo-only hover/pressed palette is supplied; downstream state roles still need migration and verification.</p>
+      </section>`;
     }
 
     // ── Render ──
@@ -404,15 +420,13 @@
           <p>OKLCH color system &middot; ${themeNames.length} themes in ${familyNames.length} families &middot; Material Design 3 type scale</p>
         </header>
 
-        <div class="theme-bar">
-          <label>Theme:</label>
+        <div class="theme-bar" role="group" aria-label="Theme">
+          <span class="theme-label">Theme:</span>
           ${themeSwitcher}
         </div>
         ${meta.description ? `<p class="theme-meta">${h(meta.description)} &middot; ${h(meta.mode)} mode &middot; pair: <a href="#" onclick="event.preventDefault();switchTheme('${meta.pair}')">${h(meta.pair)}</a></p>` : ''}
 
-        ${renderWorkspace(colors)}
-        ${renderComparisons()}
-        ${renderPairs()}
+        ${workspacePreview()}
 
         <!-- Colors -->
         <section>
@@ -425,7 +439,7 @@
                 ${g.keys.filter(k => colors[k]).map(k => {
                   const c = colors[k];
                   return `<div class="color-card">
-                    <div class="color-swatch" style="background-color:${previewColor(c)}"></div>
+                    <div class="color-swatch" style="background-color:var(--color-${k})"></div>
                     <div class="color-info">
                       <div class="color-name">${h(k)}</div>
                       <div class="color-value">${h(c.hex)}</div>
@@ -519,7 +533,7 @@
         </footer>
       `;
 
-      // Apply generated data in the selected color representation
+      // Apply theme CSS variables by loading the CSS file
       applyThemeCSS();
     }
 
@@ -527,7 +541,6 @@
       // Apply colors from JSON data directly as CSS custom properties
       const data = themes[activeTheme];
       const root = document.documentElement;
-      root.style.colorScheme = data.meta.mode;
       for (const [k, c] of Object.entries(data.colors)) {
         root.style.setProperty(`--color-${k}`, previewColor(c));
       }
@@ -541,7 +554,25 @@
     function switchTheme(name) {
       activeTheme = name;
       render();
-      document.querySelector(`[data-theme-choice="${name}"]`)?.focus();
+      document.querySelector('.theme-btn.active').focus();
+    }
+
+    function setPreviewMode(mode) {
+      previewMode = mode;
+      render();
+      document.getElementById('preview-mode').focus();
+    }
+
+    function previewAction(label) {
+      document.getElementById('preview-message').textContent = `Preview only: ${label}. No production data changed.`;
+    }
+
+    function selectPanel(button) {
+      document.querySelectorAll('.workspace-nav button').forEach(entry => {
+        entry.setAttribute('aria-pressed', String(entry === button));
+        entry.textContent = `${entry === button ? '◈' : '◇'} ${entry.textContent.replace(/^[◈◇]\s*/, '')}`;
+      });
+      previewAction(button.textContent.trim());
     }
 
     // ── Init ──

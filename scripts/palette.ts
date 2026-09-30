@@ -18,14 +18,14 @@ export const SUNSHINE_CHECKS: ContrastCheck[] = [
   ...['inverse-on-surface', 'inverse-primary'].map(foreground => ({ foreground, background: 'inverse-surface', minimum: 4.5, context: 'Inverse text' })),
   // Links appear on the canvas, white card and tonal panel. Focus rings are
   // offset from controls, so the adjacent color is the surrounding surface.
-  ...['surface', 'surface-container-lowest', 'surface-container'].flatMap(background => [
+  ...LIGHT_SURFACES.flatMap(background => [
     { foreground: 'on-primary-container', background, minimum: 4.5, context: 'Gallery link' },
     { foreground: 'on-primary-container', background, minimum: 3, context: 'Offset keyboard focus' },
     { foreground: 'outline', background, minimum: 3, context: 'Control boundary (outside)' },
   ]),
   ...['primary', 'secondary', 'tertiary', 'surface-container-lowest'].map(background => ({ foreground: background === 'surface-container-lowest' ? 'outline' : 'on-primary-container', background, minimum: 3, context: 'Control boundary (inside)' })),
   { foreground: 'error', background: 'surface-container-lowest', minimum: 3, context: 'Destructive button boundary' },
-  ...['primary-container', 'surface-container', 'surface'].map(background => ({ foreground: 'on-primary-container', background, minimum: 3, context: 'Selected border / check mark' })),
+  ...['primary-container', 'surface-container-low', 'surface-container', 'surface'].map(background => ({ foreground: 'on-primary-container', background, minimum: 3, context: 'Selected border / check mark' })),
 ];
 
 export function assessPalette(colors: Record<string, string>, checks = SUNSHINE_CHECKS) {
@@ -35,4 +35,38 @@ export function assessPalette(colors: Record<string, string>, checks = SUNSHINE_
     return { ...check, ratio, pass: ratio >= check.minimum };
   });
   return { gamutFailures, contrasts, pass: gamutFailures.length === 0 && contrasts.every(c => c.pass) };
+}
+
+export function sunshineContrastChecks(colors: Record<string, string>) {
+  const labels: Record<string, string> = {
+    'Surface text': 'surface text',
+    'Base text': 'base text',
+    'Inverse text': 'inverse text',
+    'Gallery link': 'gallery link text',
+    'Offset keyboard focus': 'gallery keyboard focus',
+    'Control boundary (outside)': 'necessary control outline',
+    'Control boundary (inside)': 'brand control boundary (inside)',
+    'Destructive button boundary': 'destructive button boundary',
+    'Selected border / check mark': 'selected navigation marker',
+  };
+  return SUNSHINE_CHECKS.map(check => ({
+    ...check,
+    label: check.context === 'Filled label' ? `${check.background} fill text`
+      : check.context === 'Container label' ? `${check.background.replace(/-container$/, '')} container text`
+      : labels[check.context],
+    ratio: tokenContrast(colors[check.foreground], colors[check.background]),
+  }));
+}
+
+export function validateSunshineColors(colors: Record<string, string>): string[] {
+  const errors = Object.entries(colors).filter(([, value]) => !inSrgbGamut(value))
+    .map(([token]) => `sunshine.${token}: invalid or outside sRGB gamut (tolerance 1e-6)`);
+  try {
+    for (const check of sunshineContrastChecks(colors)) {
+      if (check.ratio < check.minimum) errors.push(`sunshine: ${check.label} ${check.foreground}/${check.background} = ${check.ratio.toFixed(3)} < ${check.minimum}`);
+    }
+  } catch (error) {
+    errors.push(`sunshine: cannot evaluate contrast: ${error instanceof Error ? error.message : error}`);
+  }
+  return errors;
 }

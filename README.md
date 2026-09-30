@@ -140,51 +140,56 @@ Shared token files apply to every theme:
 
 | Family | Theme | Mode | Character |
 |--------|-------|------|-----------|
-| DuskMoon | Sunshine | Light | Sunlit ivory with golden amber, muted lavender and sky blue |
+| DuskMoon | Sunshine | Light | Golden amber, muted lavender, sky blue, warm ivory |
 | DuskMoon | Moonlight | Dark | Neutral white/gold |
 | Ecotone | Forest | Light | Cool green/teal |
 | Ecotone | Ocean | Dark | Cool blue |
 
 Each theme carries metadata (`family`, `pair`, `description`) propagated to all generated targets. Use `pair` to look up the light/dark counterpart at runtime.
 
-## Sunshine roles and migration
+### Sunshine roles and migration
 
-Sunshine is a workspace lit by sunshine: golden amber primary, muted lavender
-secondary, sky-blue tertiary, a soft golden accent, warm ivory/cream surfaces,
-and warm charcoal text. Error/destructive remains red, success green, info blue,
-and warning a deeper orange. **Lavender supersedes the earlier coral proposal**:
-coral made supporting brand expression too similar to destructive/error red.
-This does not guarantee separation under every color-vision condition; keep
-labels, icons and explicit destructive wording. Gold and warning need those cues too.
+Sunshine uses golden amber for primary, **muted lavender for secondary**, sky
+blue for tertiary, and soft golden yellow for accent. Lavender supersedes the
+earlier coral proposal: a supporting brand role must not look like an error or
+destructive action. Warm ivory/cream surfaces and warm charcoal text create a
+sunlit workspace rather than an interface painted yellow. Error/destructive is
+red, success is green, info is blue, and warning is deeper orange.
 
-A secondary action does not require secondary color. The generated-data gallery
-shows gold **Save**, neutral **Cancel**, red **Delete**, and lavender supporting
-expression. Status containers use their actual `on-*-container` foregrounds.
+- Save uses gold with `primary-content`; Cancel is neutral with
+  `neutral-content`; Delete is red with `error-content`. Lower-priority actions
+  are not automatically secondary-colored.
+- Preserve `surface = base-100`, `surface-container-low = base-200`, and
+  `surface-container-high = base-300`. Use `base-content` on these three light
+  bases, not all nine shades.
+- Use each actual content token on its fill, and `on-*-container` on its matching
+  container. Do not choose black or white independently in previews.
+- A bright fill is not foreground ink. Gold is unsuitable for small text,
+  necessary standalone icons, or sole selection/focus cues on ivory. The
+  gallery uses `on-primary-container` for links, focus and selected markers,
+  and `outline` for neutral control boundaries. Brand boundaries use
+  `on-primary-container` against the fill and adjacent surface; destructive
+  boundaries use `error`. `outline-variant` is for
+  decorative separation, not a substitute for a control boundary.
+- Labels, icons and explicit destructive wording remain necessary. Lavender
+  does not guarantee separation under every color-vision condition; primary
+  and warning also need semantic cues beyond hue.
 
-Warm-neutral correspondences are intentional:
-`surface = base-100`, `surface-container-low = base-200`, and
-`surface-container-high = base-300`. `base-content` is intended for the first
-three base shades, not all nine. Brand fills use dark authored content tokens.
+### Downstream migration
 
-Bright primary is a **fill, not foreground ink**. Do not use it for small text,
-necessary standalone icons, or the sole focus/selection cue on ivory. In this
-gallery, `on-primary-container` supplies underlined links, offset keyboard focus,
-selected borders/check marks and brand-button boundaries. Neutral controls and
-inputs use `outline`; `outline-variant` is decorative separation. These are
-explicitly tested contexts, not universal substitutions on arbitrary backgrounds.
+Regenerate/import the updated outputs, then audit consumer assumptions about
+white brand-button text, coral secondary actions, magenta accent and cool gray
+surfaces. Replace fill-as-ink and hue-only selected states with suitable existing
+dark roles and independently verified outlines/icons/labels. Dedicated ink,
+hover and pressed state-role work belongs in downstream follow-up; this change
+does **not** add `primary-ink`, `primary-hover`, `primary-active` or `focus-ring`
+to the shared schema. The earlier consumer-state color suggestions are not
+production tokens and are not hardcoded into the gallery.
 
-Downstream consumers must migrate hardcoded coral/pink styling and white brand
-labels to semantic tokens; audit Save/Cancel/Delete independently of brand role;
-and check hover, pressed, disabled, selected and focus states against their actual
-neighbors. Additional consumer state-role work remains separate: no
-`primary-ink`, `primary-hover`, `primary-active` or `focus-ring` public keys were
-added. Suggested future state colors are not production roles or demo overrides.
-Token generation passing does **not** establish consumer integration correctness.
-
-Sunshine and Moonlight preserve the same primary/supporting/complementary/status
-semantics, but Moonlight retains white/gold/blue and a magenta accent. Its colors
-are unchanged; do not assume their hues or accessibility properties mirror
-Sunshine. See [palette validation and known follow-ups](docs/sunshine-validation.md).
+Theme identity, pairing, shape and public keys/selectors are unchanged.
+Moonlight remains the dark pair with its authored colors untouched; white/gold
+brand roles and pink accent still warrant a separate semantic-continuity review.
+Token validation is not proof that downstream web/Flutter integration is fixed.
 
 ## Generated Outputs
 
@@ -225,6 +230,18 @@ tokens/*.yaml
 
 `codegen.yaml` controls input/output directories, file patterns, and CSS selector naming.
 
+Sunshine's required palette checks run in `validate` (also before generation)
+and `check`/CI. Tests compare all 61 approved sRGB references across CSS, TS,
+JSON and Dart, with at most one 8-bit channel difference; the hex references
+live only in test fixtures, never in a runtime palette. YAML remains
+authoritative. Unbounded linear-sRGB channels must lie in `[0, 1]` with `1e-6`
+numerical tolerance before any clipping. Text uses unrounded ratios of at
+least 4.5:1; meaningful outline/selection/focus contexts use at least 3:1.
+Alpha is composited over the actual opaque background. Decorative separators
+and arbitrary surface pairs are not subjected to a control-boundary gate.
+Other themes retain their existing structural checks, with palette concerns
+reported rather than recolored.
+
 ### Adding a theme
 
 1. Create `tokens/mytheme.yaml` with `name`, `mode`, `family`, `pair`, `description`, all 61 colors, and all 8 shape tokens
@@ -244,6 +261,15 @@ tokens/*.yaml
 ## GitHub Pages
 
 `docs/index.html` is the gallery template. `bun run build:pages` injects generated token data and writes `_site/index.html`, which the Pages workflow deploys.
+
+The gallery includes an interactive workspace, keyboard focus, action/status
+roles, secondary/error and primary/warning comparisons, calculated contrast
+results and a native OKLCH/generated sRGB rendering switch. Reports consume
+generated JSON via the same color utilities as validation; they never maintain
+a second palette. `_site/` remains ignored build output.
+
+See [validation scope and existing other-theme follow-ups](docs/sunshine-validation.md)
+and run `bun run scripts/audit-palette.ts` for the shared context report.
 
 ## License
 

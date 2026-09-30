@@ -7,11 +7,11 @@ export interface OklchColor {
 }
 
 export function parseOklch(value: string): OklchColor {
-  const match = /^(\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)(?:\s+\/\s+(\d+(?:\.\d+)?)%)?$/.exec(value);
+  const match = typeof value === 'string' && /^(\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)(?:\s+\/\s+(\d+(?:\.\d+)?)%)?$/.exec(value);
   if (!match) throw new Error(`Invalid OKLCH: ${value}`);
   const l = Number(match[1]) / 100, c = Number(match[2]), h = Number(match[3]);
   const alpha = match[4] === undefined ? undefined : Number(match[4]) / 100;
-  if (![l, c, h, alpha ?? 1].every(Number.isFinite) || l > 1 || (alpha ?? 1) > 1)
+  if (![l, c, h, alpha ?? 1].every(Number.isFinite) || l > 1 || h > 360 || (alpha ?? 1) > 1)
     throw new Error(`Invalid OKLCH components: ${value}`);
   return { l, c, h, alpha };
 }
@@ -141,4 +141,10 @@ export function tokenContrast(foreground: string, background: string, canvas?: s
   }
   const fg = composite(rgb(foreground), parseOklch(foreground).alpha ?? 1, bg);
   return contrast(fg, bg);
+}
+
+export { inSrgbGamut as isInSrgbGamut, tokenContrast as contrastRatio };
+
+export function relativeLuminance(value: string): number {
+  return luminance(oklchToLinearSrgb(value).map(linearToSrgb) as Rgb);
 }
