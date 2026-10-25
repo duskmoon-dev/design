@@ -197,8 +197,9 @@ to the shared schema. The earlier consumer-state color suggestions are not
 production tokens and are not hardcoded into the gallery.
 
 Theme identity, pairing, shape and public keys/selectors are unchanged.
-Moonlight remains the dark pair with its authored colors untouched; white/gold
-brand roles and pink accent still warrant a separate semantic-continuity review.
+Moonlight remains the dark pair with its white/gold brand roles and pink accent;
+its error label is corrected for contrast in design#3. The brand roles still
+warrant a separate semantic-continuity review.
 Token validation is not proof that downstream web/Flutter integration is fixed.
 
 ## Generated Outputs
@@ -249,8 +250,11 @@ numerical tolerance before any clipping. Text uses unrounded ratios of at
 least 4.5:1; meaningful outline/selection/focus contexts use at least 3:1.
 Alpha is composited over the actual opaque background. Decorative separators
 and arbitrary surface pairs are not subjected to a control-boundary gate.
-Other themes retain their existing structural checks, with palette concerns
-reported rather than recolored.
+All themes also require at least 4.5:1 for the eight brand/semantic filled-label
+pairs (`primary`, `secondary`, `tertiary`, `accent`, `info`, `success`, `warning`,
+`error`). Regression tests check native-derived and generated sRGB values and
+reject unreadable labels before generation. Other palette concerns remain
+diagnostics outside Sunshine's broader gate.
 
 ### Adding a theme
 

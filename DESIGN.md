@@ -249,8 +249,12 @@ atomically:
 
 Automated checks establish structural and generation correctness: schema
 completeness, recognized token names, known pair names, registered metadata
-relationships and generated target behavior. Sunshine additionally has required
-palette gates in `validate`, generation, `check` and CI:
+relationships and generated target behavior. Every theme requires at least
+4.5:1 for its eight brand/semantic filled-label pairs (neutral is excluded).
+`scripts/filled-contrast.test.ts` checks native-derived and generated sRGB
+contrast, with validation/generation negative controls for every theme.
+Sunshine additionally has required palette gates in `validate`, generation,
+`check` and CI:
 
 Pure color conversion/compositing is shared in `scripts/color.ts`; intended
 contexts and palette assessment live in `scripts/palette.ts`. Both the original
@@ -281,9 +285,9 @@ upstream `scripts/sunshine.test.ts` and complementary
   surface alias.
 
 The gallery reports the same contexts in native OKLCH and generated sRGB,
-including failures in other themes without changing their colors. Other themes
-are not newly subjected to Sunshine's required gamut/contrast gate. These
-checks cover named contexts, not every possible component state, color-vision
+including remaining failures in other themes. Beyond the eight filled-label
+pairs, other themes are not subjected to Sunshine's broader gamut/contrast gate.
+These checks cover named contexts, not every possible component state, color-vision
 condition or integration. Visual balance and downstream accessibility still
 require rendered/keyboard review; `bun run check` alone is not a global
 accessibility claim.
@@ -293,18 +297,18 @@ shared family, and opposite modes are enforced by tests over the names in
 `ALL_THEMES`; this is why registering both new variants there is part of the
 theme workflow.
 
-### Existing other-theme audit (2026-10-01)
+### Other-theme audit (updated 2026-10-26)
 
-The unchanged authored palettes at this HEAD have the following diagnostic
-failures in the gallery's role contexts. These are follow-up concerns, not
-new failing repository tests or a request to redesign other themes. For
+After the design#3 filled-label corrections, the palettes have the following
+diagnostic failures in the gallery's role contexts. These are follow-up concerns,
+not new failing repository tests or a request to redesign other themes. For
 out-of-sRGB values, contrast results use the clipped-sRGB diagnostic rendering,
 not a guarantee about native wide-gamut display behavior.
 
 | Theme | Out-of-sRGB authored tokens | Contrast concerns |
 |---|---|---|
-| Moonlight | `info`, `error-content` | Neutral fill text 3.12:1, error fill text 2.73:1; necessary outlines on nine surfaces 1.76–2.56:1; inverse-primary text 4.24:1; bright brand inner boundaries and destructive boundary also fail (17 failing contexts total). |
-| Forest | `primary`, `info`, `warning`, `on-warning-container`, `error-content`, `error-container` | Tertiary fill text 3.89:1, success fill text 4.30:1; supporting-button inner boundary 2.9924:1 remains below 3:1 (3 failing contexts total). |
+| Moonlight | `info` | Neutral fill text 3.12:1; necessary outlines on nine surfaces 1.76–2.56:1; inverse-primary text 4.24:1; bright brand inner boundaries and destructive boundary also fail (16 failing contexts total). |
+| Forest | `primary`, `info`, `warning`, `on-warning-container`, `error-content`, `error-container` | Supporting-button inner boundary 2.9924:1 remains below 3:1 (1 failing context total). |
 | Ocean | `primary-container`, `secondary-container`, `accent-content`, `inverse-primary`, `info-content`, `info-container`, `warning-content` | Necessary outlines on nine surfaces 2.22–2.81:1 and bright brand inner boundaries fail (13 failing contexts total). |
 
 Sunshine has zero failures: minimum tested text contrast 4.7742:1,

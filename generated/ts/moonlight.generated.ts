@@ -71,7 +71,7 @@ export const moonlightColors: ThemeColors = {
   'warning-container': '35% 0.06 80',
   'on-warning-container': '90% 0.06 80',
   error: '46.38% 0.1898 29.17',
-  'error-content': '86.38% 0.298 39.17',
+  'error-content': '86.38% 0.04 39.17',
   'error-container': '30% 0.08 25',
   'on-error-container': '88% 0.06 25',
 };

@@ -20,7 +20,7 @@ abstract final class DuskMoonForestTokens {
   static const Color secondaryContent = Color(0xFFFEF7F2);
   static const Color secondaryContainer = Color(0xFFF5E0D2);
   static const Color onSecondaryContainer = Color(0xFF311805);
-  static const Color tertiary = Color(0xFF3F8A78);
+  static const Color tertiary = Color(0xFF2F7B69);
   static const Color tertiaryContent = Color(0xFFF2FBF8);
   static const Color tertiaryContainer = Color(0xFFD4EFE7);
   static const Color onTertiaryContainer = Color(0xFF012019);
@@ -61,7 +61,7 @@ abstract final class DuskMoonForestTokens {
   static const Color infoContent = Color(0xFFF3FAFF);
   static const Color infoContainer = Color(0xFFDAEEFE);
   static const Color onInfoContainer = Color(0xFF042C43);
-  static const Color success = Color(0xFF1C882D);
+  static const Color success = Color(0xFF097F23);
   static const Color successContent = Color(0xFFF4FAF4);
   static const Color successContainer = Color(0xFFD8EFD8);
   static const Color onSuccessContainer = Color(0xFF052A09);

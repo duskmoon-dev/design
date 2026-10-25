@@ -1,4 +1,4 @@
-// Diagnostic report only: Sunshine is enforced by sunshine.test.ts in check/CI.
+// Full gallery diagnostics; Sunshine and all themes' brand/semantic filled labels are enforced in check/CI.
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { parse } from 'yaml';
@@ -10,7 +10,7 @@ for (const name of ['sunshine', 'moonlight', 'forest', 'ocean']) {
   const report = assessPalette(colors);
   const channels = Object.values(colors).flatMap(value => oklchToLinearSrgb(value as string));
   console.log(JSON.stringify({ name,
-    scope: name === 'sunshine' ? 'Required Sunshine contexts' : 'Diagnostic only; Sunshine gallery contexts are not universal theme requirements',
+    scope: name === 'sunshine' ? 'Required Sunshine contexts' : 'Required brand/semantic filled labels; remaining Sunshine gallery contexts are diagnostic',
     linearRange: [Math.min(...channels), Math.max(...channels)],
     gamutFailures: report.gamutFailures,
     minimumText: Math.min(...report.contrasts.filter(c => c.minimum === 4.5).map(c => c.ratio)),

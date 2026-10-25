@@ -70,3 +70,17 @@ export function validateSunshineColors(colors: Record<string, string>): string[]
   }
   return errors;
 }
+
+export function validateFilledLabelColors(theme: string, colors: Record<string, string>): string[] {
+  const errors: string[] = [];
+  try {
+    // Neutral remains a separate palette diagnostic for existing dark themes.
+    for (const role of FILLS.filter(role => role !== 'neutral')) {
+      const ratio = tokenContrast(colors[`${role}-content`], colors[role]);
+      if (ratio < 4.5) errors.push(`${theme}: filled label ${role}-content/${role} = ${ratio.toFixed(3)} < 4.5`);
+    }
+  } catch (error) {
+    errors.push(`${theme}: cannot evaluate filled label contrast: ${error instanceof Error ? error.message : error}`);
+  }
+  return errors;
+}
