@@ -88,7 +88,7 @@ describe('Approved Sunshine palette', () => {
     // Bright gold is a fill, not small text or a sole focus cue on ivory.
     expect(tokenContrast(source.colors.primary, source.colors.surface)).toBeLessThan(3);
   });
-  it('synchronizes meaning across JSON, TS, CSS and Dart (including the Flutter alias)', () => {
+  it('synchronizes every color across JSON, TS, CSS and Dart', () => {
     const json = JSON.parse(read('generated/sunshine.json'));
     const css = read('generated/sunshine.css'), dart = read('generated/dart/sunshine_tokens.g.dart');
     expect(json.meta).toEqual(sunshineMeta);
@@ -101,14 +101,12 @@ describe('Approved Sunshine palette', () => {
       expect(json.colors[key]).toEqual({ l: parsed.l, c: parsed.c, h: parsed.h, hex, ...(parsed.alpha === undefined ? {} : { alpha: parsed.alpha }) });
       expect(sunshineColors[key as keyof typeof sunshineColors]).toBe(value);
       expect(css).toContain(`--color-${key}: oklch(${value});`);
-      if (key === 'surface-container-highest') continue;
-      const dartKey = key === 'surface-variant' ? 'surfaceContainerHighest' : camel(key);
+      const dartKey = camel(key);
       const alpha = Math.round((parsed.alpha ?? 1)*255).toString(16).padStart(2,'0').toUpperCase();
       expect(dart).toContain(`static const Color ${dartKey} = Color(0x${alpha}${hex.slice(1)});`);
     }
     for (const [key,value] of Object.entries(source.shape)) expect(sunshineShape[key as keyof typeof sunshineShape]).toBe(value);
     expect(css).toContain('[data-theme="sunshine"]');
-    expect(dart).not.toContain('static const Color surfaceVariant');
     for (const [key,value] of Object.entries(json.meta)) {
       expect(css).toContain(`--theme-${key}: "${value}";`);
       expect(dart).toContain(`static const String ${key} = '${value}';`);

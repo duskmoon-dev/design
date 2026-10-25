@@ -37,6 +37,7 @@ abstract final class DuskMoonSunshineTokens {
   static const Color surfaceContainer = Color(0xFFF6EFDF);
   static const Color surfaceContainerHigh = Color(0xFFF0E7D5);
   static const Color surfaceContainerHighest = Color(0xFFE8DDC7);
+  static const Color surfaceVariant = Color(0xFFE8DDC7);
   static const Color onSurface = Color(0xFF30291F);
   static const Color onSurfaceVariant = Color(0xFF685D4F);
   static const Color base100 = Color(0xFFFFFCF5);

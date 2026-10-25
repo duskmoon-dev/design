@@ -378,6 +378,9 @@ describe('Generated CSS', () => {
 // ─── Generated Dart tests ───────────────────────────────────────────────────
 
 describe('Generated Dart', () => {
+  const schema = parseYAML(readFileSync(resolve(ROOT, 'tokens/_schema.yaml'), 'utf-8'));
+  const colorTokens: string[] = Object.values(schema.groups).flatMap((group: any) => group.tokens);
+
   for (const themeName of ALL_THEMES) {
     describe(themeName, () => {
       const dartPath = resolve(ROOT, `generated/dart/${themeName}_tokens.g.dart`);
@@ -410,18 +413,34 @@ describe('Generated Dart', () => {
         expect(content).toContain('static const double radiusSelector');
         expect(content).toContain('static const double depth');
       });
+
+      it('preserves every schema color as a separate Dart constant', () => {
+        const content = readFileSync(dartPath, 'utf-8');
+        const names = [...content.matchAll(/static const Color (\w+) = Color\(0x[A-F0-9]{8}\);/g)]
+          .map(match => match[1]);
+        const expectedNames = colorTokens.map(token => token.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase()));
+        expect(names.sort()).toEqual(expectedNames.sort());
+      });
+
+      it('preserves YAML and JSON color values, including alpha', () => {
+        const content = readFileSync(dartPath, 'utf-8');
+        const theme = parseYAML(readFileSync(resolve(ROOT, `tokens/${themeName}.yaml`), 'utf-8'));
+        const json = JSON.parse(readFileSync(resolve(ROOT, `generated/${themeName}.json`), 'utf-8'));
+
+        for (const [token, value] of Object.entries(theme.colors) as [string, string][]) {
+          const dartName = token.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
+          const { r, g, b } = oklchToRgb(value);
+          const rgb = [r, g, b].map(channel => channel.toString(16).padStart(2, '0')).join('').toUpperCase();
+          const alpha = parseOklch(value).alpha ?? 1;
+          const alphaHex = Math.round(alpha * 255).toString(16).padStart(2, '0').toUpperCase();
+
+          expect(json.colors[token].hex, token).toBe(`#${rgb}`);
+          expect(json.colors[token].alpha ?? 1, token).toBe(alpha);
+          expect(content, token).toContain(`static const Color ${dartName} = Color(0x${alphaHex}${rgb});`);
+        }
+      });
     });
   }
-
-  it('surface-variant maps to surfaceContainerHighest (sunshine)', () => {
-    const content = readFileSync(resolve(ROOT, 'generated/dart/sunshine_tokens.g.dart'), 'utf-8');
-    expect(content).toContain('static const Color surfaceContainerHighest = Color(');
-  });
-
-  it('surfaceVariant must NOT appear (sunshine)', () => {
-    const content = readFileSync(resolve(ROOT, 'generated/dart/sunshine_tokens.g.dart'), 'utf-8');
-    expect(content).not.toContain('static const Color surfaceVariant = Color(');
-  });
 });
 
 // ─── Typography token tests ─────────────────────────────────────────────────

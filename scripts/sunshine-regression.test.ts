@@ -72,7 +72,7 @@ describe('Sunshine approved palette and shipped targets', () => {
       expect(sunshineColors[token as keyof typeof sunshineColors]).toBe(colors[token]);
       const cssRaw = css.match(new RegExp(`--color-${token}: oklch\\(([^)]+)\\);`))?.[1];
       expect(cssRaw).toBe(colors[token]);
-      const dartName = token === 'surface-variant' || token === 'surface-container-highest' ? 'surfaceContainerHighest' : camelCase(token);
+      const dartName = camelCase(token);
       const dartHex = dart.match(new RegExp(`static const Color ${dartName} = Color\\(0x([A-F0-9]{8})\\);`))?.[1];
       expect(dartHex).toBeDefined();
       for (const [index, offset] of [2, 4, 6].entries()) {

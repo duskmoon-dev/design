@@ -50,7 +50,7 @@ The codegen reads `codegen.yaml` for config (input/output dirs, file patterns, s
 - `tokens/_semantic.yaml` — semantic color role mappings
 - `tokens/{theme}.yaml` — per-theme color, shape, and metadata values (4 themes)
 - `scripts/codegen.ts` — the entire generation pipeline
-- `scripts/codegen.test.ts` — test suite (142 tests)
+- `scripts/codegen.test.ts` — test suite (148 tests)
 
 ## Themes
 
@@ -84,7 +84,7 @@ Target handling:
 
 ## Non-Obvious Patterns
 
-**surface-variant aliasing in Dart:** Flutter M3 removed `surfaceVariant`. Codegen maps it to `surfaceContainerHighest` in Dart via `DART_ALIASES`, while CSS/TS keep both for backward compat. See the `DART_SKIP` set in codegen.ts.
+**Full color schema in Dart:** Codegen emits all 61 colors as separate camelCase constants, including `surfaceVariant` and `surfaceContainerHighest` from their matching YAML tokens. Keep these independent even when a theme assigns them the same value; Flutter `ColorScheme` API compatibility belongs in consumers.
 
 **Kebab→camelCase:** `primary-container` → `primaryContainer` everywhere except CSS. Dart numeric keys get prefixed if they start with a digit.
 

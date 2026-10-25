@@ -84,6 +84,16 @@ print(DuskMoonSunshineTokens.pair);         // → "moonlight"
 print(DuskMoonSunshineTokens.description);  // → "Sunlit ivory with golden amber, muted lavender and sky blue"
 ```
 
+Dart emits all 61 color tokens as separate camelCase constants, including
+`surfaceVariant` from `surface-variant` and `surfaceContainerHighest` from
+`surface-container-highest`. Flutter `ColorScheme` API compatibility belongs in
+consumers.
+
+Earlier Dart output aliased `surface-variant` to `surfaceContainerHighest` and
+omitted its canonical source value. `surfaceContainerHighest` now uses the
+correct source value in Moonlight, Forest, and Ocean; use `surfaceVariant` if
+you need the former aliased color. Sunshine's two source values currently match.
+
 ### JSON
 
 ```javascript

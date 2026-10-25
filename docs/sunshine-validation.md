@@ -17,8 +17,10 @@ bun run scripts/audit-palette.ts
 `check` and CI include the required Sunshine tests: exact public key set,
 metadata/shapes, all 61 reference round trips, all four output adapters, 50%
 scrim alpha, isolated repeat generation, finite/valid components, unclipped
-gamut, intended contrast pairs and negative controls. The Dart
-`surface-variant` → `surfaceContainerHighest` alias remains intentional.
+gamut, intended contrast pairs and negative controls. Dart preserves both
+`surfaceVariant` and `surfaceContainerHighest` independently, even though
+Sunshine currently assigns them the same color. Cross-theme tests verify all
+61 Dart color constants against their matching YAML and JSON values.
 The reference fixture is not imported by the generator or gallery. Both the
 original Sunshine tests and complementary `scripts/sunshine-regression.test.ts`
 run in check/CI. Palette gates also run before validation/generation succeeds.

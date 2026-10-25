@@ -261,12 +261,8 @@ function emitDart(theme: ThemeFile, classPrefix: string): string {
     `  static const String description = '${theme.description}';`,
   ];
 
-  const DART_ALIASES: Record<string, string> = { 'surface-variant': 'surfaceContainerHighest' };
-  const DART_SKIP = new Set(['surface-container-highest']);
-
   for (const [key, value] of Object.entries(theme.colors)) {
-    if (DART_SKIP.has(key)) continue;
-    const dartName = DART_ALIASES[key] ?? key.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
+    const dartName = key.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
     const argbHex = oklchToArgbHex(value);
     lines.push(`  static const Color ${dartName} = Color(${argbHex});`);
   }

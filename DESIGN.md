@@ -201,11 +201,11 @@ latter without changing the shared utility scale.
 All four targets carry the same theme metadata. Shared typography and spacing
 artifacts are emitted separately.
 
-Dart has one intentional compatibility exception: Flutter Material 3 removed
-`surfaceVariant`, so Dart exposes the source `surface-variant` value as
-`surfaceContainerHighest` and skips the separate
-`surface-container-highest` value. CSS, TypeScript, and JSON retain both schema
-tokens.
+Dart preserves all 61 schema color tokens as separate constants.
+`surface-variant` becomes `surfaceVariant`, and `surface-container-highest`
+becomes `surfaceContainerHighest`, each with its own source value. Flutter
+`ColorScheme` API compatibility belongs in consumers and does not rename or
+remove standalone design tokens.
 
 ## Creating a theme family
 
